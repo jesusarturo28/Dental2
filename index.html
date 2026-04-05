@@ -4,14 +4,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estefani Amza | Consultorio Dental</title>
+    <title>Estefani Amza | Odontología Estética</title>
     <meta name="description"
-        content="Consultorio Dental Estefani Amza en Lindavista, CDMX. Ofrecemos limpieza dental, ortodoncia, implantes y más.">
+        content="Cuidamos tu sonrisa en nuestro consultorio dental boutique. Limpieza, ortodoncia e implantes en un ambiente seguro y relajado.">
 
-    <!-- Google Fonts: Inter -->
+    <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- FontAwesome para íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -26,17 +26,16 @@
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="images/logo.jpeg" alt="Logo Estefani Amza"
-                    onerror="this.src='https://via.placeholder.com/40'; this.onerror=null;">
+                <i class="fa-solid fa-tooth" style="color: var(--primary-color);"></i>
                 <span>Estefani Amza</span>
             </a>
 
             <nav class="nav-links">
                 <a href="#inicio">Inicio</a>
-                <a href="#promociones">Promociones</a>
                 <a href="#servicios">Servicios</a>
-                <a href="#ubicacion">Ubicación</a>
-                <a href="#contacto" class="btn btn-primary" style="color: white;">Agendar Cita</a>
+                <a href="#tips">Tips de Salud</a>
+                <a href="#nosotros">Confianza</a>
+                <a href="#contacto" class="btn btn-primary">Agendar Cita</a>
             </nav>
 
             <button class="mobile-menu-btn" id="menu-btn" aria-label="Abrir menú">
@@ -47,184 +46,144 @@
         <!-- Menú Móvil -->
         <nav id="mobile-menu">
             <a href="#inicio">Inicio</a>
-            <a href="#promociones">Promociones</a>
             <a href="#servicios">Servicios</a>
-            <a href="#ubicacion">Ubicación</a>
+            <a href="#tips">Tips de Salud</a>
+            <a href="#nosotros">Confianza</a>
             <a href="#contacto" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
         </nav>
     </header>
 
     <!-- Inicio (Hero) -->
     <section id="inicio" class="hero">
-        <video autoplay muted loop playsinline class="hero-video">
-            <source src="images/fondo.mp4" type="video/mp4">
-            Tu navegador no soporta videos.
-        </video>
-        <div class="hero-overlay"></div>
         <div class="container relative-z">
             <div class="hero-content">
-                <span class="hero-tag">Sonrisas Saludables y Felices</span>
-                <h1>Tu salud dental en las <span>mejores manos</span></h1>
-                <p>En el consultorio de Estefani Amza te brindamos atención cálida, profesional y tecnología moderna
-                    para transformar tu sonrisa sin dolor.</p>
+                <span class="hero-tag"><i class="fa-solid fa-sparkles"></i> Odontología Estética Moderna</span>
+                <h1>Cuidamos tu <span>sonrisa</span></h1>
+                <p>Descubre una atención cálida y profesional. Transforma tu salud dental en un ambiente relajado, seguro y diseñado para tu comodidad.</p>
                 <div class="hero-btns">
                     <a href="https://wa.me/525573541129" class="btn btn-primary" target="_blank">
-                        <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
+                        Agendar cita
                     </a>
-                    <a href="https://instagram.com/tu_usuario" class="btn btn-secondary" target="_blank">
-                        <i class="fa-brands fa-instagram"></i> Nuestro Instagram
+                    <a href="#servicios" class="btn btn-secondary">
+                        Conoce más
                     </a>
-                    <a href="#servicios" class="btn btn-secondary" style="background-color: var(--text-dark);">Ver
-                        Servicios</a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Promociones -->
-    <section id="promociones" class="promotions">
-        <div class="container">
-            <h2>Promociones del Mes</h2>
-            <div class="promo-container">
-                <div class="promo-content">
-                    <div class="promo-card">
-                        <h3><i class="fa-solid fa-gift"></i> Valoración y Diagnóstico</h3>
-                        <p>Agenda hoy tu cita y obtén una valoración completa con diagnóstico detallado a un precio
-                            especial.</p>
-                    </div>
-                    <div class="promo-card">
-                        <h3><i class="fa-solid fa-sparkles"></i> Limpieza Dental Profunda</h3>
-                        <p>Luce una sonrisa radiante y libre de sarro. Promoción especial en profilaxis agendando por
-                            WhatsApp.</p>
-                    </div>
-                </div>
-                <div class="promo-image">
-                    <img src="images/happy_patient.png" alt="Paciente feliz con sonrisa perfecta" loading="lazy">
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Servicios -->
+    <!-- Servicios (Cards) -->
     <section id="servicios" class="services">
         <div class="container">
+            <span class="section-tag">Tratamientos</span>
             <h2>Nuestros Servicios</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Ofrecemos odontología integral de la más
-                alta calidad para todas tus necesidades bucodentales.</p>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Odontología integral especializada para devolverle la funcionalidad y estética a tu sonrisa.</p>
 
             <div class="services-grid">
                 <!-- Limpieza dental -->
                 <div class="service-card">
                     <div class="service-icon"><i class="fa-solid fa-pump-medical"></i></div>
                     <h3>Limpieza Dental</h3>
-                    <p>Eliminación de placa, sarro y manchas para mantener encías y dientes sanos.</p>
-                </div>
-
-                <!-- Resinas -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
-                    <h3>Resinas</h3>
-                    <p>Restauraciones estéticas del color de tu diente para tratar caries o fracturas.</p>
-                </div>
-
-                <!-- Extracciones -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-solid fa-hand-holding-medical"></i></div>
-                    <h3>Extracciones</h3>
-                    <p>Procedimientos seguros y sin dolor para dientes dañados irrecuperables.</p>
-                </div>
-
-                <!-- Endodoncias -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-solid fa-x-ray"></i></div>
-                    <h3>Endodoncias</h3>
-                    <p>Tratamiento de conductos para salvar tu pieza dental y aliviar el dolor profundo.</p>
-                </div>
-
-                <!-- Implantes dentales -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                    <h3>Implantes Dentales</h3>
-                    <p>Solución definitiva y estética para recuperar dientes perdidos.</p>
-                </div>
-
-                <!-- Prótesis totales -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-solid fa-teeth"></i></div>
-                    <h3>Prótesis Totales</h3>
-                    <p>Rehabilitación completa de sonrisa con prótesis cómodas y naturales.</p>
-                </div>
-
-                <!-- Corona -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-regular fa-gem"></i></div>
-                    <h3>Coronas</h3>
-                    <p>Funda protectora estética que devuelve la fuerza y apariencia a tu diente.</p>
-                </div>
-
-                <!-- Muelas de juicio -->
-                <div class="service-card">
-                    <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
-                    <h3>Muelas de Juicio</h3>
-                    <p>Cirugía especializada para la extracción segura de terceros molares.</p>
+                    <p>Mantenimiento profundo para encías y dientes libres de sarro y placa. Sonríe con confianza.</p>
                 </div>
 
                 <!-- Ortodoncia -->
                 <div class="service-card">
                     <div class="service-icon"><i class="fa-solid fa-teeth-open"></i></div>
                     <h3>Ortodoncia</h3>
-                    <p>Brackets y alienadores para corregir tu mordida y alinear tu sonrisa.</p>
+                    <p>Tratamientos modernos, desde brackets estéticos hasta alineadores transparentes.</p>
+                </div>
+
+                <!-- Endodoncia -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-x-ray"></i></div>
+                    <h3>Endodoncia</h3>
+                    <p>Salvando tus dientes naturales con tratamientos de alta precisión y sin dolor.</p>
+                </div>
+
+                <!-- Resinas -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
+                    <h3>Resinas</h3>
+                    <p>Restauraciones estéticas invisibles que devuelven la forma natural a tu diente.</p>
+                </div>
+
+                <!-- Implantes dentales -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Implantes Dentales</h3>
+                    <p>La mejor solución para reemplazar piezas perdidas logrando máxima firmeza y estética.</p>
+                </div>
+
+                <!-- Muelas de juicio -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
+                    <h3>Cirugía y Extracciones</h3>
+                    <p>Procedimientos seguros y cómodos, incluyendo extracción de muelas del juicio.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Ubicación y Contacto -->
-    <section id="ubicacion" class="contact">
+    <!-- Sección Educativa (Tips) -->
+    <section id="tips" class="educational">
         <div class="container">
-            <h2>Ubicación y Contacto</h2>
-            <div class="contact-grid">
-                <div class="contact-info" id="contacto">
-                    <div class="info-item">
-                        <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
-                        <div class="info-text">
-                            <h4>Dirección</h4>
-                            <p>Riobamba 952,<br>Lindavista, CDMX.</p>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
-                        <div class="info-text">
-                            <h4>Teléfono</h4>
-                            <p><a href="tel:5573541129">55 7354 1129</a></p>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
-                        <div class="info-text">
-                            <h4>WhatsApp</h4>
-                            <p><a href="https://wa.me/525573541129" target="_blank">Enviar Mensaje</a></p>
-                        </div>
-                    </div>
-
-                    <div class="info-item">
-                        <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
-                        <div class="info-text">
-                            <h4>Horarios</h4>
-                            <p>Lunes a Viernes: 9:00 AM - 7:00 PM<br>Sábados: 9:00 AM - 2:00 PM</p>
-                        </div>
-                    </div>
+            <span class="section-tag">Aprende con nosotros</span>
+            <h2>Tips de Salud Dental</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Nunca es tarde para comenzar a cuidar tu sonrisa. Aquí te damos las claves.</p>
+            
+            <div class="edu-grid">
+                <div class="edu-card">
+                    <i class="fa-solid fa-toothbrush icon"></i>
+                    <h4>Cepillado Correcto</h4>
+                    <p>Cepíllate al menos dos veces al día con pasta fluorada por dos minutos, con movimientos suaves desde la encía hacia el diente.</p>
                 </div>
-
-                <div class="map-container">
-                    <!-- Mapa embebido de Google Maps -->
-                    <iframe
-                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.350616147746!2d-99.1332!3d19.4828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f9a2636a0d0d%3A0xe5ed0a6d20387539!2sRiobamba%20952%2C%20Lindavista%20Sur%2C%20Gustavo%20A.%20Madero%2C%2007300%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses!2smx!4v1714526000000!5m2!1ses!2smx"
-                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                <div class="edu-card">
+                    <i class="fa-solid fa-hand-holding-droplet icon"></i>
+                    <h4>Uso de Hilo Dental</h4>
+                    <p>El hilo dental llega donde el cepillo no puede. Úsalo diariamente para prevenir caries entre los dientes y cuidar tus encías.</p>
+                </div>
+                <div class="edu-card">
+                    <i class="fa-regular fa-calendar-check icon"></i>
+                    <h4>Revisiones Semestrales</h4>
+                    <p>Visítanos cada 6 meses. La prevención es la mejor herramienta para evitar molestias y tratamientos costosos en el futuro.</p>
                 </div>
             </div>
+        </div>
+    </section>
+
+    <!-- Galería / Confianza -->
+    <section id="nosotros" class="gallery">
+        <div class="container">
+            <span class="section-tag">Conócenos</span>
+            <h2>Tu espacio de cuidado</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto; margin-bottom: 2rem;">Contamos con un ambiente relajante, instrumental esterilizado y tecnología de punta.</p>
+            <div class="gallery-grid">
+                <!-- Se recomienda usar fotos reales de la clínica aquí (Placeholder images currently setup) -->
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=600&q=80" alt="Consultorio Dental">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1595461135849-bf08893fdc2c?auto=format&fit=crop&w=600&q=80" alt="Instrumental esterilizado">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80" alt="Atención al paciente">
+                </div>
+                <div class="gallery-item">
+                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=600&q=80" alt="Tecnología dental">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action (Strong CTA) -->
+    <section id="contacto" class="container" style="padding-top: 3rem;">
+        <div class="cta-section">
+            <h2>¿Listo para sonreír con confianza?</h2>
+            <p>Agenda tu valoración y descubre cómo la odontología moderna, gentil y profesional puede transformar tu salud bucal sin miedos.</p>
+            <a href="https://wa.me/525573541129" class="btn btn-secondary" target="_blank">
+                Agenda tu cita
+            </a>
         </div>
     </section>
 
@@ -232,10 +191,13 @@
     <footer>
         <div class="container footer-content">
             <div class="footer-logo">
-                <img src="images/logo.jpeg" alt="Logo Blanco" onerror="this.style.display='none'">
+                <i class="fa-solid fa-tooth"></i>
                 <span>Estefani Amza</span>
             </div>
-            <p>Odontología Integral Especializada para toda la familia.</p>
+            <p style="max-width: 400px; margin: 0 auto; color: rgba(255,255,255,0.8);">Odontología Estética y Profesional. Cuidamos tu sonrisa con atención de primer nivel.</p>
+            
+            <p style="margin-top: 1rem; color: rgba(255,255,255,0.8);"><strong>Dirección:</strong> Riobamba 952, Lindavista, CDMX.<br>
+            <strong>Teléfono:</strong> <a href="tel:5573541129" style="color:var(--primary-color);">55 7354 1129</a></p>
 
             <div class="footer-socials">
                 <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
@@ -254,7 +216,7 @@
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
-    <!-- Script para Menú Móvil y animaciones -->
+    <!-- Script para Menú Móvil -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const menuBtn = document.getElementById('menu-btn');
