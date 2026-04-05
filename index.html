@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estefani Amza | Consultorio Dental</title>
+    <meta name="description"
+        content="Consultorio Dental Estefani Amza en Lindavista, CDMX. Ofrecemos limpieza dental, ortodoncia, implantes y más.">
+
+    <!-- Google Fonts: Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Navegación -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <img src="images/logo.jpeg" alt="Logo Estefani Amza"
+                    onerror="this.src='https://via.placeholder.com/40'; this.onerror=null;">
+                <span>Estefani Amza</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#promociones">Promociones</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#ubicacion">Ubicación</a>
+                <a href="#contacto" class="btn btn-primary" style="color: white;">Agendar Cita</a>
+            </nav>
+
+            <button class="mobile-menu-btn" id="menu-btn" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Menú Móvil -->
+        <nav id="mobile-menu">
+            <a href="#inicio">Inicio</a>
+            <a href="#promociones">Promociones</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#ubicacion">Ubicación</a>
+            <a href="#contacto" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
+        </nav>
+    </header>
+
+    <!-- Inicio (Hero) -->
+    <section id="inicio" class="hero">
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="images/fondo.mp4" type="video/mp4">
+            Tu navegador no soporta videos.
+        </video>
+        <div class="hero-overlay"></div>
+        <div class="container relative-z">
+            <div class="hero-content">
+                <span class="hero-tag">Sonrisas Saludables y Felices</span>
+                <h1>Tu salud dental en las <span>mejores manos</span></h1>
+                <p>En el consultorio de Estefani Amza te brindamos atención cálida, profesional y tecnología moderna
+                    para transformar tu sonrisa sin dolor.</p>
+                <div class="hero-btns">
+                    <a href="https://wa.me/525573541129" class="btn btn-primary" target="_blank">
+                        <i class="fa-brands fa-whatsapp"></i> Contactar por WhatsApp
+                    </a>
+                    <a href="https://instagram.com/tu_usuario" class="btn btn-secondary" target="_blank">
+                        <i class="fa-brands fa-instagram"></i> Nuestro Instagram
+                    </a>
+                    <a href="#servicios" class="btn btn-secondary" style="background-color: var(--text-dark);">Ver
+                        Servicios</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Promociones -->
+    <section id="promociones" class="promotions">
+        <div class="container">
+            <h2>Promociones del Mes</h2>
+            <div class="promo-container">
+                <div class="promo-content">
+                    <div class="promo-card">
+                        <h3><i class="fa-solid fa-gift"></i> Valoración y Diagnóstico</h3>
+                        <p>Agenda hoy tu cita y obtén una valoración completa con diagnóstico detallado a un precio
+                            especial.</p>
+                    </div>
+                    <div class="promo-card">
+                        <h3><i class="fa-solid fa-sparkles"></i> Limpieza Dental Profunda</h3>
+                        <p>Luce una sonrisa radiante y libre de sarro. Promoción especial en profilaxis agendando por
+                            WhatsApp.</p>
+                    </div>
+                </div>
+                <div class="promo-image">
+                    <img src="images/happy_patient.png" alt="Paciente feliz con sonrisa perfecta" loading="lazy">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <h2>Nuestros Servicios</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Ofrecemos odontología integral de la más
+                alta calidad para todas tus necesidades bucodentales.</p>
+
+            <div class="services-grid">
+                <!-- Limpieza dental -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-pump-medical"></i></div>
+                    <h3>Limpieza Dental</h3>
+                    <p>Eliminación de placa, sarro y manchas para mantener encías y dientes sanos.</p>
+                </div>
+
+                <!-- Resinas -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
+                    <h3>Resinas</h3>
+                    <p>Restauraciones estéticas del color de tu diente para tratar caries o fracturas.</p>
+                </div>
+
+                <!-- Extracciones -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-hand-holding-medical"></i></div>
+                    <h3>Extracciones</h3>
+                    <p>Procedimientos seguros y sin dolor para dientes dañados irrecuperables.</p>
+                </div>
+
+                <!-- Endodoncias -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-x-ray"></i></div>
+                    <h3>Endodoncias</h3>
+                    <p>Tratamiento de conductos para salvar tu pieza dental y aliviar el dolor profundo.</p>
+                </div>
+
+                <!-- Implantes dentales -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Implantes Dentales</h3>
+                    <p>Solución definitiva y estética para recuperar dientes perdidos.</p>
+                </div>
+
+                <!-- Prótesis totales -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-teeth"></i></div>
+                    <h3>Prótesis Totales</h3>
+                    <p>Rehabilitación completa de sonrisa con prótesis cómodas y naturales.</p>
+                </div>
+
+                <!-- Corona -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-regular fa-gem"></i></div>
+                    <h3>Coronas</h3>
+                    <p>Funda protectora estética que devuelve la fuerza y apariencia a tu diente.</p>
+                </div>
+
+                <!-- Muelas de juicio -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
+                    <h3>Muelas de Juicio</h3>
+                    <p>Cirugía especializada para la extracción segura de terceros molares.</p>
+                </div>
+
+                <!-- Ortodoncia -->
+                <div class="service-card">
+                    <div class="service-icon"><i class="fa-solid fa-teeth-open"></i></div>
+                    <h3>Ortodoncia</h3>
+                    <p>Brackets y alienadores para corregir tu mordida y alinear tu sonrisa.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ubicación y Contacto -->
+    <section id="ubicacion" class="contact">
+        <div class="container">
+            <h2>Ubicación y Contacto</h2>
+            <div class="contact-grid">
+                <div class="contact-info" id="contacto">
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-location-dot"></i></div>
+                        <div class="info-text">
+                            <h4>Dirección</h4>
+                            <p>Riobamba 952,<br>Lindavista, CDMX.</p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-phone"></i></div>
+                        <div class="info-text">
+                            <h4>Teléfono</h4>
+                            <p><a href="tel:5573541129">55 7354 1129</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-brands fa-whatsapp"></i></div>
+                        <div class="info-text">
+                            <h4>WhatsApp</h4>
+                            <p><a href="https://wa.me/525573541129" target="_blank">Enviar Mensaje</a></p>
+                        </div>
+                    </div>
+
+                    <div class="info-item">
+                        <div class="info-icon"><i class="fa-solid fa-clock"></i></div>
+                        <div class="info-text">
+                            <h4>Horarios</h4>
+                            <p>Lunes a Viernes: 9:00 AM - 7:00 PM<br>Sábados: 9:00 AM - 2:00 PM</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="map-container">
+                    <!-- Mapa embebido de Google Maps -->
+                    <iframe
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.350616147746!2d-99.1332!3d19.4828!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f9a2636a0d0d%3A0xe5ed0a6d20387539!2sRiobamba%20952%2C%20Lindavista%20Sur%2C%20Gustavo%20A.%20Madero%2C%2007300%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses!2smx!4v1714526000000!5m2!1ses!2smx"
+                        allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <img src="images/logo.jpeg" alt="Logo Blanco" onerror="this.style.display='none'">
+                <span>Estefani Amza</span>
+            </div>
+            <p>Odontología Integral Especializada para toda la familia.</p>
+
+            <div class="footer-socials">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://instagram.com/tu_usuario" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/525573541129" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Estefani Amza. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/525573541129" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Script para Menú Móvil y animaciones -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = menuBtn.querySelector('i');
+
+            // Toggle menu
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                if (mobileMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Cerrar menú al hacer clic en un enlace
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
