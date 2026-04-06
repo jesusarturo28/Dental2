@@ -4,14 +4,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Estefani Amza | Odontología Estética</title>
+    <title>Estefani Amza | Odontología Integral</title>
     <meta name="description"
         content="Cuidamos tu sonrisa en nuestro consultorio dental boutique. Limpieza, ortodoncia e implantes en un ambiente seguro y relajado.">
 
     <!-- Google Fonts: Montserrat -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- FontAwesome para íconos -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -35,7 +36,7 @@
                 <a href="#servicios">Servicios</a>
                 <a href="#tips">Tips de Salud</a>
                 <a href="#nosotros">Confianza</a>
-                <a href="#contacto" class="btn btn-primary">Agendar Cita</a>
+                <a href="#agendar" class="btn btn-primary">Agendar Cita</a>
             </nav>
 
             <button class="mobile-menu-btn" id="menu-btn" aria-label="Abrir menú">
@@ -49,17 +50,24 @@
             <a href="#servicios">Servicios</a>
             <a href="#tips">Tips de Salud</a>
             <a href="#nosotros">Confianza</a>
-            <a href="#contacto" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
+            <a href="#agendar" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
         </nav>
     </header>
 
     <!-- Inicio (Hero) -->
     <section id="inicio" class="hero">
+        <!-- Video de Fondo -->
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="images/video%201.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
         <div class="container relative-z">
             <div class="hero-content">
-                <span class="hero-tag"><i class="fa-solid fa-sparkles"></i> Odontología Estética Moderna</span>
+                <span class="hero-tag"><i class="fa-solid fa-sparkles"></i> Odontología Integral</span>
                 <h1>Cuidamos tu <span>sonrisa</span></h1>
-                <p>Descubre una atención cálida y profesional. Transforma tu salud dental en un ambiente relajado, seguro y diseñado para tu comodidad.</p>
+                <p>Descubre una atención cálida y profesional. Transforma tu salud dental en un ambiente relajado,
+                    seguro y diseñado para tu comodidad.</p>
                 <div class="hero-btns">
                     <a href="https://wa.me/525573541129" class="btn btn-primary" target="_blank">
                         Agendar cita
@@ -77,7 +85,8 @@
         <div class="container">
             <span class="section-tag">Tratamientos</span>
             <h2>Nuestros Servicios</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Odontología integral especializada para devolverle la funcionalidad y estética a tu sonrisa.</p>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Odontología integral especializada para
+                devolverle la funcionalidad y estética a tu sonrisa.</p>
 
             <div class="services-grid">
                 <!-- Limpieza dental -->
@@ -130,24 +139,100 @@
         <div class="container">
             <span class="section-tag">Aprende con nosotros</span>
             <h2>Tips de Salud Dental</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Nunca es tarde para comenzar a cuidar tu sonrisa. Aquí te damos las claves.</p>
-            
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Nunca es tarde para comenzar a cuidar tu
+                sonrisa. Aquí te damos las claves.</p>
+
             <div class="edu-grid">
                 <div class="edu-card">
                     <i class="fa-solid fa-toothbrush icon"></i>
                     <h4>Cepillado Correcto</h4>
-                    <p>Cepíllate al menos dos veces al día con pasta fluorada por dos minutos, con movimientos suaves desde la encía hacia el diente.</p>
+                    <p>Cepíllate al menos dos veces al día con pasta fluorada por dos minutos, con movimientos suaves
+                        desde la encía hacia el diente.</p>
                 </div>
                 <div class="edu-card">
                     <i class="fa-solid fa-hand-holding-droplet icon"></i>
                     <h4>Uso de Hilo Dental</h4>
-                    <p>El hilo dental llega donde el cepillo no puede. Úsalo diariamente para prevenir caries entre los dientes y cuidar tus encías.</p>
+                    <p>El hilo dental llega donde el cepillo no puede. Úsalo diariamente para prevenir caries entre los
+                        dientes y cuidar tus encías.</p>
                 </div>
                 <div class="edu-card">
                     <i class="fa-regular fa-calendar-check icon"></i>
                     <h4>Revisiones Semestrales</h4>
-                    <p>Visítanos cada 6 meses. La prevención es la mejor herramienta para evitar molestias y tratamientos costosos en el futuro.</p>
+                    <p>Visítanos cada 6 meses. La prevención es la mejor herramienta para evitar molestias y
+                        tratamientos costosos en el futuro.</p>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agendar Cita Formulario -->
+    <section id="agendar" class="appointment-section">
+        <div class="container">
+            <div class="appointment-container">
+                <span class="section-tag">Agenda tu visita</span>
+                <h2>Solicita tu Cita</h2>
+                <p class="appointment-text">No dejes que el miedo te detenga. En nuestro consultorio te brindamos un
+                    trato suave, empático y profesional. Déjanos tus datos y nos pondremos en contacto para confirmar tu
+                    espacio.</p>
+
+                <form id="appointment-form" class="appointment-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Ej. Ana Pérez"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                placeholder="Ej. 55 1234 5678" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" name="email" class="form-control"
+                                placeholder="Ej. ana@ejemplo.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Servicio de interés</label>
+                            <select id="service" name="service" class="form-control" required>
+                                <option value="" disabled selected>Selecciona un servicio</option>
+                                <option value="Limpieza Dental">Limpieza Dental</option>
+                                <option value="Ortodoncia">Ortodoncia</option>
+                                <option value="Endodoncia">Endodoncia</option>
+                                <option value="Resinas">Resinas / Empastes</option>
+                                <option value="Implantes Dentales">Implantes Dentales</option>
+                                <option value="Cirugía/Extracción">Cirugía / Extracciones</option>
+                                <option value="Otro">Otro / Valoración General</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="datetime">Fecha / Horario de preferencia</label>
+                            <input type="text" id="datetime" name="datetime" class="form-control"
+                                placeholder="Ej. Martes por la tarde" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="source">¿Cómo te enteraste de nosotros?</label>
+                            <select id="source" name="source" class="form-control" required>
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="Recomendación de amigo/familiar">Recomendación de un amigo o familiar
+                                </option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Búsqueda en Google">Búsqueda en Google</option>
+                                <option value="Pasé por la clínica">Pasé por ahí / Anuncio exterior</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="message">Mensaje Adicional</label>
+                            <textarea id="message" name="message" class="form-control" rows="4"
+                                placeholder="¿Hay algo que debamos saber?"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary form-submit">
+                        <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
+                    </button>
+                </form>
             </div>
         </div>
     </section>
@@ -157,20 +242,21 @@
         <div class="container">
             <span class="section-tag">Conócenos</span>
             <h2>Tu espacio de cuidado</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto; margin-bottom: 2rem;">Contamos con un ambiente relajante, instrumental esterilizado y tecnología de punta.</p>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto; margin-bottom: 2rem;">Contamos con un
+                ambiente relajante, instrumental esterilizado y tecnología de punta.</p>
             <div class="gallery-grid">
-                <!-- Se recomienda usar fotos reales de la clínica aquí (Placeholder images currently setup) -->
+                <!-- Fotografías reales de la clínica -->
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1606811841689-23dfddce3e95?auto=format&fit=crop&w=600&q=80" alt="Consultorio Dental">
+                    <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.47.37%20AM.jpeg" alt="Consultorio Dental">
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1595461135849-bf08893fdc2c?auto=format&fit=crop&w=600&q=80" alt="Instrumental esterilizado">
+                    <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.47.38%20AM.jpeg" alt="Atención y cuidado">
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=600&q=80" alt="Atención al paciente">
+                    <img src="images/imagen%203.jpeg" alt="Estudio y diagnóstico clínico">
                 </div>
                 <div class="gallery-item">
-                    <img src="https://images.unsplash.com/photo-1609840114035-3c981b782dfe?auto=format&fit=crop&w=600&q=80" alt="Tecnología dental">
+                    <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.48.38%20AM.jpeg" alt="Nuestro equipo">
                 </div>
             </div>
         </div>
@@ -180,7 +266,8 @@
     <section id="contacto" class="container" style="padding-top: 3rem;">
         <div class="cta-section">
             <h2>¿Listo para sonreír con confianza?</h2>
-            <p>Agenda tu valoración y descubre cómo la odontología moderna, gentil y profesional puede transformar tu salud bucal sin miedos.</p>
+            <p>Agenda tu valoración y descubre cómo la odontología moderna, gentil y profesional puede transformar tu
+                salud bucal sin miedos.</p>
             <a href="https://wa.me/525573541129" class="btn btn-secondary" target="_blank">
                 Agenda tu cita
             </a>
@@ -194,10 +281,13 @@
                 <i class="fa-solid fa-tooth"></i>
                 <span>Estefani Amza</span>
             </div>
-            <p style="max-width: 400px; margin: 0 auto; color: rgba(255,255,255,0.8);">Odontología Estética y Profesional. Cuidamos tu sonrisa con atención de primer nivel.</p>
-            
-            <p style="margin-top: 1rem; color: rgba(255,255,255,0.8);"><strong>Dirección:</strong> Riobamba 952, Lindavista, CDMX.<br>
-            <strong>Teléfono:</strong> <a href="tel:5573541129" style="color:var(--primary-color);">55 7354 1129</a></p>
+            <p style="max-width: 400px; margin: 0 auto; color: rgba(255,255,255,0.8);">Odontología Integral y
+                Profesional. Cuidamos tu sonrisa con atención de primer nivel.</p>
+
+            <p style="margin-top: 1rem; color: rgba(255,255,255,0.8);"><strong>Dirección:</strong> Riobamba 952,
+                Lindavista, CDMX.<br>
+                <strong>Teléfono:</strong> <a href="tel:5573541129" style="color:var(--primary-color);">55 7354 1129</a>
+            </p>
 
             <div class="footer-socials">
                 <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
@@ -244,6 +334,32 @@
                     icon.classList.add('fa-bars');
                 });
             });
+
+            // Formulario de Cita - Enviar a WhatsApp
+            const appointmentForm = document.getElementById('appointment-form');
+            if (appointmentForm) {
+                appointmentForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const name = document.getElementById('name').value;
+                    const phone = document.getElementById('phone').value;
+                    const email = document.getElementById('email').value;
+                    const service = document.getElementById('service').value;
+                    const datetime = document.getElementById('datetime').value;
+                    const source = document.getElementById('source').value;
+                    const message = document.getElementById('message').value;
+
+                    // Formatear el mensaje para WhatsApp
+                    const text = `¡Hola! Me gustaría agendar una cita.\n\n*Mis datos:*\n👤 Nombre: ${name}\n📱 Teléfono: ${phone}\n📧 Correo: ${email}\n🦷 Servicio: ${service}\n📅 Horario de preferencia: ${datetime}\n📢 Me enteré por: ${source}\n💬 Mensaje: ${message}\n\n¡Quedo a la espera de confirmación!`;
+
+                    // Codificar para URL
+                    const encodedText = encodeURIComponent(text);
+                    const whatsappUrl = `https://wa.me/525573541129?text=${encodedText}`;
+
+                    // Abrir en nueva pestaña
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
         });
     </script>
 </body>
