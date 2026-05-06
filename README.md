@@ -1,3 +1,21 @@
+<img width="667" height="1000" alt="WhatsApp Image 2026-04-06 at 10 48 38 AM" src="https://github.com/user-attachments/assets/74938558-d9ce-457f-bb0d-c8d38649a834" />
+<img width="736" height="981" alt="WhatsApp Image 2026-04-06 at 10 47 38 AM" src="https://github.com/user-attachments/assets/eb17f47d-7658-4e1b-9f20-43edd4419ef8" />
+<img width="736" height="1308" alt="WhatsApp Image 2026-04-06 at 10 47 38 AM (1)" src="https://github.com/user-attachments/assets/5e1ef3e2-263c-443e-8f50-89ea1fecd0c9" />
+<img width="736" height="1104" alt="WhatsApp Image 2026-04-06 at 10 47 37 AM" src="https://github.com/user-attachments/assets/af5a6a42-3317-42f6-91f8-3e4d436b89ec" />
+
+
+https://github.com/user-attachments/assets/b850ba5c-270b-4a0e-97e3-d0708e09e7d7
+
+<img width="1024" height="1024" alt="radiografia" src="https://github.com/user-attachments/assets/a5f9c189-c082-4567-8569-7a549cd4701f" />
+<img width="1050" height="531" alt="logo" src="https://github.com/user-attachments/assets/13ca4d7d-6c0a-4530-90fe-8160042d2449" />
+<img width="736" height="1104" alt="imagen 3" src="https://github.com/user-attachments/assets/aa8ada0a-9ae9-4dba-8d1f-e4403c0414e5" />
+<img width="1024" height="1024" alt="hero_bg" src="https://github.com/user-attachments/assets/126a2569-7cd5-4050-ba5e-6ed8c88e8b0d" />
+<img width="1024" height="1024" alt="happy_patient" src="https://github.com/user-attachments/assets/84dd896b-6a3b-405d-bb1b-d411e9b2f250" />
+
+
+https://github.com/user-attachments/assets/df3956f6-f194-4fc4-a5e4-267a5ec4d650
+
+<img width="1024" height="1024" alt="clinica_moderna" src="https://github.com/user-attachments/assets/c7715b79-400c-433a-b200-336ca031fc93" />
 [styles.css](https://github.com/user-attachments/files/27457451/styles.css)
 
 :root {
