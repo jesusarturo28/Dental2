@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Estefani Amza | Odontología Integral</title>
+    <meta name="description"
+        content="Cuidamos tu sonrisa en nuestro consultorio dental boutique. Limpieza, ortodoncia e implantes en un ambiente seguro y relajado.">
+
+    <!-- Google Fonts: Montserrat -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <!-- FontAwesome para íconos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- AOS (Animate on Scroll) CSS -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <!-- Swiper CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+
+    <!-- Estilos principales -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <!-- Navegación -->
+    <header>
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-tooth" style="color: var(--primary-color);"></i>
+                <span>Estefani Amza</span>
+            </a>
+
+            <nav class="nav-links">
+                <a href="#inicio">Inicio</a>
+                <a href="#servicios">Servicios</a>
+                <a href="#tips">Tips de Salud</a>
+                <a href="#nosotros">Confianza</a>
+                <div class="nav-socials">
+                    <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                </div>
+                <a href="#agendar" class="btn btn-primary">Agendar Cita</a>
+            </nav>
+
+            <button class="mobile-menu-btn" id="menu-btn" aria-label="Abrir menú">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Menú Móvil -->
+        <nav id="mobile-menu">
+            <a href="#inicio">Inicio</a>
+            <a href="#servicios">Servicios</a>
+            <a href="#tips">Tips de Salud</a>
+            <a href="#nosotros">Confianza</a>
+            <div class="mobile-socials">
+                <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+            </div>
+            <a href="#agendar" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
+        </nav>
+    </header>
+
+    <!-- Inicio (Hero) -->
+    <section id="inicio" class="hero">
+        <!-- Video de Fondo -->
+        <video autoplay muted loop playsinline class="hero-video">
+            <source src="images/video%201.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <div class="container relative-z">
+            <div class="hero-content">
+                <span class="hero-tag"><i class="fa-solid fa-sparkles"></i> Odontología Integral</span>
+                <h1>Cuidamos tu <span>sonrisa</span></h1>
+                <p>Descubre una atención cálida y profesional. Transforma tu salud dental en un ambiente relajado,
+                    seguro y diseñado para tu comodidad.</p>
+                <div class="hero-btns">
+                    <a href="https://wa.me/525573541129" class="btn btn-primary" target="_blank">
+                        Agendar cita
+                    </a>
+                    <a href="#servicios" class="btn btn-secondary">
+                        Conoce más
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Servicios (Cards) -->
+    <section id="servicios" class="services">
+        <div class="container">
+            <span class="section-tag">Tratamientos</span>
+            <h2>Nuestros Servicios</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Odontología integral especializada para
+                devolverle la funcionalidad y estética a tu sonrisa.</p>
+
+            <div class="services-grid">
+                <!-- Limpieza dental -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="0">
+                    <div class="service-icon"><i class="fa-solid fa-pump-medical"></i></div>
+                    <h3>Limpieza Dental</h3>
+                    <p>Mantenimiento profundo para encías y dientes libres de sarro y placa. Sonríe con confianza.</p>
+                </div>
+
+                <!-- Ortodoncia -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="service-icon"><i class="fa-solid fa-teeth-open"></i></div>
+                    <h3>Ortodoncia</h3>
+                    <p>Tratamientos modernos, desde brackets estéticos hasta alineadores transparentes.</p>
+                </div>
+
+                <!-- Endodoncia -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="service-icon"><i class="fa-solid fa-x-ray"></i></div>
+                    <h3>Endodoncia</h3>
+                    <p>Salvando tus dientes naturales con tratamientos de alta precisión y sin dolor.</p>
+                </div>
+
+                <!-- Resinas -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
+                    <h3>Resinas</h3>
+                    <p>Restauraciones estéticas invisibles que devuelven la forma natural a tu diente.</p>
+                </div>
+
+                <!-- Implantes dentales -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                    <h3>Implantes Dentales</h3>
+                    <p>La mejor solución para reemplazar piezas perdidas logrando máxima firmeza y estética.</p>
+                </div>
+
+                <!-- Muelas de juicio -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="500">
+                    <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
+                    <h3>Cirugía y Extracciones</h3>
+                    <p>Procedimientos seguros y cómodos, incluyendo extracción de muelas del juicio.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Agendar Cita Formulario -->
+    <section id="agendar" class="appointment-section">
+        <div class="container">
+            <div class="appointment-container" data-aos="fade-up" data-aos-duration="800">
+                <span class="section-tag">Agenda tu visita</span>
+                <h2>Solicita tu Cita</h2>
+                <p class="appointment-text">No dejes que el miedo te detenga. En nuestro consultorio te brindamos un
+                    trato suave, empático y profesional. Déjanos tus datos y nos pondremos en contacto para confirmar tu
+                    espacio.</p>
+
+                <form id="appointment-form" class="appointment-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" name="name" class="form-control" placeholder="Ej. Ana Pérez"
+                                required>
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Teléfono</label>
+                            <input type="tel" id="phone" name="phone" class="form-control"
+                                placeholder="Ej. 55 1234 5678" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Servicio de interés</label>
+                            <select id="service" name="service" class="form-control" required>
+                                <option value="" disabled selected>Selecciona un servicio</option>
+                                <option value="Limpieza Dental">Limpieza Dental</option>
+                                <option value="Ortodoncia">Ortodoncia</option>
+                                <option value="Endodoncia">Endodoncia</option>
+                                <option value="Resinas">Resinas / Empastes</option>
+                                <option value="Implantes Dentales">Implantes Dentales</option>
+                                <option value="Cirugía/Extracción">Cirugía / Extracciones</option>
+                                <option value="Otro">Otro / Valoración General</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="datetime">Fecha / Horario de preferencia</label>
+                            <input type="text" id="datetime" name="datetime" class="form-control"
+                                placeholder="Ej. Martes por la tarde" required>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="source">¿Cómo te enteraste de nosotros?</label>
+                            <select id="source" name="source" class="form-control" required>
+                                <option value="" disabled selected>Selecciona una opción</option>
+                                <option value="Recomendación de amigo/familiar">Recomendación de un amigo o familiar
+                                </option>
+                                <option value="Facebook">Facebook</option>
+                                <option value="Instagram">Instagram</option>
+                                <option value="Búsqueda en Google">Búsqueda en Google</option>
+                                <option value="Pasé por la clínica">Pasé por ahí / Anuncio exterior</option>
+                                <option value="Otro">Otro</option>
+                            </select>
+                        </div>
+                        <div class="form-group full-width">
+                            <label for="message">Mensaje Adicional</label>
+                            <textarea id="message" name="message" class="form-control" rows="4"
+                                placeholder="¿Hay algo que debamos saber?"></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn-primary form-submit">
+                        <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
+                    </button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Educativa (Tips) -->
+    <section id="tips" class="educational">
+        <div class="container">
+            <span class="section-tag">Aprende con nosotros</span>
+            <h2>Tips de Salud Dental</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto;">Nunca es tarde para comenzar a cuidar tu
+                sonrisa. Aquí te damos las claves.</p>
+
+            <div class="edu-grid">
+                <div class="edu-card" data-aos="fade-up" data-aos-delay="0">
+                    <i class="fa-solid fa-toothbrush icon"></i>
+                    <h4>Cepillado Correcto</h4>
+                    <p>Cepíllate al menos dos veces al día con pasta fluorada por dos minutos, con movimientos suaves
+                        desde la encía hacia el diente.</p>
+                </div>
+                <div class="edu-card" data-aos="fade-up" data-aos-delay="150">
+                    <i class="fa-solid fa-hand-holding-droplet icon"></i>
+                    <h4>Uso de Hilo Dental</h4>
+                    <p>El hilo dental llega donde el cepillo no puede. Úsalo diariamente para prevenir caries entre los
+                        dientes y cuidar tus encías.</p>
+                </div>
+                <div class="edu-card" data-aos="fade-up" data-aos-delay="300">
+                    <i class="fa-regular fa-calendar-check icon"></i>
+                    <h4>Revisiones Semestrales</h4>
+                    <p>Visítanos cada 6 meses. La prevención es la mejor herramienta para evitar molestias y
+                        tratamientos costosos en el futuro.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Galería / Confianza -->
+    <section id="nosotros" class="gallery">
+        <div class="container">
+            <span class="section-tag">Conócenos</span>
+            <h2>Tu espacio de cuidado</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto; margin-bottom: 2rem;">Contamos con un
+                ambiente relajante, instrumental esterilizado y tecnología de punta.</p>
+            <!-- Swiper Carousel -->
+            <div class="swiper gallery-slider" data-aos="fade-up">
+                <div class="swiper-wrapper">
+                    <!-- Fotografías reales de la clínica -->
+                    <div class="swiper-slide">
+                        <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.47.37%20AM.jpeg"
+                            alt="Consultorio Dental">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.47.38%20AM.jpeg"
+                            alt="Atención y cuidado">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/imagen%203.jpeg" alt="Estudio y diagnóstico clínico">
+                    </div>
+                    <div class="swiper-slide">
+                        <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.48.38%20AM.jpeg" alt="Nuestro equipo">
+                    </div>
+                </div>
+                <!-- Paginación y Botones de Navegación -->
+                <div class="swiper-pagination"></div>
+                <div class="swiper-button-prev"></div>
+                <div class="swiper-button-next"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Ubicación -->
+    <section id="ubicacion" class="location">
+        <div class="container">
+            <span class="section-tag" data-aos="fade-up">Visítanos</span>
+            <h2 data-aos="fade-up">Nuestra Clínica</h2>
+            <p style="text-align: center; max-width: 600px; margin: 0 auto; margin-bottom: 2rem;" data-aos="fade-up"
+                data-aos-delay="100">
+                Ubicados en el corazón de Lindavista. Instalaciones modernas, seguras y de fácil acceso.
+            </p>
+            <div class="map-container" data-aos="fade-up" data-aos-delay="200">
+                <!-- Coordenadas/Búsqueda de Riobamba 952 Lindavista CDMX -->
+                <iframe
+                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3761.428514041774!2d-99.1294862241031!3d19.480287981809075!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x85d1f99c0d456af9%3A0x6b77cd48037aff3b!2sRiobamba%20952%2C%20Lindavista%20Sur%2C%20Gustavo%20A.%20Madero%2C%2007300%20Ciudad%20de%20M%C3%A9xico%2C%20CDMX!5e0!3m2!1ses-419!2smx!4v1700000000000!5m2!1ses-419!2smx"
+                    width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade">
+                </iframe>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call To Action (Strong CTA) -->
+    <section id="contacto" class="container" style="padding-top: 3rem;" data-aos="zoom-in" data-aos-duration="1000">
+        <div class="cta-section">
+            <h2>¿Listo para sonreír con confianza?</h2>
+            <p>Agenda tu valoración y descubre cómo la odontología moderna, gentil y profesional puede transformar tu
+                salud bucal sin miedos.</p>
+            <a href="https://wa.me/525573541129" class="btn btn-secondary" target="_blank">
+                Agenda tu cita
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <i class="fa-solid fa-tooth"></i>
+                <span>Estefani Amza</span>
+            </div>
+            <p style="max-width: 400px; margin: 0 auto; color: rgba(255,255,255,0.8);">Odontología Integral y
+                Profesional. Cuidamos tu sonrisa con atención de primer nivel.</p>
+
+            <p style="margin-top: 1rem; color: rgba(255,255,255,0.8);"><strong>Dirección:</strong> Riobamba 952,
+                Lindavista, CDMX.<br>
+                <strong>Teléfono:</strong> <a href="tel:5573541129" style="color:var(--primary-color);">55 7354 1129</a>
+            </p>
+
+            <div class="footer-socials">
+                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/525573541129" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; 2024 Estefani Amza. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/525573541129" class="whatsapp-float" target="_blank" aria-label="Contactar por WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- AOS JS -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <!-- Swiper JS -->
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    <!-- Script Principal para Menú y Lógica -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const icon = menuBtn.querySelector('i');
+
+            // Toggle menu
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('active');
+                if (mobileMenu.classList.contains('active')) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-xmark');
+                } else {
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                }
+            });
+
+            // Cerrar menú al hacer clic en un enlace
+            const menuLinks = mobileMenu.querySelectorAll('a');
+            menuLinks.forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.remove('active');
+                    icon.classList.remove('fa-xmark');
+                    icon.classList.add('fa-bars');
+                });
+            });
+
+            // Formulario de Cita - Enviar a WhatsApp
+            const appointmentForm = document.getElementById('appointment-form');
+            if (appointmentForm) {
+                appointmentForm.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const name = document.getElementById('name').value;
+                    const phone = document.getElementById('phone').value;
+                    const service = document.getElementById('service').value;
+                    const datetime = document.getElementById('datetime').value;
+                    const source = document.getElementById('source').value;
+                    const message = document.getElementById('message').value;
+
+                    // Formatear el mensaje para WhatsApp
+                    const text = `¡Hola! Me gustaría agendar una cita.\n\n*Mis datos:*\n👤 Nombre: ${name}\n📱 Teléfono: ${phone}\n🦷 Servicio: ${service}\n📅 Horario de preferencia: ${datetime}\n📢 Me enteré por: ${source}\n💬 Mensaje: ${message}\n\n¡Quedo a la espera de confirmación!`;
+
+                    // Codificar para URL
+                    const encodedText = encodeURIComponent(text);
+                    const whatsappUrl = `https://wa.me/525573541129?text=${encodedText}`;
+
+                    // Abrir en nueva pestaña
+                    window.open(whatsappUrl, '_blank');
+                });
+            }
+
+            // Inicializar Carrusel (Swiper)
+            if (typeof Swiper !== 'undefined') {
+                const swiper = new Swiper('.gallery-slider', {
+                    slidesPerView: 1,
+                    spaceBetween: 20,
+                    loop: true,
+                    grabCursor: true,
+                    autoplay: {
+                        delay: 4500,
+                        disableOnInteraction: false, // Sigue autoplay después de interactuar
+                    },
+                    pagination: {
+                        el: '.swiper-pagination',
+                        clickable: true,
+                    },
+                    navigation: {
+                        nextEl: '.swiper-button-next',
+                        prevEl: '.swiper-button-prev',
+                    },
+                });
+            }
+
+            // Inicializar Animaciones al hacer Scroll (AOS)
+            if (typeof AOS !== 'undefined') {
+                AOS.init({
+                    once: true, // Que la animación suceda solo una vez cada 30 segundos
+
+                    offset: 50,  // offset en pixeles al hacer scroll
+                    duration: 800, // duración de animación 800ms
+                    easing: 'ease-out-cubic' // Curva de animación suave
+                });
+            }
+        });
+    </script>
+</body>
+
+</html>
