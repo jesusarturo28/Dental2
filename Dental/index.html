@@ -43,7 +43,7 @@
                 <a href="#tips">Tips de Salud</a>
                 <a href="#nosotros">Confianza</a>
                 <div class="nav-socials">
-                    <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                    <a href="https://www.facebook.com/share/1LqjtgGiuZ/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                     <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
                 </div>
                 <a href="#agendar" class="btn btn-primary">Agendar Cita</a>
@@ -61,7 +61,7 @@
             <a href="#tips">Tips de Salud</a>
             <a href="#nosotros">Confianza</a>
             <div class="mobile-socials">
-                <a href="#" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/share/1LqjtgGiuZ/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                 <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
             </div>
             <a href="#agendar" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
@@ -173,14 +173,17 @@
                         <div class="form-group">
                             <label for="service">Servicio de interés</label>
                             <select id="service" name="service" class="form-control" required>
-                                <option value="" disabled selected>Selecciona un servicio</option>
-                                <option value="Limpieza Dental">Limpieza Dental</option>
-                                <option value="Ortodoncia">Ortodoncia</option>
-                                <option value="Endodoncia">Endodoncia</option>
-                                <option value="Resinas">Resinas / Empastes</option>
+                                <option value="" disabled selected>Selecciona un servicio de tu interés</option>
+                                <option value="Limpieza Dental Profunda">Limpieza Dental Profunda</option>
+                                <option value="Diseño de Sonrisa">Diseño de Sonrisa</option>
+                                <option value="Ortodoncia (Brackets y Alineadores)">Ortodoncia (Brackets estéticos, convencionales y alineadores)</option>
+                                <option value="Restauración Estética con Resina (Alta Gama)">Restauración Estética con Resina (Alta Gama)</option>
+                                <option value="Blanqueamiento Dental">Blanqueamiento Dental</option>
                                 <option value="Implantes Dentales">Implantes Dentales</option>
-                                <option value="Cirugía/Extracción">Cirugía / Extracciones</option>
-                                <option value="Otro">Otro / Valoración General</option>
+                                <option value="Prótesis Bucal y Rehabilitación">Prótesis Bucal (Coronas / Dentaduras / Puentes)</option>
+                                <option value="Endodoncia">Endodoncia (Tratamiento de Conductos)</option>
+                                <option value="Cirugía Bucal y Extracción de Muelas del Juicio">Cirugía Bucal & Extracción de Muelas del Juicio</option>
+                                <option value="Valoración Integral y Primera Visita">Valoración Integral & Primera Visita</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -225,19 +228,19 @@
 
             <div class="edu-grid">
                 <div class="edu-card" data-aos="fade-up" data-aos-delay="0">
-                    <i class="fa-solid fa-toothbrush icon"></i>
+                    <div class="icon"><i class="fa-solid fa-tooth"></i></div>
                     <h4>Cepillado Correcto</h4>
                     <p>Cepíllate al menos dos veces al día con pasta fluorada por dos minutos, con movimientos suaves
                         desde la encía hacia el diente.</p>
                 </div>
                 <div class="edu-card" data-aos="fade-up" data-aos-delay="150">
-                    <i class="fa-solid fa-hand-holding-droplet icon"></i>
+                    <div class="icon"><i class="fa-solid fa-hand-holding-droplet"></i></div>
                     <h4>Uso de Hilo Dental</h4>
                     <p>El hilo dental llega donde el cepillo no puede. Úsalo diariamente para prevenir caries entre los
                         dientes y cuidar tus encías.</p>
                 </div>
                 <div class="edu-card" data-aos="fade-up" data-aos-delay="300">
-                    <i class="fa-regular fa-calendar-check icon"></i>
+                    <div class="icon"><i class="fa-regular fa-calendar-check"></i></div>
                     <h4>Revisiones Semestrales</h4>
                     <p>Visítanos cada 6 meses. La prevención es la mejor herramienta para evitar molestias y
                         tratamientos costosos en el futuro.</p>
@@ -246,36 +249,97 @@
         </div>
     </section>
 
-    <!-- Galería / Confianza -->
-    <section id="nosotros" class="gallery">
+    <!-- Testimonios / Confianza -->
+    <section id="nosotros" class="testimonials-section">
         <div class="container">
-            <span class="section-tag">Conócenos</span>
-            <h2>Tu espacio de cuidado</h2>
-            <p style="text-align: center; max-width: 600px; margin: 0 auto; margin-bottom: 2rem;">Contamos con un
-                ambiente relajante, instrumental esterilizado y tecnología de punta.</p>
-            <!-- Swiper Carousel -->
-            <div class="swiper gallery-slider" data-aos="fade-up">
-                <div class="swiper-wrapper">
-                    <!-- Fotografías reales de la clínica -->
-                    <div class="swiper-slide">
-                        <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.47.37%20AM.jpeg"
-                            alt="Consultorio Dental">
+            <span class="section-tag" data-aos="fade-up">Testimonios de Pacientes</span>
+            <h2 data-aos="fade-up" data-aos-delay="100">Sonrisas que inspiran confianza</h2>
+            <p class="testimonials-subtitle" data-aos="fade-up" data-aos-delay="150">La tranquilidad y satisfacción de nuestros pacientes es nuestra mayor garantía. Descubre lo que opinan sobre su experiencia en nuestro consultorio.</p>
+
+            <div class="testimonials-grid">
+                <!-- Testimonio 1 -->
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="testimonial-rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
                     </div>
-                    <div class="swiper-slide">
-                        <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.47.38%20AM.jpeg"
-                            alt="Atención y cuidado">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/imagen%203.jpeg" alt="Estudio y diagnóstico clínico">
-                    </div>
-                    <div class="swiper-slide">
-                        <img src="images/WhatsApp%20Image%202026-04-06%20at%2010.48.38%20AM.jpeg" alt="Nuestro equipo">
+                    <p class="testimonial-text">"Siempre le he tenido pánico a los dentistas, pero la Dra. Estefani me atendió con una paciencia increíble. El tratamiento de resina fue totalmente sin dolor. ¡100% recomendada!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>MP</span>
+                        </div>
+                        <div class="author-info">
+                            <h4>Mariana Peralta</h4>
+                            <span>Limpieza & Resina Estética</span>
+                        </div>
+                        <i class="fa-brands fa-google google-badge" title="Reseña verificada en Google"></i>
                     </div>
                 </div>
-                <!-- Paginación y Botones de Navegación -->
-                <div class="swiper-pagination"></div>
-                <div class="swiper-button-prev"></div>
-                <div class="swiper-button-next"></div>
+
+                <!-- Testimonio 2 -->
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="testimonial-rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Inicié mi tratamiento de alineadores invisibles y el avance ha sido sorprendente. El consultorio es super moderno, pulcro y relajante. Te hacen sentir cómodo de principio a fin."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>CR</span>
+                        </div>
+                        <div class="author-info">
+                            <h4>Carlos Ramírez</h4>
+                            <span>Ortodoncia & Alineadores</span>
+                        </div>
+                        <i class="fa-brands fa-google google-badge" title="Reseña verificada en Google"></i>
+                    </div>
+                </div>
+
+                <!-- Testimonio 3 -->
+                <div class="testimonial-card" data-aos="fade-up" data-aos-delay="400">
+                    <div class="testimonial-rating">
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                        <i class="fa-solid fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"Me hice blanqueamiento y diseño de sonrisa previo a un evento muy importante. El resultado superó por completo mis expectativas. Trato muy profesional y cálido."</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">
+                            <span>SG</span>
+                        </div>
+                        <div class="author-info">
+                            <h4>Sofía Gutiérrez</h4>
+                            <span>Diseño de Sonrisa & Blanqueamiento</span>
+                        </div>
+                        <i class="fa-brands fa-google google-badge" title="Reseña verificada en Google"></i>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Banner de Calificación -->
+            <div class="trust-badge-banner" data-aos="fade-up" data-aos-delay="500">
+                <div class="trust-item">
+                    <span class="trust-number">5.0 ⭐⭐⭐⭐⭐</span>
+                    <span class="trust-label">Calificación en Google</span>
+                </div>
+                <div class="trust-divider"></div>
+                <div class="trust-item">
+                    <span class="trust-number">+500</span>
+                    <span class="trust-label">Pacientes Satisfechos</span>
+                </div>
+                <div class="trust-divider"></div>
+                <div class="trust-item">
+                    <span class="trust-number">100%</span>
+                    <span class="trust-label">Trato Gentil & Sin Dolor</span>
+                </div>
             </div>
         </div>
     </section>
@@ -328,7 +392,7 @@
             </p>
 
             <div class="footer-socials">
-                <a href="#"><i class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://www.facebook.com/share/1LqjtgGiuZ/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                 <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
                 <a href="https://wa.me/525573541129" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
