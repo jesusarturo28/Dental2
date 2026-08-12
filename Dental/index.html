@@ -33,8 +33,7 @@
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
-                <i class="fa-solid fa-tooth" style="color: var(--primary-color);"></i>
-                <span>Estefani Amza</span>
+                <img src="images/nuevo%20logo.jpeg" alt="Dra. Estefani Amza | Odontología Integral" class="brand-logo-img">
             </a>
 
             <nav class="nav-links">
@@ -96,53 +95,62 @@
 
     <!-- Servicios (Cards) -->
     <section id="servicios" class="services">
+        <img src="images/nuevo%20logo.jpeg" alt="" class="brand-watermark">
         <div class="container">
             <span class="section-tag">Tratamientos</span>
             <h2>Nuestros Servicios</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto;">Odontología integral especializada para
                 devolverle la funcionalidad y estética a tu sonrisa.</p>
+            <div class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Desliza para ver más ➔</div>
 
             <div class="services-grid">
                 <!-- Limpieza dental -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="0">
                     <div class="service-icon"><i class="fa-solid fa-pump-medical"></i></div>
                     <h3>Limpieza Dental</h3>
-                    <p>Mantenimiento profundo para encías y dientes libres de sarro y placa. Sonríe con confianza.</p>
+                    <p>Procedimiento preventivo que elimina placa bacteriana y sarro, ayudando a mantener la salud de dientes y encías nos ayuda a prevenir enfermedades bucales.</p>
                 </div>
 
                 <!-- Ortodoncia -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-icon"><i class="fa-solid fa-teeth-open"></i></div>
                     <h3>Ortodoncia</h3>
-                    <p>Tratamientos modernos, desde brackets estéticos hasta alineadores transparentes.</p>
+                    <p>Tratamiento que corrige la posición de los dientes y la relación entre ambas arcadas, mejorando tanto la función como la estética de la sonrisa.</p>
                 </div>
 
                 <!-- Endodoncia -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="200">
-                    <div class="service-icon"><i class="fa-solid fa-x-ray"></i></div>
+                    <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
                     <h3>Endodoncia</h3>
-                    <p>Salvando tus dientes naturales con tratamientos de alta precisión y sin dolor.</p>
+                    <p>Tratamiento destinado a conservar dientes afectados por caries profundas, traumatismos o infecciones que comprometen el tejido interno del diente.</p>
                 </div>
 
                 <!-- Resinas -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
                     <h3>Resinas</h3>
-                    <p>Restauraciones estéticas invisibles que devuelven la forma natural a tu diente.</p>
+                    <p>Restauraciones estéticas utilizadas para recuperar dientes afectados por caries, fracturas o desgaste, conservando una apariencia natural.</p>
                 </div>
 
                 <!-- Implantes dentales -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                     <h3>Implantes Dentales</h3>
-                    <p>La mejor solución para reemplazar piezas perdidas logrando máxima firmeza y estética.</p>
+                    <p>Tratamiento para reemplazar dientes ausentes mediante una estructura que se integra al hueso y permite posteriormente colocar una restauración dental fija.</p>
                 </div>
 
-                <!-- Muelas de juicio -->
+                <!-- Cirugía Bucal -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="500">
                     <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
-                    <h3>Cirugía y Extracciones</h3>
-                    <p>Procedimientos seguros y cómodos, incluyendo extracción de muelas del juicio.</p>
+                    <h3>Cirugía Bucal</h3>
+                    <p>Procedimientos quirúrgicos destinados a resolver diferentes alteraciones de la cavidad oral, incluyendo extracciones dentales y tratamiento de terceros molares.</p>
+                </div>
+
+                <!-- Odontopediatría -->
+                <div class="service-card" data-aos="fade-up" data-aos-delay="600">
+                    <div class="service-icon"><i class="fa-solid fa-child-reaching"></i></div>
+                    <h3>Odontopediatría</h3>
+                    <p>Atención dental especializada para niños y adolescentes, enfocada en la prevención, cuidado y desarrollo de una sonrisa sana desde temprana edad.</p>
                 </div>
             </div>
         </div>
@@ -174,16 +182,16 @@
                             <label for="service">Servicio de interés</label>
                             <select id="service" name="service" class="form-control" required>
                                 <option value="" disabled selected>Selecciona un servicio de tu interés</option>
-                                <option value="Limpieza Dental Profunda">Limpieza Dental Profunda</option>
-                                <option value="Diseño de Sonrisa">Diseño de Sonrisa</option>
-                                <option value="Ortodoncia (Brackets y Alineadores)">Ortodoncia (Brackets estéticos, convencionales y alineadores)</option>
-                                <option value="Restauración Estética con Resina (Alta Gama)">Restauración Estética con Resina (Alta Gama)</option>
-                                <option value="Blanqueamiento Dental">Blanqueamiento Dental</option>
+                                <option value="Limpieza Dental">Limpieza Dental</option>
+                                <option value="Ortodoncia">Ortodoncia (Brackets y Alineadores)</option>
+                                <option value="Endodoncia">Endodoncia</option>
+                                <option value="Resinas">Resinas (Restauraciones Estéticas)</option>
                                 <option value="Implantes Dentales">Implantes Dentales</option>
-                                <option value="Prótesis Bucal y Rehabilitación">Prótesis Bucal (Coronas / Dentaduras / Puentes)</option>
-                                <option value="Endodoncia">Endodoncia (Tratamiento de Conductos)</option>
-                                <option value="Cirugía Bucal y Extracción de Muelas del Juicio">Cirugía Bucal & Extracción de Muelas del Juicio</option>
-                                <option value="Valoración Integral y Primera Visita">Valoración Integral & Primera Visita</option>
+                                <option value="Cirugía Bucal">Cirugía Bucal & Extracciones</option>
+                                <option value="Odontopediatría">Odontopediatría (Atención Infantil)</option>
+                                <option value="Diseño de Sonrisa">Diseño de Sonrisa & Blanqueamiento</option>
+                                <option value="Prótesis Bucal">Prótesis Bucal & Rehabilitación</option>
+                                <option value="Valoración Integral">Valoración Integral & Primera Visita</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -225,6 +233,7 @@
             <h2>Tips de Salud Dental</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto;">Nunca es tarde para comenzar a cuidar tu
                 sonrisa. Aquí te damos las claves.</p>
+            <div class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Desliza para ver más ➔</div>
 
             <div class="edu-grid">
                 <div class="edu-card" data-aos="fade-up" data-aos-delay="0">
@@ -255,6 +264,7 @@
             <span class="section-tag" data-aos="fade-up">Testimonios de Pacientes</span>
             <h2 data-aos="fade-up" data-aos-delay="100">Sonrisas que inspiran confianza</h2>
             <p class="testimonials-subtitle" data-aos="fade-up" data-aos-delay="150">La tranquilidad y satisfacción de nuestros pacientes es nuestra mayor garantía. Descubre lo que opinan sobre su experiencia en nuestro consultorio.</p>
+            <div class="swipe-hint" data-aos="fade-up" data-aos-delay="180"><i class="fa-solid fa-hand-pointer"></i> Desliza para ver más ➔</div>
 
             <div class="testimonials-grid">
                 <!-- Testimonio 1 -->
@@ -380,8 +390,7 @@
     <footer>
         <div class="container footer-content">
             <div class="footer-logo">
-                <i class="fa-solid fa-tooth"></i>
-                <span>Estefani Amza</span>
+                <img src="images/nuevo%20logo.jpeg" alt="Dra. Estefani Amza | Odontología Integral" class="footer-brand-logo-img">
             </div>
             <p style="max-width: 400px; margin: 0 auto; color: rgba(255,255,255,0.8);">Odontología Integral y
                 Profesional. Cuidamos tu sonrisa con atención de primer nivel.</p>
