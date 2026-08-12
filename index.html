@@ -170,11 +170,6 @@
                             <input type="tel" id="phone" name="phone" class="form-control"
                                 placeholder="Ej. 55 1234 5678" required>
                         </div>
-                        <div class="form-group full-width">
-                            <label for="email">Correo electrónico</label>
-                            <input type="email" id="email" name="email" class="form-control"
-                                placeholder="Ej. ana@ejemplo.com" required>
-                        </div>
                         <div class="form-group">
                             <label for="service">Servicio de interés</label>
                             <select id="service" name="service" class="form-control" required>
@@ -391,14 +386,13 @@
 
                     const name = document.getElementById('name').value;
                     const phone = document.getElementById('phone').value;
-                    const email = document.getElementById('email').value;
                     const service = document.getElementById('service').value;
                     const datetime = document.getElementById('datetime').value;
                     const source = document.getElementById('source').value;
                     const message = document.getElementById('message').value;
 
                     // Formatear el mensaje para WhatsApp
-                    const text = `¡Hola! Me gustaría agendar una cita.\n\n*Mis datos:*\n👤 Nombre: ${name}\n📱 Teléfono: ${phone}\n📧 Correo: ${email}\n🦷 Servicio: ${service}\n📅 Horario de preferencia: ${datetime}\n📢 Me enteré por: ${source}\n💬 Mensaje: ${message}\n\n¡Quedo a la espera de confirmación!`;
+                    const text = `¡Hola! Me gustaría agendar una cita.\n\n*Mis datos:*\n👤 Nombre: ${name}\n📱 Teléfono: ${phone}\n🦷 Servicio: ${service}\n📅 Horario de preferencia: ${datetime}\n📢 Me enteré por: ${source}\n💬 Mensaje: ${message}\n\n¡Quedo a la espera de confirmación!`;
 
                     // Codificar para URL
                     const encodedText = encodeURIComponent(text);
