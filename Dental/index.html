@@ -8,10 +8,10 @@
     <meta name="description"
         content="Cuidamos tu sonrisa en nuestro consultorio dental boutique. Limpieza, ortodoncia e implantes en un ambiente seguro y relajado.">
 
-    <!-- Google Fonts: Montserrat -->
+    <!-- Google Fonts: Montserrat, Dancing Script & Raleway (para logo) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@600;700&family=Great+Vibes&family=Raleway:wght@300;400;500&family=Montserrat:wght@400;500;600;700;800&display=swap"
         rel="stylesheet">
 
     <!-- FontAwesome para íconos -->
@@ -33,7 +33,7 @@
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="images/nuevo%20logo.jpeg" alt="Dra. Estefani Amza | Odontología Integral" class="brand-logo-img">
+                <img src="images/logo_estefani_amza.svg" alt="Dra. Estefani Amza | Odontología Integral" class="brand-logo-img">
             </a>
 
             <nav class="nav-links">
@@ -74,6 +74,8 @@
             <source src="images/video%201.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
+        <!-- Marca de agua hero -->
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--hero" aria-hidden="true">
 
         <div class="container relative-z">
             <div class="hero-content">
@@ -95,64 +97,143 @@
 
     <!-- Servicios (Cards) -->
     <section id="servicios" class="services">
-        <img src="images/nuevo%20logo.jpeg" alt="" class="brand-watermark">
+        <img src="images/logo_header.png" alt="" class="brand-watermark" aria-hidden="true">
         <div class="container">
             <span class="section-tag">Tratamientos</span>
             <h2>Nuestros Servicios</h2>
             <p style="text-align: center; max-width: 600px; margin: 0 auto;">Odontología integral especializada para
                 devolverle la funcionalidad y estética a tu sonrisa.</p>
-            <div class="swipe-hint"><i class="fa-solid fa-hand-pointer"></i> Desliza para ver más ➔</div>
 
+            <!-- Grid 6 principales -->
             <div class="services-grid">
                 <!-- Limpieza dental -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="0">
                     <div class="service-icon"><i class="fa-solid fa-pump-medical"></i></div>
                     <h3>Limpieza Dental</h3>
-                    <p>Procedimiento preventivo que elimina placa bacteriana y sarro, ayudando a mantener la salud de dientes y encías nos ayuda a prevenir enfermedades bucales.</p>
+                    <p>Procedimiento preventivo que elimina placa bacteriana y sarro, ayudando a mantener la salud de dientes y encías.</p>
                 </div>
 
                 <!-- Ortodoncia -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="100">
                     <div class="service-icon"><i class="fa-solid fa-teeth-open"></i></div>
                     <h3>Ortodoncia</h3>
-                    <p>Tratamiento que corrige la posición de los dientes y la relación entre ambas arcadas, mejorando tanto la función como la estética de la sonrisa.</p>
+                    <p>Tratamiento que corrige la posición de los dientes y la relación entre ambas arcadas, mejorando función y estética.</p>
                 </div>
 
                 <!-- Endodoncia -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="200">
                     <div class="service-icon"><i class="fa-solid fa-shield-halved"></i></div>
                     <h3>Endodoncia</h3>
-                    <p>Tratamiento destinado a conservar dientes afectados por caries profundas, traumatismos o infecciones que comprometen el tejido interno del diente.</p>
+                    <p>Tratamiento destinado a conservar dientes afectados por caries profundas, traumatismos o infecciones internas.</p>
                 </div>
 
                 <!-- Resinas -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="300">
                     <div class="service-icon"><i class="fa-solid fa-tooth"></i></div>
                     <h3>Resinas</h3>
-                    <p>Restauraciones estéticas utilizadas para recuperar dientes afectados por caries, fracturas o desgaste, conservando una apariencia natural.</p>
+                    <p>Restauraciones estéticas para recuperar dientes afectados por caries, fracturas o desgaste con apariencia natural.</p>
                 </div>
 
                 <!-- Implantes dentales -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="400">
                     <div class="service-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
                     <h3>Implantes Dentales</h3>
-                    <p>Tratamiento para reemplazar dientes ausentes mediante una estructura que se integra al hueso y permite posteriormente colocar una restauración dental fija.</p>
+                    <p>Reemplazo de dientes ausentes con una estructura integrada al hueso que permite colocar una restauración dental fija.</p>
                 </div>
 
                 <!-- Cirugía Bucal -->
                 <div class="service-card" data-aos="fade-up" data-aos-delay="500">
                     <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
                     <h3>Cirugía Bucal</h3>
-                    <p>Procedimientos quirúrgicos destinados a resolver diferentes alteraciones de la cavidad oral, incluyendo extracciones dentales y tratamiento de terceros molares.</p>
-                </div>
-
-                <!-- Odontopediatría -->
-                <div class="service-card" data-aos="fade-up" data-aos-delay="600">
-                    <div class="service-icon"><i class="fa-solid fa-child-reaching"></i></div>
-                    <h3>Odontopediatría</h3>
-                    <p>Atención dental especializada para niños y adolescentes, enfocada en la prevención, cuidado y desarrollo de una sonrisa sana desde temprana edad.</p>
+                    <p>Procedimientos quirúrgicos para resolver alteraciones de la cavidad oral, incluyendo extracciones y terceros molares.</p>
                 </div>
             </div>
+
+            <!-- Carrusel catálogo completo (9 servicios) -->
+            <div class="catalog-carousel-wrap" data-aos="fade-up" data-aos-delay="100">
+                <div class="catalog-header">
+                    <span class="catalog-badge"><i class="fa-solid fa-grid-2"></i> Catálogo completo</span>
+                    <p class="catalog-sub">Todos nuestros tratamientos &mdash; desliza para explorar</p>
+                </div>
+                <div class="swiper catalog-swiper">
+                    <div class="swiper-wrapper">
+                        <!-- 1 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-pump-medical"></i></div>
+                                <h4>Limpieza Dental</h4>
+                                <p>Elimina placa y sarro para prevenir enfermedades bucales.</p>
+                            </div>
+                        </div>
+                        <!-- 2 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-teeth-open"></i></div>
+                                <h4>Ortodoncia</h4>
+                                <p>Brackets y alineadores para corregir posición dental.</p>
+                            </div>
+                        </div>
+                        <!-- 3 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-shield-halved"></i></div>
+                                <h4>Endodoncia</h4>
+                                <p>Tratamiento del nervio para conservar dientes dañados.</p>
+                            </div>
+                        </div>
+                        <!-- 4 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-tooth"></i></div>
+                                <h4>Resinas</h4>
+                                <p>Restauraciones estéticas de apariencia natural.</p>
+                            </div>
+                        </div>
+                        <!-- 5 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
+                                <h4>Implantes Dentales</h4>
+                                <p>Reemplazo fijo de dientes ausentes integrado al hueso.</p>
+                            </div>
+                        </div>
+                        <!-- 6 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-syringe"></i></div>
+                                <h4>Cirugía Bucal</h4>
+                                <p>Extracciones y tratamiento de terceros molares.</p>
+                            </div>
+                        </div>
+                        <!-- 7 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-child-reaching"></i></div>
+                                <h4>Odontopediatría</h4>
+                                <p>Atención dental especializada para niños y adolescentes.</p>
+                            </div>
+                        </div>
+                        <!-- 8 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                                <h4>Diseño de Sonrisa</h4>
+                                <p>Blanqueamiento y estética dental para una sonrisa perfecta.</p>
+                            </div>
+                        </div>
+                        <!-- 9 -->
+                        <div class="swiper-slide">
+                            <div class="catalog-card">
+                                <div class="catalog-icon"><i class="fa-solid fa-person-dots-from-line"></i></div>
+                                <h4>Prótesis &amp; Rehabilitación</h4>
+                                <p>Restauración completa de la función y estética bucal.</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="swiper-pagination catalog-pagination"></div>
+                </div>
+            </div>
+
         </div>
     </section>
 
@@ -228,6 +309,7 @@
 
     <!-- Sección Educativa (Tips) -->
     <section id="tips" class="educational">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--tips" aria-hidden="true">
         <div class="container">
             <span class="section-tag">Aprende con nosotros</span>
             <h2>Tips de Salud Dental</h2>
@@ -239,7 +321,7 @@
                 <div class="edu-card" data-aos="fade-up" data-aos-delay="0">
                     <div class="icon"><i class="fa-solid fa-tooth"></i></div>
                     <h4>Cepillado Correcto</h4>
-                    <p>Cepíllate al menos dos veces al día con pasta fluorada por dos minutos, con movimientos suaves
+                    <p>Cepíllate al menos dos veces al día con pasta dental por dos minutos, con movimientos suaves
                         desde la encía hacia el diente.</p>
                 </div>
                 <div class="edu-card" data-aos="fade-up" data-aos-delay="150">
@@ -260,6 +342,7 @@
 
     <!-- Testimonios / Confianza -->
     <section id="nosotros" class="testimonials-section">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--testimonials" aria-hidden="true">
         <div class="container">
             <span class="section-tag" data-aos="fade-up">Testimonios de Pacientes</span>
             <h2 data-aos="fade-up" data-aos-delay="100">Sonrisas que inspiran confianza</h2>
@@ -375,7 +458,8 @@
     </section>
 
     <!-- Call To Action (Strong CTA) -->
-    <section id="contacto" class="container" style="padding-top: 3rem;" data-aos="zoom-in" data-aos-duration="1000">
+    <section id="contacto" class="container" style="padding-top: 3rem; position: relative;" data-aos="zoom-in" data-aos-duration="1000">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--cta" aria-hidden="true">
         <div class="cta-section">
             <h2>¿Listo para sonreír con confianza?</h2>
             <p>Agenda tu valoración y descubre cómo la odontología moderna, gentil y profesional puede transformar tu
@@ -390,7 +474,7 @@
     <footer>
         <div class="container footer-content">
             <div class="footer-logo">
-                <img src="images/nuevo%20logo.jpeg" alt="Dra. Estefani Amza | Odontología Integral" class="footer-brand-logo-img">
+                <img src="images/logo_estefani_amza_white.svg" alt="Dra. Estefani Amza | Odontología Integral" class="footer-brand-logo-img">
             </div>
             <p style="max-width: 400px; margin: 0 auto; color: rgba(255,255,255,0.8);">Odontología Integral y
                 Profesional. Cuidamos tu sonrisa con atención de primer nivel.</p>
@@ -402,8 +486,8 @@
 
             <div class="footer-socials">
                 <a href="https://www.facebook.com/share/1LqjtgGiuZ/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
-                <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                <a href="https://wa.me/525573541129" target="_blank"><i class="fa-brands fa-whatsapp"></i></a>
+                <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
+                <a href="https://wa.me/525573541129" target="_blank" aria-label="WhatsApp"><i class="fa-brands fa-whatsapp"></i></a>
             </div>
 
             <div class="footer-bottom">
@@ -476,8 +560,32 @@
                 });
             }
 
-            // Inicializar Carrusel (Swiper)
-            if (typeof Swiper !== 'undefined') {
+            // Inicializar Carrusel Catálogo (Swiper)
+            if (typeof Swiper !== 'undefined' && document.querySelector('.catalog-swiper')) {
+                const catalogSwiper = new Swiper('.catalog-swiper', {
+                    slidesPerView: 1.2,
+                    spaceBetween: 16,
+                    loop: true,
+                    grabCursor: true,
+                    centeredSlides: false,
+                    autoplay: {
+                        delay: 3200,
+                        disableOnInteraction: false,
+                    },
+                    pagination: {
+                        el: '.catalog-pagination',
+                        clickable: true,
+                    },
+                    breakpoints: {
+                        480: { slidesPerView: 2.2, spaceBetween: 18 },
+                        768: { slidesPerView: 3.2, spaceBetween: 22 },
+                        1024: { slidesPerView: 4, spaceBetween: 24 },
+                    },
+                });
+            }
+
+            // Inicializar Carrusel (Swiper) - solo si existe .gallery-slider en el DOM
+            if (typeof Swiper !== 'undefined' && document.querySelector('.gallery-slider')) {
                 const swiper = new Swiper('.gallery-slider', {
                     slidesPerView: 1,
                     spaceBetween: 20,

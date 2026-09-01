@@ -61,6 +61,7 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: hidden;
 }
 
 body {
@@ -71,6 +72,7 @@ body {
     radial-gradient(circle at 90% 70%, rgba(236, 72, 153, 0.05) 0%, transparent 40%),
     radial-gradient(circle at 50% 90%, rgba(6, 182, 212, 0.05) 0%, transparent 50%);
   line-height: 1.6;
+  overflow-x: hidden;
 }
 
 /* Typography */
@@ -189,32 +191,33 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 80px;
+  min-height: 110px;
+  padding: 8px 0;
 }
 
 .brand-logo-img {
-  height: 52px;
+  height: 100px;
   width: auto;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(140, 82, 255, 0.25);
-  border: 1.5px solid rgba(140, 82, 255, 0.3);
-  transition: var(--transition);
   object-fit: contain;
+  transition: var(--transition);
 }
 
 .brand-logo-img:hover {
   transform: scale(1.04);
-  box-shadow: 0 6px 20px rgba(140, 82, 255, 0.4);
+  filter: drop-shadow(0 4px 12px rgba(15, 43, 70, 0.2));
 }
 
 .footer-brand-logo-img {
-  height: 70px;
+  height: 100px;
   width: auto;
-  border-radius: 14px;
-  box-shadow: 0 8px 25px rgba(140, 82, 255, 0.4);
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  margin-bottom: 0.5rem;
   object-fit: contain;
+  margin-bottom: 0.5rem;
+  transition: var(--transition);
+}
+
+.footer-brand-logo-img:hover {
+  filter: drop-shadow(0 0 18px rgba(140, 82, 255, 0.65));
+  transform: scale(1.04);
 }
 
 .brand-watermark {
@@ -222,10 +225,10 @@ header {
   top: 4%;
   right: 3%;
   width: 220px;
-  opacity: 0.05;
   pointer-events: none;
   border-radius: 20px;
-  filter: drop-shadow(0 0 12px rgba(140, 82, 255, 0.5));
+  opacity: 0.08;
+  mix-blend-mode: multiply;
 }
 
 .nav-links {
@@ -458,7 +461,9 @@ header {
 .hero h1 span {
   background: linear-gradient(135deg, #8C52FF 0%, #EC4899 100%);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
+  color: transparent;
   position: relative;
   display: inline-block;
 }
@@ -625,6 +630,150 @@ header {
     font-size: 1rem;
     line-height: 1.6;
   }
+}
+
+/* Catalog Carousel */
+.catalog-carousel-wrap {
+  margin-top: 3.5rem;
+  position: relative;
+  /* Necesario para contener el swiper y evitar desbordamiento horizontal */
+  overflow: hidden;
+  margin-left: -1.5rem;
+  margin-right: -1.5rem;
+  padding: 0 1.5rem;
+}
+
+.catalog-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.catalog-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.45rem 1.2rem;
+  background: linear-gradient(135deg, rgba(140, 82, 255, 0.12), rgba(236, 72, 153, 0.1));
+  border: 1.5px solid rgba(140, 82, 255, 0.3);
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--primary-color);
+  margin-bottom: 0.5rem;
+}
+
+.catalog-sub {
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  margin-top: 0.4rem;
+}
+
+.catalog-swiper {
+  padding-bottom: 2.8rem !important;
+  /* overflow: hidden para no salirse del contenedor */
+  overflow: hidden;
+  /* Clip para que la paginacion no cause scroll horizontal */
+  clip-path: inset(0 0 -40px 0);
+}
+
+.catalog-card {
+  background: var(--white);
+  border: 1.5px solid rgba(140, 82, 255, 0.15);
+  border-radius: 1.2rem;
+  padding: 1.4rem 1rem;
+  text-align: center;
+  transition: var(--transition);
+  box-shadow: var(--shadow-sm);
+  height: 100%;
+}
+
+.catalog-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(140, 82, 255, 0.4);
+  box-shadow: var(--shadow-md);
+}
+
+.catalog-icon {
+  width: 52px;
+  height: 52px;
+  background: var(--gradient-btn);
+  color: var(--white);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  margin: 0 auto 0.9rem;
+  box-shadow: 0 4px 14px rgba(140, 82, 255, 0.3);
+  transition: var(--transition);
+}
+
+.catalog-card:hover .catalog-icon {
+  background: var(--gradient-primary);
+  transform: scale(1.1);
+}
+
+.catalog-card h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  margin-bottom: 0.4rem;
+}
+
+.catalog-card p {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+}
+
+.catalog-pagination {
+  bottom: 0 !important;
+}
+
+.catalog-pagination .swiper-pagination-bullet {
+  background: rgba(140, 82, 255, 0.3);
+}
+
+.catalog-pagination .swiper-pagination-bullet-active {
+  background: var(--primary-color);
+}
+
+/* Watermark variants — posiciones estrategicas */
+.brand-watermark--hero {
+  top: auto;
+  bottom: 5%;
+  left: 3%;
+  right: auto;
+  width: 180px;
+  filter: invert(1) sepia(0.2) hue-rotate(230deg) saturate(1.2) opacity(0.07);
+}
+
+.brand-watermark--tips {
+  top: auto;
+  bottom: 4%;
+  right: 2%;
+  width: 200px;
+  filter: invert(1) sepia(0.2) hue-rotate(230deg) saturate(1.2) opacity(0.06);
+}
+
+.brand-watermark--testimonials {
+  top: 5%;
+  left: 2%;
+  right: auto;
+  width: 190px;
+  filter: invert(1) sepia(0.2) hue-rotate(230deg) saturate(1.2) opacity(0.05);
+}
+
+.brand-watermark--cta {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  right: auto;
+  width: 260px;
+  filter: invert(1) sepia(0.2) hue-rotate(230deg) saturate(1.2) opacity(0.04);
+  z-index: 0;
 }
 
 /* Appointment Form Section */
@@ -1150,9 +1299,10 @@ footer {
 }
 
 .footer-logo i {
-  color: #EC4899;
+  color: transparent;
   background: var(--gradient-primary);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 
@@ -1285,7 +1435,9 @@ footer {
   .hero h1 span {
     background: linear-gradient(135deg, #8C52FF 0%, #EC4899 100%);
     -webkit-background-clip: text;
+    background-clip: text;
     -webkit-text-fill-color: transparent;
+    color: transparent;
   }
 
   .hero p {
