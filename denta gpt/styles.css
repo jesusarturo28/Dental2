@@ -357,6 +357,7 @@ header {
   box-shadow: var(--shadow-lg);
   border-top: 2px solid var(--primary-light);
   border-bottom: 3px solid var(--primary-color);
+  gap: 0.7rem;
 }
 
 @media (min-width: 768px) {
@@ -371,24 +372,46 @@ header {
 }
 
 #mobile-menu a {
-  padding: 1rem;
+  padding: 0.85rem 1rem;
   font-weight: 600;
-  border-bottom: 1px solid var(--primary-light);
+  border: 1.5px solid rgba(140, 82, 255, 0.25);
+  border-radius: 0.8rem;
   text-align: center;
   color: var(--text-dark);
+  background: #FAF7FF;
+  transition: var(--transition);
+}
+
+#mobile-menu a:hover,
+#mobile-menu a:focus-visible {
+  color: var(--primary-color);
+  border-color: var(--primary-color);
+  background: var(--white);
+}
+
+#mobile-menu .mobile-menu-appointment {
+  color: var(--white);
+  border-color: transparent;
+  background: var(--gradient-btn);
+  box-shadow: 0 6px 16px rgba(140, 82, 255, 0.28);
+}
+
+#mobile-menu .mobile-menu-appointment:hover,
+#mobile-menu .mobile-menu-appointment:focus-visible {
+  color: var(--white);
+  background: var(--gradient-primary);
 }
 
 .mobile-socials {
   display: flex;
   justify-content: center;
   gap: 1.5rem;
-  padding: 1.5rem 0;
-  border-bottom: 1px solid var(--primary-light);
+  padding: 0.6rem 0;
 }
 
 .mobile-socials a {
   padding: 0 !important;
-  border-bottom: none !important;
+  border: none !important;
   width: 44px;
   height: 44px;
   border-radius: 50%;
