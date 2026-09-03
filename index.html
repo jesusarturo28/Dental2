@@ -33,7 +33,7 @@
     <header>
         <div class="container nav-container">
             <a href="#" class="logo">
-                <img src="images/logo_estefani_amza.png" alt="Dra. Estefani Amza | Odontología Integral" class="brand-logo-img">
+                <img src="images/logo_header.png" alt="Dra. Estefani Amza | Odontología Integral" class="brand-logo-img">
             </a>
 
             <nav class="nav-links">
@@ -48,9 +48,15 @@
                 <a href="#agendar" class="btn btn-primary">Agendar Cita</a>
             </nav>
 
-            <button class="mobile-menu-btn" id="menu-btn" aria-label="Abrir menú">
-                <i class="fa-solid fa-bars"></i>
-            </button>
+            <div class="mobile-nav-actions">
+                <a href="https://wa.me/525573541129" class="mobile-contact-btn" target="_blank" aria-label="Escribir por WhatsApp">
+                    <i class="fa-brands fa-whatsapp"></i>
+                </a>
+                <a href="#agendar" class="mobile-appointment-btn">Cita</a>
+                <button class="mobile-menu-btn" id="menu-btn" aria-label="Abrir menú">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
         </div>
 
         <!-- Menú Móvil -->
@@ -63,19 +69,19 @@
                 <a href="https://www.facebook.com/share/1LqjtgGiuZ/" target="_blank" aria-label="Facebook"><i class="fa-brands fa-facebook-f"></i></a>
                 <a href="https://www.instagram.com/dra.estefaniamza/" target="_blank" aria-label="Instagram"><i class="fa-brands fa-instagram"></i></a>
             </div>
-            <a href="#agendar" style="color: var(--primary-color); font-weight: 700;">Agendar Cita</a>
+            <a href="#agendar" class="mobile-menu-appointment">Agendar Cita</a>
         </nav>
     </header>
 
     <!-- Inicio (Hero) -->
     <section id="inicio" class="hero">
         <!-- Video de Fondo -->
-        <video autoplay muted loop playsinline class="hero-video" poster="images/logo_estefani_amza.png">
+        <video autoplay muted loop playsinline class="hero-video" poster="images/logo_header.png">
             <source src="images/video%201.mp4" type="video/mp4">
         </video>
         <div class="hero-overlay"></div>
         <!-- Marca de agua hero -->
-        <img src="images/logo_estefani_amza.png" alt="" class="brand-watermark brand-watermark--hero" aria-hidden="true">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--hero" aria-hidden="true">
 
         <div class="container relative-z">
             <div class="hero-content">
@@ -97,7 +103,7 @@
 
     <!-- Servicios (Cards) -->
     <section id="servicios" class="services">
-        <img src="images/logo_estefani_amza.png" alt="" class="brand-watermark" aria-hidden="true">
+        <img src="images/logo_header.png" alt="" class="brand-watermark" aria-hidden="true">
         <div class="container">
             <span class="section-tag">Tratamientos</span>
             <h2>Nuestros Servicios</h2>
@@ -146,91 +152,6 @@
                     <div class="service-icon"><i class="fa-solid fa-syringe"></i></div>
                     <h3>Cirugía Bucal</h3>
                     <p>Procedimientos quirúrgicos para resolver alteraciones de la cavidad oral, incluyendo extracciones y terceros molares.</p>
-                </div>
-            </div>
-
-            <!-- Carrusel catálogo completo (9 servicios) -->
-            <div class="catalog-carousel-wrap" data-aos="fade-up" data-aos-delay="100">
-                <div class="catalog-header">
-                    <span class="catalog-badge"><i class="fa-solid fa-grid-2"></i> Catálogo completo</span>
-                    <p class="catalog-sub">Todos nuestros tratamientos &mdash; desliza para explorar</p>
-                </div>
-                <div class="swiper catalog-swiper">
-                    <div class="swiper-wrapper">
-                        <!-- 1 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-pump-medical"></i></div>
-                                <h4>Limpieza Dental</h4>
-                                <p>Elimina placa y sarro para prevenir enfermedades bucales.</p>
-                            </div>
-                        </div>
-                        <!-- 2 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-teeth-open"></i></div>
-                                <h4>Ortodoncia</h4>
-                                <p>Brackets y alineadores para corregir posición dental.</p>
-                            </div>
-                        </div>
-                        <!-- 3 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-shield-halved"></i></div>
-                                <h4>Endodoncia</h4>
-                                <p>Tratamiento del nervio para conservar dientes dañados.</p>
-                            </div>
-                        </div>
-                        <!-- 4 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-tooth"></i></div>
-                                <h4>Resinas</h4>
-                                <p>Restauraciones estéticas de apariencia natural.</p>
-                            </div>
-                        </div>
-                        <!-- 5 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-screwdriver-wrench"></i></div>
-                                <h4>Implantes Dentales</h4>
-                                <p>Reemplazo fijo de dientes ausentes integrado al hueso.</p>
-                            </div>
-                        </div>
-                        <!-- 6 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-syringe"></i></div>
-                                <h4>Cirugía Bucal</h4>
-                                <p>Extracciones y tratamiento de terceros molares.</p>
-                            </div>
-                        </div>
-                        <!-- 7 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-child-reaching"></i></div>
-                                <h4>Odontopediatría</h4>
-                                <p>Atención dental especializada para niños y adolescentes.</p>
-                            </div>
-                        </div>
-                        <!-- 8 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
-                                <h4>Diseño de Sonrisa</h4>
-                                <p>Blanqueamiento y estética dental para una sonrisa perfecta.</p>
-                            </div>
-                        </div>
-                        <!-- 9 -->
-                        <div class="swiper-slide">
-                            <div class="catalog-card">
-                                <div class="catalog-icon"><i class="fa-solid fa-person-dots-from-line"></i></div>
-                                <h4>Prótesis &amp; Rehabilitación</h4>
-                                <p>Restauración completa de la función y estética bucal.</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="swiper-pagination catalog-pagination"></div>
                 </div>
             </div>
 
@@ -309,7 +230,7 @@
 
     <!-- Sección Educativa (Tips) -->
     <section id="tips" class="educational">
-        <img src="images/logo_estefani_amza.png" alt="" class="brand-watermark brand-watermark--tips" aria-hidden="true">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--tips" aria-hidden="true">
         <div class="container">
             <span class="section-tag">Aprende con nosotros</span>
             <h2>Tips de Salud Dental</h2>
@@ -342,7 +263,7 @@
 
     <!-- Testimonios / Confianza -->
     <section id="nosotros" class="testimonials-section">
-        <img src="images/logo_estefani_amza.png" alt="" class="brand-watermark brand-watermark--testimonials" aria-hidden="true">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--testimonials" aria-hidden="true">
         <div class="container">
             <span class="section-tag" data-aos="fade-up">Testimonios de Pacientes</span>
             <h2 data-aos="fade-up" data-aos-delay="100">Sonrisas que inspiran confianza</h2>
@@ -459,7 +380,7 @@
 
     <!-- Call To Action (Strong CTA) -->
     <section id="contacto" class="container" style="padding-top: 3rem; position: relative;" data-aos="zoom-in" data-aos-duration="1000">
-        <img src="images/logo_estefani_amza.png" alt="" class="brand-watermark brand-watermark--cta" aria-hidden="true">
+        <img src="images/logo_header.png" alt="" class="brand-watermark brand-watermark--cta" aria-hidden="true">
         <div class="cta-section">
             <h2>¿Listo para sonreír con confianza?</h2>
             <p>Agenda tu valoración y descubre cómo la odontología moderna, gentil y profesional puede transformar tu
@@ -557,30 +478,6 @@
 
                     // Abrir en nueva pestaña
                     window.open(whatsappUrl, '_blank');
-                });
-            }
-
-            // Inicializar Carrusel Catálogo (Swiper)
-            if (typeof Swiper !== 'undefined' && document.querySelector('.catalog-swiper')) {
-                const catalogSwiper = new Swiper('.catalog-swiper', {
-                    slidesPerView: 1.2,
-                    spaceBetween: 16,
-                    loop: true,
-                    grabCursor: true,
-                    centeredSlides: false,
-                    autoplay: {
-                        delay: 3200,
-                        disableOnInteraction: false,
-                    },
-                    pagination: {
-                        el: '.catalog-pagination',
-                        clickable: true,
-                    },
-                    breakpoints: {
-                        480: { slidesPerView: 2.2, spaceBetween: 18 },
-                        768: { slidesPerView: 3.2, spaceBetween: 22 },
-                        1024: { slidesPerView: 4, spaceBetween: 24 },
-                    },
                 });
             }
 
