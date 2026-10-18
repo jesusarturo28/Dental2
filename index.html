@@ -292,8 +292,8 @@
                                 placeholder="Ej. Martes por la tarde" required>
                         </div>
                         <div class="form-group full-width">
-                            <label for="source">¿Cómo te enteraste de nosotros?</label>
-                            <select id="source" name="source" class="form-control" required>
+                            <label for="source">¿Cómo te enteraste de nosotros? (opcional)</label>
+                            <select id="source" name="source" class="form-control">
                                 <option value="" disabled selected>Selecciona una opción</option>
                                 <option value="Recomendación de amigo/familiar">Recomendación de un amigo o familiar
                                 </option>
@@ -561,7 +561,26 @@
 
     <!-- Script Principal para Menú y Lógica -->
     <script>
+        // Medición de contactos para anuncios (Google Ads / GA4 / Meta).
+        // No hace nada hasta que se instale una etiqueta de Google o el Pixel de Meta.
+        // No envía datos personales ni el tratamiento elegido.
+        window.dataLayer = window.dataLayer || [];
+        function trackContact(eventName, origin) {
+            window.dataLayer.push({ event: eventName, contact_origin: origin });
+            if (typeof window.gtag === 'function') window.gtag('event', eventName, { contact_origin: origin });
+            if (typeof window.fbq === 'function') window.fbq('track', eventName === 'generate_lead' ? 'Lead' : 'Contact');
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('a[href^="https://wa.me"], a[href^="tel:"]').forEach(link => {
+                link.addEventListener('click', () => {
+                    const section = link.closest('section, header, footer');
+                    let origin = section ? (section.id || section.tagName.toLowerCase()) : 'flotante';
+                    if (link.classList.contains('whatsapp-float')) origin = 'flotante';
+                    trackContact(link.href.startsWith('tel:') ? 'contact_phone' : 'contact_whatsapp', origin);
+                });
+            });
+
             const menuBtn = document.getElementById('menu-btn');
             const mobileMenu = document.getElementById('mobile-menu');
             const icon = menuBtn.querySelector('i');
@@ -598,7 +617,7 @@
                     const phone = document.getElementById('phone').value;
                     const service = document.getElementById('service').value;
                     const datetime = document.getElementById('datetime').value;
-                    const source = document.getElementById('source').value;
+                    const source = document.getElementById('source').value || 'No especificado';
                     const message = document.getElementById('message').value;
 
                     // Formatear el mensaje para WhatsApp
@@ -607,6 +626,8 @@
                     // Codificar para URL
                     const encodedText = encodeURIComponent(text);
                     const whatsappUrl = `https://wa.me/525573541129?text=${encodedText}`;
+
+                    trackContact('generate_lead', 'formulario');
 
                     // Abrir en nueva pestaña
                     window.open(whatsappUrl, '_blank');
