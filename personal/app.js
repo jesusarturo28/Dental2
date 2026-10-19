@@ -12,8 +12,10 @@
 
     // Hay que leer el enlace del correo (invitación o recuperación) antes de que Supabase lo limpie
     const INITIAL_HASH = window.location.hash || '';
-    const LINK_TYPE = (INITIAL_HASH.match(/type=([a-z_]+)/) || [])[1] || '';
-    const LINK_ERROR = decodeURIComponent(((INITIAL_HASH.match(/error_description=([^&]+)/) || [])[1] || '').replace(/\+/g, ' '));
+    // Se lee como parámetros: el enlace trae "token_type=bearer" y "type=recovery", y solo importa el segundo
+    const LINK_PARAMS = new URLSearchParams(INITIAL_HASH.replace(/^#/, ''));
+    const LINK_TYPE = LINK_PARAMS.get('type') || '';
+    const LINK_ERROR = LINK_PARAMS.get('error_description') || '';
 
     const sb = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY, {
         auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true }
@@ -87,8 +89,16 @@
 
     function errMsg(e) {
         if (!e) return 'Ocurrió un error.';
-        if (e.message && /Failed to fetch|NetworkError/i.test(e.message)) return 'Sin conexión. Revisa tu internet e intenta de nuevo.';
-        return e.message || String(e);
+        const m = e.message || String(e);
+        if (/Failed to fetch|NetworkError/i.test(m)) return 'Sin conexión. Revisa tu internet e intenta de nuevo.';
+        // Mensajes de inicio de sesión de Supabase, en español
+        if (e.code === 'over_email_send_rate_limit' || /rate limit|only request this after/i.test(m))
+            return 'Ya se enviaron varios correos seguidos. Espera alrededor de una hora antes de pedir otro.';
+        if (e.code === 'same_password' || /different from the old/i.test(m)) return 'La contraseña nueva debe ser distinta a la anterior.';
+        if (e.code === 'weak_password' || /weak|at least \d+ characters/i.test(m)) return 'La contraseña es muy débil. Usa al menos 10 caracteres y combina letras y números.';
+        if (e.code === 'reauthentication_needed') return 'Por seguridad, cierra sesión y vuelve a entrar antes de cambiar la contraseña.';
+        if (e.code === 'session_not_found' || /Auth session missing/i.test(m)) return 'Tu sesión expiró. Vuelve a iniciar sesión.';
+        return m;
     }
 
     async function rpc(name, args) {
@@ -224,6 +234,30 @@
         showAuth('login-form');
     }
     $('#logout').addEventListener('click', logout);
+
+    // Cambiar contraseña estando dentro (no necesita correo)
+    $('#change-pass').addEventListener('click', () => {
+        const m = openModal('Cambiar contraseña', `<form id="cp">
+            <p class="muted small">Usa al menos 10 caracteres. Evita contraseñas que uses en otros sitios.</p>
+            <div class="field"><label>Contraseña nueva</label><input name="p1" type="password" autocomplete="new-password" minlength="10" required></div>
+            <div class="field"><label>Repite la contraseña</label><input name="p2" type="password" autocomplete="new-password" minlength="10" required></div>
+            <p class="form-error" id="cp-error"></p>
+            <div class="actions"><button class="btn btn-primary" type="submit">Guardar contraseña</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div></form>`);
+        bind(m.body, { close: () => m.close() });
+        $('#cp', m.body).addEventListener('submit', ev => {
+            ev.preventDefault();
+            const f = ev.target, err = $('#cp-error', m.body);
+            err.textContent = '';
+            if (f.p1.value.length < 10) { err.textContent = 'La contraseña debe tener al menos 10 caracteres.'; return; }
+            if (f.p1.value !== f.p2.value) { err.textContent = 'Las contraseñas no coinciden.'; return; }
+            busy($('button[type=submit]', f), async () => {
+                const { error } = await sb.auth.updateUser({ password: f.p1.value });
+                if (error) { err.textContent = errMsg(error); return; }
+                m.close();
+                toast('Contraseña guardada. Úsala la próxima vez que entres.', 'ok');
+            });
+        });
+    });
     $('#no-access-logout').addEventListener('click', logout);
 
     sb.auth.onAuthStateChange(event => {
