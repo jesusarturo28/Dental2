@@ -240,7 +240,8 @@
         { id: 'agenda', label: 'Agenda', roles: 'all' },
         { id: 'pacientes', label: 'Pacientes', roles: 'all' },
         { id: 'cotizaciones', label: 'Cotizaciones', roles: 'all' },
-        { id: 'seguimientos', label: 'Seguimientos', roles: 'edit' }
+        { id: 'seguimientos', label: 'Seguimientos', roles: 'edit' },
+        { id: 'equipo', label: 'Equipo', roles: 'admin' }
     ];
 
     async function startApp() {
@@ -286,7 +287,7 @@
     }
 
     function visibleTabs() {
-        return TABS.filter(t => t.roles === 'all' || canEdit());
+        return TABS.filter(t => t.roles === 'all' || (t.roles === 'edit' && canEdit()) || (t.roles === 'admin' && isAdmin()));
     }
 
     function renderTabs() {
@@ -316,7 +317,7 @@
         window.scrollTo(0, 0);
         const view = $('#view');
         view.innerHTML = '<p class="loading">Cargando…</p>';
-        const fn = { inicio: renderInicio, solicitudes: renderSolicitudes, agenda: renderAgenda, pacientes: renderPacientes, cotizaciones: renderCotizaciones, seguimientos: renderSeguimientos }[tab];
+        const fn = { inicio: renderInicio, solicitudes: renderSolicitudes, agenda: renderAgenda, pacientes: renderPacientes, cotizaciones: renderCotizaciones, seguimientos: renderSeguimientos, equipo: renderEquipo }[tab];
         Promise.resolve(fn(view)).catch(e => {
             view.innerHTML = `<div class="note">No se pudo cargar esta sección: ${esc(errMsg(e))}</div>
                 <button class="btn" id="retry">Intentar de nuevo</button>`;
@@ -1203,6 +1204,102 @@
                     toast('Seguimiento creado.', 'ok');
                     if (onDone) onDone();
                 } catch (e) { $('#nf-error', m.body).textContent = errMsg(e); }
+            });
+        });
+    }
+
+
+    // ------------------------------------------------------------------
+    // EQUIPO (solo Administrador)
+    // ------------------------------------------------------------------
+    async function renderEquipo(view) {
+        const [rows, roles] = await Promise.all([rpc('admin_list_staff'), q(sb.from('roles').select('id,name').order('name'))]);
+        state.roles = roles || [];
+        view.innerHTML = `<div class="toolbar"><h2>Equipo</h2><button class="btn btn-primary" data-act="new">Agregar persona</button></div>
+            <p class="muted small">Quién puede entrar a esta página y qué puede hacer. Recepción gestiona pacientes, agenda, cotizaciones y seguimientos; Odontólogo solo consulta.</p>
+            ${(rows || []).map(staffCard).join('')}`;
+        const byId = Object.fromEntries((rows || []).map(r => [r.id, r]));
+        bind(view, {
+            new: () => staffModal(null),
+            edit: btn => staffModal(byId[btn.dataset.id]),
+            invite: btn => busy(btn, () => sendInvite(byId[btn.dataset.id]))
+        });
+    }
+
+    function accessStatus(u) {
+        if (!u.has_account) return '<span class="chip gray">Sin invitar</span>';
+        if (u.last_sign_in_at) return `<span class="chip ok">Entró por última vez ${esc(fmtDateTime(u.last_sign_in_at))}</span>`;
+        if (u.confirmed_at) return '<span class="chip ok">Cuenta lista</span>';
+        return `<span class="chip warn">Invitación enviada${u.invited_at ? ' ' + esc(fmtDateTime(u.invited_at)) : ''}, falta aceptarla</span>`;
+    }
+
+    function staffCard(u) {
+        return `<div class="card">
+            <div class="card-head"><h3>${esc(u.name)}${u.is_me ? ' <span class="muted small">(tú)</span>' : ''}</h3>
+                <span><span class="chip">${esc(u.role_name || 'Sin rol')}</span> ${u.active ? '' : '<span class="chip gray">Inactivo</span>'}</span></div>
+            <div class="meta">${u.email ? `<span>✉️ ${esc(u.email)}</span>` : '<span class="muted">Sin correo</span>'}${u.phone ? `<span>📱 ${esc(u.phone)}</span>` : ''}</div>
+            <div>${accessStatus(u)}</div>
+            <div class="actions">
+                ${u.active && u.email && !u.is_me ? `<button class="btn btn-sm btn-primary" data-act="invite" data-id="${u.id}">${u.has_account ? 'Enviar enlace de contraseña' : 'Enviar invitación'}</button>` : ''}
+                <button class="btn btn-sm btn-ghost" data-act="edit" data-id="${u.id}">Editar</button>
+            </div></div>`;
+    }
+
+    // Llama a la función del servidor que manda el correo de invitación
+    async function sendInvite(u) {
+        try {
+            const { data, error } = await sb.functions.invoke('invite-staff', { body: { user_id: u.id } });
+            if (error) {
+                let msg = error.message;
+                try { const j = await error.context.json(); if (j && j.error) msg = j.error; } catch (e) { /* sin detalle */ }
+                throw new Error(msg);
+            }
+            toast(data && data.sent === 'invite'
+                ? `Invitación enviada a ${u.email}. Le llegará un correo para crear su contraseña.`
+                : `Le enviamos a ${u.email} un enlace para crear su contraseña.`, 'ok');
+            if (state.tab === 'equipo') go('equipo');
+        } catch (e) { toast(errMsg(e), 'error'); }
+    }
+
+    function staffModal(u) {
+        const roleOpts = sel => (state.roles || []).map(r => `<option value="${r.id}" ${r.id === sel ? 'selected' : ''}>${esc(r.name)}</option>`).join('');
+        const recep = (state.roles || []).find(r => r.name === 'Recepción');
+        const m = openModal(u ? 'Editar persona' : 'Agregar persona', `<form id="tf">
+            <div class="field"><label>Nombre</label><input name="name" required value="${esc(u ? u.name : '')}"></div>
+            <div class="grid-2">
+                <div class="field"><label>Correo</label><input name="email" type="email" required value="${esc(u ? u.email : '')}" ${u && u.has_account ? 'readonly title="Ya tiene cuenta: el correo no se cambia aquí"' : ''}></div>
+                <div class="field"><label>Teléfono</label><input name="phone" type="tel" value="${esc(u ? u.phone : '')}"></div>
+                <div class="field"><label>Rol</label><select name="role_id" required>${roleOpts(u ? u.role_id : recep && recep.id)}</select></div>
+                ${u ? `<div class="field"><label>Estado</label><select name="active"><option value="true" ${u.active ? 'selected' : ''}>Activo</option><option value="false" ${u.active ? '' : 'selected'}>Inactivo (ya no puede entrar)</option></select></div>` : ''}
+            </div>
+            ${u ? '' : '<div class="field"><label class="check"><input type="checkbox" name="invite" checked> Enviarle ahora el correo de invitación</label></div>'}
+            <p class="form-error" id="tf-error"></p>
+            <div class="actions"><button class="btn btn-primary" type="submit">Guardar</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div></form>`);
+        bind(m.body, { close: () => m.close() });
+        $('#tf', m.body).addEventListener('submit', ev => {
+            ev.preventDefault();
+            const f = ev.target;
+            const row = { name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim() || null, role_id: f.role_id.value };
+            busy($('button[type=submit]', f), async () => {
+                try {
+                    if (u) {
+                        row.active = f.active.value === 'true';
+                        await q(sb.from('users').update(row).eq('id', u.id));
+                        m.close();
+                        toast('Datos guardados.', 'ok');
+                        go('equipo');
+                    } else {
+                        row.active = true;
+                        const created = await q(sb.from('users').insert(row).select('id,name,email').single());
+                        // Si ya existía una cuenta de acceso con ese correo, se liga en este momento
+                        await rpc('admin_link_staff_account', { p_user_id: created.id }).catch(() => false);
+                        m.close();
+                        if (f.invite.checked) await sendInvite(created); else toast('Persona agregada.', 'ok');
+                        go('equipo');
+                    }
+                } catch (e) {
+                    $('#tf-error', m.body).textContent = /users_email_key|duplicate/i.test(e.message || '') ? 'Ya hay una persona con ese correo.' : errMsg(e);
+                }
             });
         });
     }
