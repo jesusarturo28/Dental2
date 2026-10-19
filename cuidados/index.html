@@ -52,6 +52,14 @@ h2{font-size:1.35rem;font-weight:800;color:var(--pd);margin-bottom:6px}
 .tag{display:inline-block;background:var(--pl);color:var(--pd);font-weight:700;font-size:.78rem;padding:3px 10px;border-radius:999px;margin-bottom:8px;letter-spacing:.02em}
 .feature .tag{background:rgba(255,255,255,.22);color:#fff}
 .note{font-size:.85rem;color:var(--tl);background:#fff;border:1px dashed var(--line);border-radius:12px;padding:12px}
+.steps{list-style:none;padding:0;margin:14px 0;display:grid;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.14);border-radius:12px;padding:12px}
+.steps .n{flex:0 0 32px;height:32px;border-radius:50%;background:#fff;color:var(--pd);font-weight:800;display:flex;align-items:center;justify-content:center}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px}
+.pills span{background:#fff;color:var(--pd);font-weight:700;font-size:.82rem;padding:5px 12px;border-radius:999px}
+.btn.ig{background:linear-gradient(135deg,#F58529,#DD2A7B,#8134AF)}
+.bag{border-left:5px solid var(--cyan);background:#ECFEFF}
+.bag h3{color:#0E7490}
 footer{background:#1E152A;color:#d9d0ea;text-align:center;padding:24px 16px 90px;font-size:.88rem}
 footer a{color:#fff}
 .float{position:fixed;left:16px;right:16px;bottom:14px;max-width:788px;margin:0 auto;z-index:10}
@@ -64,7 +72,7 @@ footer a{color:#fff}
   <div class="wrap">
     <img src="../images/logo_estefani_amza_white.png" alt="Estefani Amza | Odontología Integral">
     <h1>Tu recuperación, en buenas manos</h1>
-    <p>Guía de cuidados antes y después de tu cirugía de traumatología, con enfermería a domicilio y atención dental.</p>
+    <p>Guía de cuidados antes y después de tu cirugía de traumatología, con <strong>VitalCare Enfermería a domicilio</strong> y <strong>Odontología Integral Dra. Estefani Amza</strong>.</p>
     <nav class="chips">
       <a href="#enfermeria">🏠 Enfermería a domicilio</a>
       <a href="#antes">📋 Antes de la cirugía</a>
@@ -79,9 +87,9 @@ footer a{color:#fff}
   <!-- ENFERMERÍA A DOMICILIO (destacado) -->
   <section id="enfermeria">
     <div class="card feature">
-      <span class="tag">NUESTRA AGENCIA DE ENFERMERÍA</span>
+      <span class="tag">VITALCARE · AGENCIA DE ENFERMERÍA</span>
       <h2>Enfermería a domicilio</h2>
-      <p class="lead">Personal de enfermería capacitado va a tu casa para que te recuperes con seguridad y comodidad, sin traslados.</p>
+      <p class="lead">Licenciados en enfermería capacitados y certificados van a tu casa para que te recuperes con seguridad y comodidad, sin traslados. Cobertura en CDMX y Estado de México.</p>
       <div class="grid">
         <div class="svc"><b>🩹 Curación de heridas</b><span>Limpieza y cambio de apósitos de la herida quirúrgica.</span></div>
         <div class="svc"><b>✂️ Retiro de puntos y grapas</b><span>Cuando tu médico lo indique, en tu domicilio.</span></div>
@@ -90,10 +98,13 @@ footer a{color:#fff}
         <div class="svc"><b>🦽 Movilización segura</b><span>Ayuda para cambios de posición, levantarse, uso de andadera o muletas.</span></div>
         <div class="svc"><b>🛏️ Cuidado del paciente encamado</b><span>Prevención de úlceras por presión, higiene y aseo personal.</span></div>
         <div class="svc"><b>🧴 Sondas y drenajes</b><span>Cuidado y vigilancia de sondas, catéteres y drenajes.</span></div>
-        <div class="svc"><b>🕒 Turnos y acompañamiento</b><span>Visitas por evento, turnos de 8, 12 o 24 horas.</span></div>
+        <div class="svc"><b>🏥 Acompañamiento hospitalario</b><span>Cuidamos a tu familiar durante su estancia en el hospital, de día o de noche.</span></div>
+        <div class="svc"><b>💧 Sueroterapia</b><span>Hidratación intravenosa y aplicación de vitaminas a domicilio.</span></div>
+        <div class="svc"><b>👵 Adultos mayores</b><span>Asistencia, compañía y monitoreo constante.</span></div>
+        <div class="svc"><b>🕒 Turnos y visitas</b><span>Visitas por evento o turnos diurnos y nocturnos.</span></div>
       </div>
-      <a class="btn" href="https://wa.me/525573541129?text=Hola%2C%20me%20dieron%20su%20QR%20en%20el%20hospital.%20Me%20interesa%20el%20servicio%20de%20enfermer%C3%ADa%20a%20domicilio." target="_blank" rel="noopener">💬 Solicitar enfermería a domicilio</a>
-      <a class="btn alt" href="tel:+525573541129">📞 Llamar: 55 7354 1129</a>
+      <a class="btn" href="https://wa.me/525573522094?text=Hola%20VitalCare%2C%20me%20dieron%20su%20QR%20en%20el%20hospital.%20Me%20interesa%20el%20servicio%20de%20enfermer%C3%ADa%20a%20domicilio." target="_blank" rel="noopener">💬 Solicitar enfermería · WhatsApp 24/7</a>
+      <a class="btn alt" href="tel:+525573522094">📞 Llamar: 55 7352 2094</a>
     </div>
   </section>
 
@@ -134,6 +145,24 @@ footer a{color:#fff}
         <li>Ropa cómoda y holgada, calzado cerrado antiderrapante.</li>
         <li>Un familiar o acompañante responsable.</li>
       </ul>
+    </div>
+    <div class="card">
+      <h3>🧴 Artículos de aseo personal</h3>
+      <ul>
+        <li>Jabón (recomendamos <strong>jabón líquido</strong>, es más higiénico) y shampoo.</li>
+        <li>Toalla para secarse.</li>
+        <li>Zacate o esponja para el baño.</li>
+        <li>Cepillo de dientes, pasta dental y desodorante.</li>
+        <li>Peine o cepillo para el cabello.</li>
+        <li>Hombres: rastrillo y espuma para afeitar.</li>
+        <li>Mujeres: toallas femeninas si estás en tu periodo.</li>
+        <li>Toallitas húmedas y sandalias para el baño.</li>
+      </ul>
+    </div>
+    <div class="card bag">
+      <h3>🛍️ Importante: bolsas para proteger tus lesiones</h3>
+      <p>Las heridas, yesos, férulas y vendajes <strong>no se pueden mojar</strong>. Por eso te pedimos traer <strong>bolsas de plástico grandes y resistentes</strong> (tipo bolsa para basura).</p>
+      <p style="margin-top:8px">Con ellas embolsamos y cubrimos la zona lesionada al momento del baño. Por ejemplo, si tienes una fractura de pie, cubrimos todo el pie y la pierna para que no se moje.</p>
     </div>
   </section>
 
@@ -184,10 +213,18 @@ footer a{color:#fff}
         <li>Falta de aire o dolor en el pecho.</li>
       </ul>
     </div>
-    <div class="card feature">
-      <h3>🏠 ¿Necesitas ayuda en casa durante tu recuperación?</h3>
-      <p>Nuestro equipo de enfermería puede hacer tus curaciones, aplicar tus medicamentos y vigilar tu evolución sin que salgas de casa.</p>
-      <a class="btn" href="https://wa.me/525573541129?text=Hola%2C%20acabo%20de%20salir%20de%20cirug%C3%ADa%20y%20necesito%20enfermer%C3%ADa%20a%20domicilio." target="_blank" rel="noopener">💬 Quiero enfermería a domicilio</a>
+    <div class="card feature" id="tu-enfermero">
+      <span class="tag">DEL HOSPITAL A TU CASA · VITALCARE</span>
+      <h2>Tu recuperación continúa en casa, con el mismo cuidado profesional</h2>
+      <p>Al salir del hospital no estás solo. El equipo de enfermería de VitalCare conoce los cuidados que necesitas después de una cirugía de traumatología y te acompaña en casa hasta que te recuperes por completo.</p>
+      <ol class="steps">
+        <li><span class="n">1</span><span><strong>Guarda nuestro número</strong> antes de tu alta: 55 7352 2094.</span></li>
+        <li><span class="n">2</span><span><strong>Escríbenos por WhatsApp</strong> y mándanos foto de tus indicaciones de alta.</span></li>
+        <li><span class="n">3</span><span><strong>Agendamos tu visita</strong> para curaciones, medicamentos, retiro de puntos o lo que necesites.</span></li>
+      </ol>
+      <div class="pills"><span>✔ Personal certificado</span><span>✔ WhatsApp 24/7</span><span>✔ CDMX y Edomex</span></div>
+      <a class="btn" href="https://wa.me/525573522094?text=Hola%20VitalCare%2C%20estoy%20por%20salir%20del%20hospital%20y%20quiero%20agendar%20enfermer%C3%ADa%20a%20domicilio%20para%20mi%20recuperaci%C3%B3n." target="_blank" rel="noopener">💬 Agendar mi visita a domicilio</a>
+      <a class="btn ig" href="https://www.instagram.com/vitalcare_enfermeros/" target="_blank" rel="noopener">📸 Síguenos en Instagram @vitalcare_enfermeros</a>
     </div>
   </section>
 
@@ -217,12 +254,12 @@ footer a{color:#fff}
 </main>
 
 <footer>
-  <p><strong>Estefani Amza | Odontología Integral</strong> · Enfermería a domicilio</p>
-  <p>WhatsApp: <a href="https://wa.me/525573541129">55 7354 1129</a> · <a href="https://www.instagram.com/dra.estefaniamza/">Instagram</a> · <a href="../">Sitio web</a></p>
+  <p><strong>VitalCare Enfermería</strong> · WhatsApp 24/7: <a href="https://wa.me/525573522094">55 7352 2094</a> · <a href="https://www.instagram.com/vitalcare_enfermeros/">Instagram</a></p>
+  <p style="margin-top:6px"><strong>Estefani Amza | Odontología Integral</strong> · WhatsApp: <a href="https://wa.me/525573541129">55 7354 1129</a> · <a href="https://www.instagram.com/dra.estefaniamza/">Instagram</a> · <a href="../">Sitio web</a></p>
 </footer>
 
 <div class="float">
-  <a class="btn" href="https://wa.me/525573541129?text=Hola%2C%20me%20dieron%20su%20QR%20en%20el%20hospital%20y%20quiero%20informes." target="_blank" rel="noopener">💬 Escríbenos por WhatsApp</a>
+  <a class="btn" href="https://wa.me/525573522094?text=Hola%20VitalCare%2C%20me%20dieron%20su%20QR%20en%20el%20hospital%20y%20quiero%20informes." target="_blank" rel="noopener">💬 Escríbenos por WhatsApp</a>
 </div>
 
 </body>
