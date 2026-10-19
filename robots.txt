@@ -3,32 +3,42 @@
 
 User-agent: *
 Allow: /
+Disallow: /personal/
 
 User-agent: OAI-SearchBot
 Allow: /
+Disallow: /personal/
 
 User-agent: GPTBot
 Allow: /
+Disallow: /personal/
 
 User-agent: Claude-SearchBot
 Allow: /
+Disallow: /personal/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /personal/
 
 User-agent: Googlebot
 Allow: /
+Disallow: /personal/
 
 User-agent: Bingbot
 Allow: /
+Disallow: /personal/
 
 User-agent: facebookexternalhit
 Allow: /
+Disallow: /personal/
 
 User-agent: Twitterbot
 Allow: /
+Disallow: /personal/
 
 User-agent: LinkedInBot
 Allow: /
+Disallow: /personal/
 
 Sitemap: https://estefaniamza.netlify.app/sitemap.xml
