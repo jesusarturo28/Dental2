@@ -24,7 +24,8 @@
     const state = {
         role: null, me: null, tab: 'inicio',
         services: [], specialists: [], sources: [],
-        agendaDate: null, quoteStatus: '', patientQuery: ''
+        agendaDate: null, quoteStatus: '', patientQuery: '',
+        calMonth: null, calDay: null, calSpecialist: ''
     };
 
     const OPEN_STATUSES = ['Solicitud nueva', 'Pendiente de confirmar', 'Confirmada'];
@@ -272,6 +273,7 @@
         { id: 'inicio', label: 'Inicio', roles: 'all' },
         { id: 'solicitudes', label: 'Solicitudes', roles: 'edit' },
         { id: 'agenda', label: 'Agenda', roles: 'all' },
+        { id: 'calendario', label: 'Calendario', roles: 'all' },
         { id: 'pacientes', label: 'Pacientes', roles: 'all' },
         { id: 'cotizaciones', label: 'Cotizaciones', roles: 'all' },
         { id: 'seguimientos', label: 'Seguimientos', roles: 'edit' },
@@ -308,7 +310,7 @@
     async function loadCatalogs() {
         try {
             const [services, specialists, sources] = await Promise.all([
-                q(sb.from('services').select('id,name,category,base_price,duration_minutes,active').eq('active', true).order('category').order('name')),
+                q(sb.from('services').select('id,name,category,base_price,duration_minutes,sessions_min,sessions_max,sessions_note,active').eq('active', true).order('category').order('name')),
                 q(sb.from('specialists').select('id,name,specialty,active').eq('active', true).order('name')),
                 q(sb.from('patient_sources').select('id,name').eq('active', true).order('name'))
             ]);
@@ -351,7 +353,7 @@
         window.scrollTo(0, 0);
         const view = $('#view');
         view.innerHTML = '<p class="loading">Cargando…</p>';
-        const fn = { inicio: renderInicio, solicitudes: renderSolicitudes, agenda: renderAgenda, pacientes: renderPacientes, cotizaciones: renderCotizaciones, seguimientos: renderSeguimientos, equipo: renderEquipo }[tab];
+        const fn = { inicio: renderInicio, solicitudes: renderSolicitudes, agenda: renderAgenda, calendario: renderCalendario, pacientes: renderPacientes, cotizaciones: renderCotizaciones, seguimientos: renderSeguimientos, equipo: renderEquipo }[tab];
         Promise.resolve(fn(view)).catch(e => {
             view.innerHTML = `<div class="note">No se pudo cargar esta sección: ${esc(errMsg(e))}</div>
                 <button class="btn" id="retry">Intentar de nuevo</button>`;
@@ -381,10 +383,18 @@
                 cat = s.category;
                 html += `<optgroup label="${esc(cat || 'Otros')}">`;
             }
-            html += `<option value="${s.id}" ${s.id === selected ? 'selected' : ''}>${esc(s.name)} · ${esc(s.duration_minutes)} min · ${money(s.base_price)}</option>`;
+            html += `<option value="${s.id}" ${s.id === selected ? 'selected' : ''}>${esc(s.name)} · ${esc(s.duration_minutes)} min${sessionsLabel(s) ? ' · ' + esc(sessionsLabel(s)) : ''} · ${money(s.base_price)}</option>`;
         });
         if (cat !== null) html += '</optgroup>';
         return html;
+    }
+
+    function sessionsLabel(s) {
+        if (s.sessions_note) return s.sessions_note;
+        if (!s.sessions_min) return '';
+        const a = s.sessions_min, b = s.sessions_max || a;
+        const n = a === b ? String(a) : a + ' a ' + b;
+        return n + (b === 1 ? ' sesión' : ' sesiones');
     }
 
     function specialistOptions(selected) {
@@ -771,6 +781,137 @@
         const rows = await rpc('get_dashboard_agenda', { p_date: d });
         box.innerHTML = (rows || []).length ? rows.map(agendaCard).join('') : '<div class="empty">No hay citas este día.</div>';
         bindAgenda(box, () => go('agenda'));
+    }
+
+    // ------------------------------------------------------------------
+    // Calendario mensual
+    // ------------------------------------------------------------------
+    // Horario de citas normales (último paciente a la 1 pm) y horario de urgencias
+    const CAL_OPEN = 7 * 60, CAL_CLOSE = 14 * 60;
+    const CAL_URGENT = 'Urgencias: 22:00 a 6:00';
+    const CAL_COLORS = ['#8C52FF', '#0f766e', '#d9480f', '#0369a1', '#c2255c', '#5c940d', '#9a5b00'];
+    const WEEKDAYS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
+
+    const toMin = t => { const [h, m] = String(t).split(':'); return (+h) * 60 + (+m); };
+    const fromMin = m => String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
+    const capFirst = t => String(t).charAt(0).toUpperCase() + String(t).slice(1);
+    const shortName = n => String(n || '').replace(/^(dra?\.?|doctora?)\s+/i, '');
+
+    function specColor(id) {
+        const i = state.specialists.findIndex(s => s.id === id);
+        return i < 0 ? '#837599' : CAL_COLORS[i % CAL_COLORS.length];
+    }
+
+    async function renderCalendario(view) {
+        const today = todayMX();
+        const month = state.calMonth || today.slice(0, 7);
+        state.calMonth = month;
+        const first = month + '-01';
+        const dow = new Date(first + 'T12:00:00Z').getUTCDay();
+        const gridStart = addDays(first, -dow);
+        const nextMonth = addDays(addDays(first, 32).slice(0, 7) + '-01', 0);
+        const lastDay = addDays(nextMonth, -1);
+        const weeks = Math.ceil((dow + Number(lastDay.slice(8))) / 7);
+        const gridEnd = addDays(gridStart, weeks * 7 - 1);
+        const title = new Intl.DateTimeFormat('es-MX', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(first + 'T12:00:00Z'));
+        const filter = state.calSpecialist;
+
+        view.innerHTML = `<div class="toolbar"><h2>${esc(capFirst(title))}</h2>
+                <button class="btn btn-ghost btn-sm" data-act="prev" aria-label="Mes anterior">←</button>
+                <button class="btn btn-ghost btn-sm" data-act="today">Hoy</button>
+                <button class="btn btn-ghost btn-sm" data-act="next" aria-label="Mes siguiente">→</button></div>
+            <div class="cal-filters">
+                <button class="cal-filter ${filter ? '' : 'on'}" data-act="filter" data-id="">Todos</button>
+                ${state.specialists.map(s => `<button class="cal-filter ${filter === s.id ? 'on' : ''}" data-act="filter" data-id="${s.id}" style="--c:${specColor(s.id)}"><i></i>${esc(s.name)}</button>`).join('')}
+            </div>
+            <p class="muted small">Citas de 7:00 a 14:00 (último paciente a la 1 pm) · ${esc(CAL_URGENT)}. Toca un día para ver sus horarios.</p>
+            <div class="cal" id="cal"><p class="loading">Cargando…</p></div>
+            <div id="cal-day"></div>`;
+
+        const setMonth = m => { state.calMonth = m; state.calDay = null; go('calendario'); };
+        bind(view, {
+            prev: () => setMonth(addDays(first, -1).slice(0, 7)),
+            next: () => setMonth(nextMonth.slice(0, 7)),
+            today: () => { state.calMonth = today.slice(0, 7); state.calDay = today; go('calendario'); },
+            filter: b => { state.calSpecialist = b.dataset.id; go('calendario'); }
+        });
+
+        let rows = await rpc('get_calendar_range', { p_from: gridStart, p_to: gridEnd });
+        rows = (rows || []).filter(r => !filter || r.specialist_id === filter || (r.kind === 'bloqueo' && !r.specialist_id));
+        const byDay = {};
+        rows.forEach(r => { (byDay[r.day] = byDay[r.day] || []).push(r); });
+
+        let html = WEEKDAYS.map((w, i) => `<div class="cal-head ${i === 0 ? 'sun' : ''}">${w}</div>`).join('');
+        for (let i = 0; i < weeks * 7; i++) {
+            const d = addDays(gridStart, i);
+            const items = (byDay[d] || []).filter(r => r.kind === 'cita');
+            const blocks = (byDay[d] || []).filter(r => r.kind === 'bloqueo');
+            const out = d.slice(0, 7) !== month;
+            const MAX = 3;
+            const chips = items.slice(0, MAX).map(r =>
+                `<span class="cal-chip ${r.is_emergency ? 'urg' : ''}" style="--c:${specColor(r.specialist_id)}">${esc(fmtTime(r.start_time))}<span class="nm"> ${esc(shortName(r.specialist_name))}</span></span>`).join('');
+            html += `<button class="cal-cell ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${d === state.calDay ? 'sel' : ''}" data-act="day" data-d="${d}">
+                <span class="cal-num ${i % 7 === 0 ? 'sun' : ''}">${Number(d.slice(8))}</span>
+                ${chips}
+                ${items.length > MAX ? `<span class="cal-more">+${items.length - MAX} más</span>` : ''}
+                ${blocks.length ? '<span class="cal-chip blk">Bloqueado</span>' : ''}
+            </button>`;
+        }
+        const cal = $('#cal');
+        cal.innerHTML = html;
+        bind(cal, { day: b => { state.calDay = b.dataset.d; $$('.cal-cell', cal).forEach(c => c.classList.toggle('sel', c === b)); renderCalDay(byDay[b.dataset.d] || [], b.dataset.d); } });
+        if (state.calDay && state.calDay >= gridStart && state.calDay <= gridEnd) renderCalDay(byDay[state.calDay] || [], state.calDay);
+    }
+
+    function renderCalDay(rows, d) {
+        const box = $('#cal-day');
+        const specs = state.calSpecialist ? state.specialists.filter(s => s.id === state.calSpecialist) : state.specialists;
+        const citas = rows.filter(r => r.kind === 'cita');
+        const blocks = rows.filter(r => r.kind === 'bloqueo');
+        const normal = citas.filter(r => !r.is_emergency);
+        const urg = citas.filter(r => r.is_emergency);
+
+        // Cuadrícula de media hora por especialista dentro del horario normal
+        const busyAt = (sid, m) => normal.find(r => r.specialist_id === sid && toMin(r.start_time) <= m && toMin(r.end_time) > m);
+        const blockedAt = (sid, m) => blocks.find(b => (!b.specialist_id || b.specialist_id === sid) && toMin(b.start_time) <= m && toMin(b.end_time) > m);
+        let grid = '';
+        if (specs.length) {
+            grid = `<div class="table-wrap"><table class="cal-day-grid"><thead><tr><th>Hora</th>${specs.map(s => `<th style="color:${specColor(s.id)}">${esc(s.name)}</th>`).join('')}</tr></thead><tbody>`;
+            for (let m = CAL_OPEN; m < CAL_CLOSE; m += 30) {
+                grid += `<tr><td class="h">${fromMin(m)}</td>` + specs.map(s => {
+                    const a = busyAt(s.id, m);
+                    if (a) {
+                        const startsHere = toMin(a.start_time) === m || m === CAL_OPEN;
+                        return `<td class="busy" style="--c:${specColor(s.id)}">${startsHere ? `<button class="link-btn" data-act="patient" data-id="${a.patient_id}">${esc(a.patient_name)}</button><span>${esc(a.service_name)} · ${esc(fmtTime(a.start_time))}–${esc(fmtTime(a.end_time))}</span>` : ''}</td>`;
+                    }
+                    const b = blockedAt(s.id, m);
+                    if (b) return `<td class="blk">${esc(b.reason || 'Bloqueado')}</td>`;
+                    return '<td class="free">Libre</td>';
+                }).join('') + '</tr>';
+            }
+            grid += '</tbody></table></div>';
+        } else {
+            grid = '<div class="note">Todavía no hay especialistas registrados.</div>';
+        }
+        const free = specs.map(s => {
+            let n = 0;
+            for (let m = CAL_OPEN; m < CAL_CLOSE; m += 30) if (!busyAt(s.id, m) && !blockedAt(s.id, m)) n++;
+            return `<span class="chip" style="background:#fff;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n * 30} min libres</span>`;
+        }).join(' ');
+
+        box.innerHTML = `<div class="card cal-day-card">
+            <div class="card-head"><h3>${esc(capFirst(fmtDateLong(d)))}</h3>
+                ${canEdit() ? '<button class="btn btn-primary btn-sm" data-act="new">Nueva cita</button>' : ''}</div>
+            <div class="meta">${free}</div>
+            ${grid}
+            <h3 style="margin-top:1rem">Urgencias (22:00 a 6:00)</h3>
+            ${urg.length ? urg.map(r => `<div class="meta"><span class="chip bad">${esc(fmtTime(r.start_time))}–${esc(fmtTime(r.end_time))}</span><span>${esc(r.patient_name)}</span><span>🦷 ${esc(r.service_name)}</span><span>👩‍⚕️ ${esc(r.specialist_name)}</span></div>`).join('') : '<p class="muted small">Sin urgencias registradas este día.</p>'}
+        </div>`;
+        bind(box, {
+            patient: el => openPatient(el.dataset.id),
+            new: () => appointmentModal({ date: d, onDone: () => go('calendario') })
+        });
+        box.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 
     function noSpecialistsNote() {
