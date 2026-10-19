@@ -292,6 +292,12 @@
                                 placeholder="¿Hay algo que debamos saber?"></textarea>
                         </div>
                     </div>
+                    <!-- Campo trampa para bots: las personas no lo ven ni lo llenan -->
+                    <div class="form-honeypot" aria-hidden="true">
+                        <label for="website">No llenar este campo</label>
+                        <input type="text" id="website" name="website" tabindex="-1" autocomplete="off">
+                    </div>
+                    <p id="form-status" class="form-status" role="status" aria-live="polite"></p>
                     <button type="submit" class="btn btn-primary form-submit">
                         <i class="fa-brands fa-whatsapp"></i> Enviar por WhatsApp
                     </button>
@@ -571,18 +577,68 @@
                 });
             });
 
-            // Formulario de Cita - Enviar a WhatsApp
+            // Conexión con la base de datos (Supabase). La clave publicable es pública por diseño:
+            // solo permite llamar a submit_appointment_request, que valida y no devuelve datos.
+            const SUPABASE_URL = 'https://poqkhcwkbjsvbvttyghc.supabase.co';
+            const SUPABASE_KEY = 'sb_publishable_oI5y_BS3duhQOeDqDZdZbQ_LpjE5m_j';
+
+            // Guarda la solicitud en la base de datos. Nunca bloquea el envío por WhatsApp.
+            function saveAppointmentRequest(data) {
+                return fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_appointment_request`, {
+                    method: 'POST',
+                    keepalive: true,
+                    headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
+                    body: JSON.stringify({
+                        p_name: data.name,
+                        p_phone: data.phone,
+                        p_service: data.service,
+                        p_preferred: data.datetime,
+                        p_source: data.source,
+                        p_message: data.message,
+                        p_website: data.website
+                    })
+                }).then(res => res.ok).catch(() => false);
+            }
+
+            // Formulario de Cita - Guardar en la base de datos y enviar a WhatsApp
             const appointmentForm = document.getElementById('appointment-form');
+            const formStatus = document.getElementById('form-status');
+            const showStatus = (text, type) => {
+                formStatus.textContent = text;
+                formStatus.className = `form-status ${type || ''}`;
+            };
             if (appointmentForm) {
                 appointmentForm.addEventListener('submit', function (e) {
                     e.preventDefault();
 
-                    const name = document.getElementById('name').value;
-                    const phone = document.getElementById('phone').value;
+                    const name = document.getElementById('name').value.trim();
+                    const phone = document.getElementById('phone').value.trim();
                     const service = document.getElementById('service').value;
-                    const datetime = document.getElementById('datetime').value;
+                    const datetime = document.getElementById('datetime').value.trim();
                     const source = document.getElementById('source').value;
-                    const message = document.getElementById('message').value;
+                    const message = document.getElementById('message').value.trim();
+                    const website = document.getElementById('website').value;
+
+                    // Mismas reglas que la base de datos, para avisar antes de enviar
+                    if (name.length < 2) {
+                        showStatus('Escribe tu nombre completo.', 'error');
+                        return;
+                    }
+                    if (phone.replace(/\D/g, '').length < 10) {
+                        showStatus('Escribe un teléfono de 10 dígitos.', 'error');
+                        return;
+                    }
+
+                    showStatus('Abriendo WhatsApp…', '');
+                    saveAppointmentRequest({ name, phone, service, datetime, source, message, website })
+                        .then(ok => {
+                            if (ok) {
+                                showStatus('¡Listo! Recibimos tu solicitud. Termina de enviarla por WhatsApp y te confirmaremos tu cita.', 'success');
+                                appointmentForm.reset();
+                            } else {
+                                showStatus('No pudimos registrar tu solicitud en línea, pero puedes enviarla por WhatsApp.', 'error');
+                            }
+                        });
 
                     // Formatear el mensaje para WhatsApp
                     const text = `¡Hola! Me gustaría agendar una cita.\n\n*Mis datos:*\n👤 Nombre: ${name}\n📱 Teléfono: ${phone}\n🦷 Servicio: ${service}\n📅 Horario de preferencia: ${datetime}\n📢 Me enteré por: ${source}\n💬 Mensaje: ${message}\n\n¡Quedo a la espera de confirmación!`;
