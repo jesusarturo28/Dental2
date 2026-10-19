@@ -167,3 +167,62 @@ table.items input { padding: .4rem .5rem; }
 .toast.ok { background: var(--ok); }
 .form-error { color: var(--bad); font-size: .88rem; margin: .3rem 0 .6rem; }
 .loading { color: var(--muted); padding: 1rem 0; }
+
+/* ---------- Calendario mensual ---------- */
+.cal-filters { display: flex; flex-wrap: wrap; gap: .4rem; margin-bottom: .6rem; }
+.cal-filter {
+  --c: var(--primary);
+  display: inline-flex; align-items: center; gap: .4rem; border: 1px solid var(--border); background: #fff;
+  border-radius: 999px; padding: .35rem .8rem; font: inherit; font-size: .85rem; font-weight: 600; color: var(--text-light); cursor: pointer;
+}
+.cal-filter i { width: .65rem; height: .65rem; border-radius: 50%; background: var(--c); }
+.cal-filter.on { background: var(--c); border-color: var(--c); color: #fff; }
+.cal-filter.on i { background: #fff; }
+
+.cal {
+  display: grid; grid-template-columns: repeat(7, minmax(0, 1fr));
+  background: var(--card); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; margin-bottom: 1rem;
+}
+.cal-head { text-align: center; font-size: .78rem; font-weight: 600; color: var(--muted); padding: .5rem 0; border-bottom: 1px solid var(--border); }
+.cal-head.sun { color: var(--bad); }
+.cal-cell {
+  min-height: 108px; min-width: 0; display: flex; flex-direction: column; align-items: stretch; gap: 3px;
+  padding: .3rem .25rem .4rem; border: none; border-right: 1px solid var(--border); border-bottom: 1px solid var(--border);
+  background: #fff; font: inherit; text-align: left; cursor: pointer;
+}
+.cal-cell:nth-child(7n) { border-right: none; }
+.cal-cell:hover { background: var(--bg); }
+.cal-cell.out { background: #FBF9FD; }
+.cal-cell.out .cal-num, .cal-cell.out .cal-chip { opacity: .45; }
+.cal-cell.sel { background: var(--primary-light); }
+.cal-num { align-self: center; font-size: .82rem; font-weight: 600; width: 1.7rem; height: 1.7rem; line-height: 1.7rem; text-align: center; border-radius: 50%; color: var(--text); }
+.cal-num.sun { color: var(--bad); }
+.cal-cell.today .cal-num { background: var(--primary); color: #fff; }
+.cal-chip {
+  --c: var(--primary);
+  display: block; font-size: .72rem; font-weight: 600; line-height: 1.25; padding: .18rem .3rem; border-radius: 5px;
+  background: color-mix(in srgb, var(--c) 14%, #fff); color: var(--c); border-left: 3px solid var(--c);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.cal-chip.urg { background: var(--bad-bg); color: var(--bad); border-left-color: var(--bad); }
+.cal-chip.blk { background: #EEEAF3; color: #5A4E6D; border-left-color: #837599; }
+.cal-more { font-size: .7rem; color: var(--muted); font-weight: 600; padding-left: .2rem; }
+
+.cal-day-card { scroll-margin-top: 110px; }
+table.cal-day-grid { width: 100%; border-collapse: collapse; font-size: .85rem; margin-top: .4rem; }
+table.cal-day-grid th { font-size: .8rem; text-align: left; padding: .4rem; border-bottom: 1px solid var(--border); }
+table.cal-day-grid td { padding: .35rem .45rem; border-bottom: 1px solid var(--border); vertical-align: top; min-width: 120px; }
+table.cal-day-grid td.h { font-weight: 700; color: var(--text-light); min-width: 0; width: 3.4rem; }
+table.cal-day-grid td.free { color: var(--ok); font-size: .78rem; }
+table.cal-day-grid td.busy { --c: var(--primary); background: color-mix(in srgb, var(--c) 12%, #fff); border-left: 3px solid var(--c); }
+table.cal-day-grid td.busy .link-btn { display: block; font-weight: 700; color: var(--text); text-decoration: none; text-align: left; }
+table.cal-day-grid td.busy span { display: block; font-size: .75rem; color: var(--text-light); }
+table.cal-day-grid td.blk { background: #EEEAF3; color: #5A4E6D; font-size: .78rem; }
+
+@media (max-width: 640px) {
+  main { padding-left: .5rem; padding-right: .5rem; }
+  .cal-cell { min-height: 92px; padding: .25rem .12rem; gap: 2px; }
+  .cal-chip { font-size: .66rem; padding: .12rem .15rem; border-left-width: 2px; text-overflow: clip; text-align: center; }
+  .cal-chip .nm { display: none; }
+  .cal-num { font-size: .75rem; width: 1.5rem; height: 1.5rem; line-height: 1.5rem; }
+}
