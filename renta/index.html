@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Renta de Consultorio Dental en Lindavista, CDMX | Por hora o por paquete</title>
+<meta name="description" content="Renta consultorio dental equipado en Lindavista, GAM, CDMX: unidad dental, autoclave, rayos X y ultrasonido. Disponible 24/7. Paquetes desde $110 la hora.">
+<link rel="canonical" href="https://estefaniamza.netlify.app/renta/">
+<meta property="og:title" content="Renta de consultorio dental en Lindavista, CDMX">
+<meta property="og:description" content="Consultorio equipado, disponible 24/7. Paquetes desde $110 la hora. Ideal si ya tienes pacientes en la zona norte de CDMX.">
+<meta property="og:image" content="https://estefaniamza.netlify.app/images/og-estefani-amza.jpg">
+<meta property="og:url" content="https://estefaniamza.netlify.app/renta/">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="../images/logo_estefani_amza_purple.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --p:#8C52FF;--pd:#6C2BD9;--pl:#F3E8FF;--pink:#EC4899;--cyan:#06B6D4;
+  --bg:#FAF6FF;--card:#fff;--tx:#1E152A;--tl:#5A4E6D;--line:#E9D5FF;
+  --ok:#0F9F6E;--warn:#D9363E;
+  --grad:linear-gradient(135deg,#8C52FF 0%,#7C3AED 45%,#EC4899 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Montserrat,system-ui,sans-serif;background:var(--bg);color:var(--tx);line-height:1.6;font-size:16px}
+a{color:var(--pd)}
+.wrap{max-width:880px;margin:0 auto;padding:0 16px}
+header.hero{background:var(--grad);color:#fff;padding:28px 0 40px;text-align:center}
+.hero img{height:56px;width:auto;margin-bottom:14px}
+.hero .kicker{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.45);padding:5px 14px;border-radius:999px;font-size:.8rem;font-weight:700;letter-spacing:.04em;margin-bottom:12px}
+.hero h1{font-size:clamp(1.6rem,5.5vw,2.5rem);line-height:1.15;font-weight:800}
+.hero p{margin:12px auto 0;max-width:620px;opacity:.95;font-weight:500}
+.hero-ctas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:22px}
+.hero-ctas .btn{width:auto;margin:0;padding:13px 22px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:18px}
+.chips a{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);color:#fff;text-decoration:none;padding:7px 13px;border-radius:999px;font-size:.85rem;font-weight:600}
+section{padding:30px 0 6px}
+h2{font-size:1.4rem;font-weight:800;color:var(--pd);margin-bottom:6px;line-height:1.25}
+.lead{color:var(--tl);margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;margin-bottom:14px;box-shadow:0 6px 18px rgba(140,82,255,.08)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px}
+.item{background:var(--pl);border-radius:14px;padding:14px}
+.item b{display:block;color:var(--pd);margin-bottom:2px}
+.item span{font-size:.9rem;color:var(--tl)}
+.plans{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:6px}
+.plan{position:relative;background:#fff;border:2px solid var(--line);border-radius:18px;padding:22px 20px;text-align:center}
+.plan.best{border-color:var(--p);box-shadow:0 14px 30px rgba(140,82,255,.18)}
+.plan .badge{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grad);color:#fff;font-size:.72rem;font-weight:800;padding:4px 12px;border-radius:999px;white-space:nowrap}
+.plan h3{font-size:1.05rem}
+.plan .price{font-size:2.3rem;font-weight:800;color:var(--pd);line-height:1.1;margin-top:8px}
+.plan .price small{font-size:1rem;font-weight:600;color:var(--tl)}
+.plan .total{font-weight:700;margin-top:4px}
+.plan .after{font-size:.84rem;color:var(--tl);margin-top:10px;border-top:1px dashed var(--line);padding-top:10px}
+.terms{font-size:.88rem;color:var(--tl);margin-top:14px}
+.terms li{margin:4px 0 4px 18px}
+.specs{display:flex;flex-wrap:wrap;gap:8px}
+.specs span{background:#fff;border:1px solid var(--p);color:var(--pd);font-weight:700;font-size:.88rem;padding:7px 14px;border-radius:999px}
+.feature{background:var(--grad);color:#fff;border:none}
+.feature h2{color:#fff}
+.feature .lead{color:rgba(255,255,255,.92)}
+.steps{list-style:none;padding:0;margin:8px 0 0;display:grid;gap:10px}
+.steps li{display:flex;gap:12px;align-items:flex-start;background:rgba(255,255,255,.14);border-radius:12px;padding:12px}
+.steps .n{flex:0 0 32px;height:32px;border-radius:50%;background:#fff;color:var(--pd);font-weight:800;display:flex;align-items:center;justify-content:center}
+.check{list-style:none;padding:0}
+.check li{padding-left:28px;position:relative;margin:7px 0}
+.check li::before{content:"✓";position:absolute;left:0;top:0;width:20px;height:20px;border-radius:50%;background:var(--pl);color:var(--pd);font-weight:800;font-size:.8rem;display:flex;align-items:center;justify-content:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;background:#25D366;color:#fff;text-decoration:none;font-weight:700;padding:14px 20px;border-radius:12px;margin-top:12px;width:100%;font-size:1rem;border:0;cursor:pointer;font-family:inherit}
+.btn.alt{background:#fff;color:var(--pd)}
+.btn.out{background:var(--pd)}
+.btn:disabled{opacity:.6;cursor:wait}
+form .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media (max-width:620px){form .row{grid-template-columns:1fr}}
+label{display:block;font-weight:600;font-size:.9rem;margin:12px 0 5px}
+label .opt{font-weight:500;color:var(--tl)}
+input,select,textarea{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:16px;color:var(--tx);background:var(--bg)}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--p);outline-offset:0;background:#fff}
+textarea{resize:vertical;min-height:84px}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.status{margin-top:12px;padding:12px 14px;border-radius:10px;font-weight:600;display:none}
+.status.ok{display:block;background:#E8FAF3;color:var(--ok)}
+.status.err{display:block;background:#FFF5F5;color:var(--warn)}
+.privacy{font-size:.8rem;color:var(--tl);margin-top:10px}
+.map{border:0;width:100%;height:260px;border-radius:14px;margin-top:10px}
+footer{background:#1E152A;color:#d9d0ea;text-align:center;padding:24px 16px 96px;font-size:.88rem;margin-top:30px}
+footer a{color:#fff}
+.float{position:fixed;left:16px;right:16px;bottom:14px;max-width:848px;margin:0 auto;z-index:10}
+.float .btn{margin:0;box-shadow:0 10px 25px rgba(0,0,0,.25)}
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <img src="../images/logo_estefani_amza_white.png" alt="Estefani Amza | Odontología Integral">
+    <br><span class="kicker">PARA ODONTÓLOGOS Y ESPECIALISTAS</span>
+    <h1>Renta de consultorio dental en Lindavista, CDMX</h1>
+    <p>Atiende a tus pacientes de la zona norte en un consultorio equipado, sin invertir en uno propio. Por paquete de horas, cualquier día y a cualquier hora.</p>
+    <div class="hero-ctas">
+      <a class="btn alt" href="#informes">Quiero informes</a>
+      <a class="btn" href="https://wa.me/525573541129?text=Hola%2C%20soy%20odont%C3%B3logo%20y%20me%20interesa%20rentar%20el%20consultorio%20en%20Lindavista." target="_blank" rel="noopener">💬 WhatsApp</a>
+    </div>
+    <nav class="chips">
+      <a href="#equipo">🦷 Equipo</a>
+      <a href="#paquetes">💲 Paquetes</a>
+      <a href="#como-funciona">📋 Cómo funciona</a>
+      <a href="#ubicacion">📍 Ubicación</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section id="equipo">
+    <h2>Todo listo para que solo llegues a trabajar</h2>
+    <p class="lead">Tú traes tu instrumental y tus materiales; nosotros ponemos el consultorio, el equipo y los servicios.</p>
+    <div class="grid">
+      <div class="item"><b>Unidad dental completa</b><span>Sillón, lámpara, escupidera y compresor.</span></div>
+      <div class="item"><b>Autoclave</b><span>Para esterilizar tu instrumental en el consultorio.</span></div>
+      <div class="item"><b>Rayos X dental</b><span>Con mandil plomado para tus pacientes.</span></div>
+      <div class="item"><b>Ultrasonido dental</b><span>Para profilaxis y tratamientos periodontales.</span></div>
+      <div class="item"><b>Sala de espera y baño</b><span>Para que tus pacientes esperen cómodos.</span></div>
+      <div class="item"><b>Luz, agua y RPBI</b><span>Servicios incluidos y contenedores de residuos biológicos.</span></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <h2>Disponible las 24 horas, los 7 días</h2>
+      <p class="lead" style="margin-bottom:8px">Reserva por WhatsApp cualquier horario libre, de día o de noche. Tus horarios apartados se respetan: nadie puede borrarlos ni ocuparlos.</p>
+      <ul class="check">
+        <li>Acceso con llave o código personal</li>
+        <li>Reservas con 24 horas de anticipación</li>
+        <li>Cambios o cancelaciones sin costo con 24 horas de aviso</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="paquetes">
+    <h2>Paquetes mensuales</h2>
+    <p class="lead">Precio de lanzamiento de <strong>$110 la hora</strong> durante tus primeros 3 meses.</p>
+    <div class="plans">
+      <div class="plan">
+        <h3>Paquete 30 horas</h3>
+        <div class="price">$110 <small>/ hora</small></div>
+        <div class="total">$3,300 al mes</div>
+        <div class="after">Después de 3 meses: $150 la hora ($4,500 al mes)</div>
+      </div>
+      <div class="plan best">
+        <span class="badge">MEJOR PRECIO A LARGO PLAZO</span>
+        <h3>Paquete 40 horas</h3>
+        <div class="price">$110 <small>/ hora</small></div>
+        <div class="total">$4,400 al mes</div>
+        <div class="after">Después de 3 meses: $130 la hora ($5,200 al mes)</div>
+      </div>
+    </div>
+    <ul class="terms">
+      <li>Hora suelta o tiempo extra: $180 la hora.</li>
+      <li>Pago mensual por adelantado. Depósito en garantía de un mes. Plazo mínimo de 3 meses.</li>
+      <li>Precios en pesos mexicanos. Si necesitas factura, se agregan los impuestos correspondientes.</li>
+    </ul>
+  </section>
+
+  <section>
+    <div class="card">
+      <h2>Buscamos especialistas</h2>
+      <p class="lead" style="margin-bottom:10px">Si tu especialidad complementa a la odontología general del consultorio, <strong>también te referimos pacientes</strong>.</p>
+      <div class="specs">
+        <span>Endodoncia</span><span>Ortodoncia</span><span>Cirugía maxilofacial</span><span>Periodoncia</span><span>Prótesis e implantes</span>
+      </div>
+      <p class="privacy" style="font-size:.88rem;margin-top:12px">También son bienvenidos odontólogos generales que ya tengan pacientes en la zona norte de CDMX.</p>
+    </div>
+  </section>
+
+  <section id="como-funciona">
+    <div class="card feature">
+      <h2>Cómo funciona</h2>
+      <ol class="steps">
+        <li><span class="n">1</span><div><strong>Déjanos tus datos</strong> en el formulario o por WhatsApp.</div></li>
+        <li><span class="n">2</span><div><strong>Visita el consultorio</strong> y revisa el equipo sin compromiso.</div></li>
+        <li><span class="n">3</span><div><strong>Elige tu paquete y firma el contrato</strong> con tu cédula profesional.</div></li>
+        <li><span class="n">4</span><div><strong>Reserva tus horarios</strong> por WhatsApp y empieza a atender.</div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section>
+    <div class="card">
+      <h2>Requisitos</h2>
+      <ul class="check">
+        <li>Cédula profesional (y de especialidad, si aplica)</li>
+        <li>Tu propio instrumental y materiales de consumo</li>
+        <li>Seguir los protocolos de esterilización y manejo de residuos (NOM-013 y NOM-087)</li>
+        <li>Recomendado: seguro de responsabilidad civil profesional</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="informes">
+    <div class="card">
+      <h2>Solicita informes</h2>
+      <p class="lead">Déjanos tus datos y te escribimos por WhatsApp para resolver dudas y agendar una visita.</p>
+      <form id="rental-form" novalidate>
+        <div class="row">
+          <div>
+            <label for="name">Nombre completo</label>
+            <input id="name" name="name" required maxlength="120" autocomplete="name" placeholder="Dra. / Dr. Nombre Apellido">
+          </div>
+          <div>
+            <label for="phone">WhatsApp (10 dígitos)</label>
+            <input id="phone" name="phone" required maxlength="20" inputmode="tel" autocomplete="tel" placeholder="55 1234 5678">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="specialty">Especialidad</label>
+            <select id="specialty" name="specialty" required>
+              <option value="" disabled selected>Selecciona</option>
+              <option>Odontología general</option>
+              <option>Endodoncia</option>
+              <option>Ortodoncia</option>
+              <option>Cirugía maxilofacial</option>
+              <option>Periodoncia</option>
+              <option>Prótesis e implantes</option>
+              <option>Odontopediatría</option>
+              <option>Otra</option>
+            </select>
+          </div>
+          <div>
+            <label for="package">Paquete de interés</label>
+            <select id="package" name="package">
+              <option>Paquete 30 horas</option>
+              <option>Paquete 40 horas</option>
+              <option>Horas sueltas</option>
+              <option selected>Aún no lo sé</option>
+            </select>
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="email">Correo <span class="opt">(opcional)</span></label>
+            <input id="email" name="email" type="email" maxlength="160" autocomplete="email">
+          </div>
+          <div>
+            <label for="license">Cédula profesional <span class="opt">(opcional)</span></label>
+            <input id="license" name="license" maxlength="30" inputmode="numeric">
+          </div>
+        </div>
+        <div class="row">
+          <div>
+            <label for="hours">Días y horarios que te interesan</label>
+            <input id="hours" name="hours" maxlength="300" placeholder="Ej. martes y jueves de 4 a 8 pm">
+          </div>
+          <div>
+            <label for="patients">¿Ya tienes pacientes en la zona?</label>
+            <select id="patients" name="patients">
+              <option>Sí</option>
+              <option>Algunos</option>
+              <option selected>Aún no</option>
+            </select>
+          </div>
+        </div>
+        <label for="message">Comentarios <span class="opt">(opcional)</span></label>
+        <textarea id="message" name="message" maxlength="1000"></textarea>
+        <div class="hp" aria-hidden="true">
+          <label for="website">No llenar</label>
+          <input id="website" name="website" tabindex="-1" autocomplete="off">
+        </div>
+        <button class="btn out" type="submit">Enviar solicitud</button>
+        <div id="form-status" class="status" role="status" aria-live="polite"></div>
+        <p class="privacy">Usamos tus datos solo para contactarte sobre la renta del consultorio.</p>
+      </form>
+    </div>
+  </section>
+
+  <section id="ubicacion">
+    <div class="card">
+      <h2>Ubicación</h2>
+      <p class="lead" style="margin-bottom:4px"><strong>Riobamba 952, Lindavista Sur, Gustavo A. Madero, C.P. 07300, CDMX.</strong> Zona norte de la Ciudad de México.</p>
+      <iframe class="map" title="Mapa: Riobamba 952, Lindavista Sur, CDMX" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+        src="https://www.google.com/maps?q=Riobamba+952,+Lindavista+Sur,+Gustavo+A.+Madero,+07300+CDMX&output=embed"></iframe>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <p><strong>Estefani Amza | Odontología Integral</strong> · WhatsApp: <a href="https://wa.me/525573541129">55 7354 1129</a> · <a href="https://www.instagram.com/dra.estefaniamza/">Instagram</a> · <a href="../">Sitio para pacientes</a></p>
+</footer>
+
+<div class="float">
+  <a class="btn" href="https://wa.me/525573541129?text=Hola%2C%20soy%20odont%C3%B3logo%20y%20me%20interesa%20rentar%20el%20consultorio%20en%20Lindavista." target="_blank" rel="noopener">💬 Pregunta por WhatsApp</a>
+</div>
+
+<script>
+(function () {
+  // Clave publicable de Supabase: es pública por diseño; solo permite llamar a submit_rental_lead.
+  const SUPABASE_URL = 'https://poqkhcwkbjsvbvttyghc.supabase.co';
+  const SUPABASE_KEY = 'sb_publishable_oI5y_BS3duhQOeDqDZdZbQ_LpjE5m_j';
+
+  const form = document.getElementById('rental-form');
+  const status = document.getElementById('form-status');
+  const button = form.querySelector('button[type="submit"]');
+  const val = id => form.elements[id].value.trim();
+
+  function show(msg, kind) {
+    status.textContent = msg;
+    status.className = 'status ' + kind;
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const name = val('name'), phone = val('phone'), specialty = val('specialty');
+    if (name.length < 3) return show('Escribe tu nombre completo.', 'err');
+    if (phone.replace(/\D/g, '').length < 10) return show('Escribe un teléfono de 10 dígitos.', 'err');
+    if (!specialty) return show('Selecciona tu especialidad.', 'err');
+
+    button.disabled = true;
+    show('Enviando…', 'ok');
+    try {
+      const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/submit_rental_lead`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'apikey': SUPABASE_KEY },
+        body: JSON.stringify({
+          p_name: name, p_phone: phone, p_email: val('email') || null,
+          p_specialty: specialty, p_license: val('license') || null,
+          p_package: val('package'), p_hours: val('hours') || null,
+          p_has_patients: val('patients'), p_message: val('message') || null,
+          p_website: val('website') || null,
+        }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.message || 'No pudimos enviar tu solicitud.');
+      }
+      form.reset();
+      show('¡Gracias! Recibimos tus datos. Te escribiremos por WhatsApp en breve.', 'ok');
+      if (window.dataLayer) window.dataLayer.push({ event: 'generate_lead', contact_origin: 'renta' });
+    } catch (err) {
+      show(err.message + ' También puedes escribirnos por WhatsApp al 55 7354 1129.', 'err');
+    } finally {
+      button.disabled = false;
+    }
+  });
+})();
+</script>
+</body>
+</html>

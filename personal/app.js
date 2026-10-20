@@ -25,7 +25,8 @@
         role: null, me: null, tab: 'inicio',
         services: [], specialists: [], sources: [],
         agendaDate: null, quoteStatus: '', patientQuery: '',
-        calMonth: null, calDay: null, calSpecialist: ''
+        calMonth: null, calDay: null, calSpecialist: '',
+        rentaFilter: 'activos'
     };
 
     const OPEN_STATUSES = ['Solicitud nueva', 'Pendiente de confirmar', 'Confirmada'];
@@ -277,6 +278,7 @@
         { id: 'pacientes', label: 'Pacientes', roles: 'all' },
         { id: 'cotizaciones', label: 'Cotizaciones', roles: 'all' },
         { id: 'seguimientos', label: 'Seguimientos', roles: 'edit' },
+        { id: 'renta', label: 'Renta', roles: 'edit' },
         { id: 'equipo', label: 'Equipo', roles: 'admin' }
     ];
 
@@ -353,7 +355,7 @@
         window.scrollTo(0, 0);
         const view = $('#view');
         view.innerHTML = '<p class="loading">Cargando…</p>';
-        const fn = { inicio: renderInicio, solicitudes: renderSolicitudes, agenda: renderAgenda, calendario: renderCalendario, pacientes: renderPacientes, cotizaciones: renderCotizaciones, seguimientos: renderSeguimientos, equipo: renderEquipo }[tab];
+        const fn = { inicio: renderInicio, solicitudes: renderSolicitudes, agenda: renderAgenda, calendario: renderCalendario, pacientes: renderPacientes, cotizaciones: renderCotizaciones, seguimientos: renderSeguimientos, renta: renderRenta, equipo: renderEquipo }[tab];
         Promise.resolve(fn(view)).catch(e => {
             view.innerHTML = `<div class="note">No se pudo cargar esta sección: ${esc(errMsg(e))}</div>
                 <button class="btn" id="retry">Intentar de nuevo</button>`;
@@ -369,7 +371,8 @@
             'Confirmada': 'ok', 'Atendida': 'ok', 'Aceptada': 'ok', 'Completado': 'ok', 'Convertida en cita': 'ok', 'Activo': 'ok',
             'Pendiente de confirmar': 'warn', 'Solicitud nueva': 'warn', 'Nueva': 'warn', 'Pendiente': 'warn', 'Enviada': 'info', 'En seguimiento': 'info', 'En proceso': 'info', 'En revisión': 'info',
             'Cancelada por paciente': 'bad', 'Cancelada por clínica': 'bad', 'No se presentó': 'bad', 'Rechazada': 'bad', 'Vencida': 'bad', 'Descartada': 'gray', 'Cancelado': 'gray',
-            'Reprogramada': 'gray', 'Borrador': 'gray', 'Inactivo': 'gray'
+            'Reprogramada': 'gray', 'Borrador': 'gray', 'Inactivo': 'gray',
+            'Nuevo': 'warn', 'Contactado': 'info', 'Visita agendada': 'info', 'Contrato firmado': 'ok', 'Descartado': 'gray'
         };
         return `<span class="chip ${map[s] || ''}">${esc(s)}</span>`;
     }
@@ -1387,6 +1390,92 @@
     // ------------------------------------------------------------------
     // EQUIPO (solo Administrador)
     // ------------------------------------------------------------------
+    // ------------------------------------------------------------------
+    // Renta del consultorio: doctores interesados (formulario de /renta/)
+    // ------------------------------------------------------------------
+    const RENTA_STATUSES = ['Nuevo', 'Contactado', 'Visita agendada', 'Contrato firmado', 'Descartado'];
+    const RENTA_ACTIVE = ['Nuevo', 'Contactado', 'Visita agendada'];
+
+    async function renderRenta(view) {
+        const rows = await q(sb.from('rental_leads').select('*').order('created_at', { ascending: false }).limit(300));
+        const count = st => rows.filter(r => r.status === st).length;
+        const f = state.rentaFilter;
+        const shown = rows.filter(r => f === 'todos' ? true : f === 'activos' ? RENTA_ACTIVE.includes(r.status) : r.status === f);
+        const filterOpts = [['activos', 'En proceso'], ['todos', 'Todos'], ...RENTA_STATUSES.map(s => [s, s])]
+            .map(([v, l]) => `<option value="${esc(v)}" ${v === f ? 'selected' : ''}>${esc(l)}</option>`).join('');
+
+        view.innerHTML = `<div class="toolbar"><h2>Interesados en rentar</h2>
+            <button class="btn btn-ghost btn-sm" data-act="reload">Actualizar</button></div>
+            <p class="muted small">Doctores que dejaron sus datos en la página de renta del consultorio.</p>
+            <div class="kpis">
+                <div class="kpi"><div class="label">Nuevos</div><div class="value">${count('Nuevo')}</div><div class="hint">Por contactar</div></div>
+                <div class="kpi"><div class="label">Contactados</div><div class="value">${count('Contactado')}</div></div>
+                <div class="kpi"><div class="label">Visita agendada</div><div class="value">${count('Visita agendada')}</div></div>
+                <div class="kpi"><div class="label">Contrato firmado</div><div class="value">${count('Contrato firmado')}</div></div>
+            </div>
+            <div class="field" style="max-width:260px"><label for="renta-filter">Mostrar</label><select id="renta-filter">${filterOpts}</select></div>
+            <div id="renta-list">${shown.length ? shown.map(rentaCard).join('') : '<div class="empty">No hay interesados en esta lista.</div>'}</div>`;
+
+        $('#renta-filter', view).addEventListener('change', ev => { state.rentaFilter = ev.target.value; go('renta'); });
+        $$('select[data-status]', view).forEach(sel => sel.addEventListener('change', async () => {
+            sel.disabled = true;
+            try {
+                await q(sb.from('rental_leads').update({ status: sel.value, updated_at: new Date().toISOString() }).eq('id', sel.dataset.status));
+                toast('Estado actualizado: ' + sel.value + '.', 'ok');
+                go('renta');
+            } catch (e) { toast(errMsg(e), 'error'); sel.disabled = false; }
+        }));
+        const byId = Object.fromEntries(rows.map(r => [r.id, r]));
+        bind(view, {
+            reload: () => go('renta'),
+            notes: btn => rentaNotesModal(byId[btn.dataset.id])
+        });
+    }
+
+    function rentaCard(r) {
+        const wa = waLink(r.phone, `Hola ${r.name || ''}, te escribimos de Estefani Amza | Odontología Integral por tu interés en rentar el consultorio en Lindavista.`);
+        const statusOpts = RENTA_STATUSES.map(s => `<option ${s === r.status ? 'selected' : ''}>${esc(s)}</option>`).join('');
+        return `<div class="card">
+            <div class="card-head"><h3>${esc(r.name)}</h3>${statusChip(r.status)}</div>
+            <div class="meta">
+                <span>📱 ${esc(r.phone)}</span>
+                ${r.specialty ? `<span>🦷 ${esc(r.specialty)}</span>` : ''}
+                ${r.package ? `<span>💲 ${esc(r.package)}</span>` : ''}
+                ${r.preferred_hours ? `<span>📅 ${esc(r.preferred_hours)}</span>` : ''}
+                ${r.has_patients ? `<span>👥 Pacientes en la zona: ${esc(r.has_patients)}</span>` : ''}
+                ${r.license_number ? `<span>🎓 Cédula ${esc(r.license_number)}</span>` : ''}
+                ${r.email ? `<span>✉️ ${esc(r.email)}</span>` : ''}
+                <span class="muted">Recibido ${esc(fmtDateTime(r.created_at))}</span>
+            </div>
+            ${r.message ? `<p>💬 ${esc(r.message)}</p>` : ''}
+            ${r.notes ? `<div class="note info">📝 ${esc(r.notes)}</div>` : ''}
+            <div class="actions">
+                ${wa ? `<a class="btn btn-wa btn-sm" href="${esc(wa)}" target="_blank" rel="noopener">WhatsApp</a>` : ''}
+                <select data-status="${r.id}" aria-label="Cambiar estado de ${esc(r.name)}" style="width:auto">${statusOpts}</select>
+                <button class="btn btn-ghost btn-sm" data-act="notes" data-id="${r.id}">${r.notes ? 'Editar notas' : 'Agregar notas'}</button>
+            </div></div>`;
+    }
+
+    function rentaNotesModal(r) {
+        const m = openModal('Notas: ' + r.name, `<form id="rn">
+            <div class="field"><label>Notas internas</label><textarea name="notes" rows="5" maxlength="2000" placeholder="Ej. Visita el jueves 5 pm. Interesado en 40 horas por la tarde.">${esc(r.notes || '')}</textarea></div>
+            <p class="form-error" id="rn-error"></p>
+            <div class="actions"><button class="btn btn-primary" type="submit">Guardar</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div></form>`);
+        bind(m.body, { close: () => m.close() });
+        $('#rn', m.body).addEventListener('submit', ev => {
+            ev.preventDefault();
+            const notes = ev.target.notes.value.trim() || null;
+            busy($('button[type=submit]', ev.target), async () => {
+                try {
+                    await q(sb.from('rental_leads').update({ notes, updated_at: new Date().toISOString() }).eq('id', r.id));
+                    m.close();
+                    toast('Notas guardadas.', 'ok');
+                    go('renta');
+                } catch (e) { $('#rn-error', m.body).textContent = errMsg(e); }
+            });
+        });
+    }
+
     async function renderEquipo(view) {
         const [rows, roles] = await Promise.all([rpc('admin_list_staff'), q(sb.from('roles').select('id,name').order('name'))]);
         state.roles = roles || [];
