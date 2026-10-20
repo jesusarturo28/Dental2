@@ -30,3 +30,12 @@ En GitHub:
 6. Guarda.
 
 El sitio es HTML/CSS/JS estático y no requiere build.
+
+## Chatbot del sitio (asistente virtual)
+
+- `chat.js` y `chat.css` — burbuja de chat (arriba del botón de WhatsApp).
+- `supabase/functions/chatbot/index.ts` — función del servidor que contesta con Claude usando los servicios, precios y horarios de la base de datos, y registra solicitudes de cita (origen `Chat web`, estado `Nueva`).
+- `supabase/migrations/20261020_chatbot.sql` — límite de mensajes por visitante y función para guardar las solicitudes del chat.
+
+Para que funcione hay que agregar el secreto `ANTHROPIC_API_KEY` en Supabase → Edge Functions → Secrets.
+Para cambiar lo que dice el bot sobre precios u horarios, edita las tablas `services` y `business_hours`; el bot las vuelve a leer cada 10 minutos.
