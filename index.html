@@ -467,6 +467,14 @@
                     <span class="trust-label">Trato Gentil & Sin Dolor</span>
                 </div>
             </div>
+
+            <!-- Botón para dejar reseña en Google -->
+            <div class="review-cta" data-aos="fade-up" data-aos-delay="550">
+                <p>¿Ya te atendiste con nosotros? Tu opinión ayuda a otros pacientes.</p>
+                <a href="https://g.page/r/CTICTiD1vviIECE/review" class="btn btn-primary review-btn" target="_blank" rel="noopener">
+                    <i class="fa-brands fa-google"></i> Déjanos tu reseña en Google
+                </a>
+            </div>
         </div>
     </section>
 
@@ -586,6 +594,10 @@
                     if (link.classList.contains('whatsapp-float')) origin = 'flotante';
                     trackContact(link.href.startsWith('tel:') ? 'contact_phone' : 'contact_whatsapp', origin);
                 });
+            });
+
+            document.querySelectorAll('a[href^="https://g.page/r/"]').forEach(link => {
+                link.addEventListener('click', () => trackContact('review_click', 'nosotros'));
             });
 
             const menuBtn = document.getElementById('menu-btn');
