@@ -1862,3 +1862,22 @@ footer {
     height: 96px;
   }
 }
+
+/* Botón para dejar reseña en Google */
+.review-cta {
+  margin-top: 2.5rem;
+  text-align: center;
+}
+
+.review-cta p {
+  margin-bottom: 1rem;
+  color: var(--text-light, #555);
+  font-size: 1rem;
+}
+
+@media (max-width: 480px) {
+  .review-btn {
+    width: 100%;
+    padding: 0.9rem 1.2rem;
+  }
+}
