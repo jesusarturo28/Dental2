@@ -24,6 +24,6 @@ Codex actúa como segundo revisor, independiente y escéptico, del trabajo de Cl
 5. Al usuario dile en pocas líneas qué encontró Codex, qué corregiste y qué descartaste y por qué.
 
 ## Si falla
-- Código 2 / "sin credenciales": falta `OPENAI_API_KEY` en el entorno.
+- Código 2 / "sin credenciales": hay que iniciar sesión con `codex login --device-auth` (cuenta de ChatGPT); pídele al usuario que apruebe el código.
 - "CONNECT tunnel failed 403": la política de red no permite `api.openai.com`.
 En ambos casos díselo al usuario; no inventes resultados de revisión.

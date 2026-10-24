@@ -14,16 +14,14 @@ if [ ! -f "$HOME/.codex/config.toml" ]; then
 model_reasoning_effort = "high"
 approval_policy = "never"
 sandbox_mode = "read-only"
+# Usar la cuenta de ChatGPT (plan de pago), no la API de pago por uso.
+forced_login_method = "chatgpt"
 
 [shell_environment_policy]
 inherit = "core"
 TOML
 fi
 
-# Login con API key si está disponible como variable de entorno.
-if [ -n "${OPENAI_API_KEY:-}" ]; then
-  if ! codex login status >/dev/null 2>&1; then
-    printenv OPENAI_API_KEY | codex login --with-api-key >/dev/null 2>&1 || true
-  fi
-fi
+# El login es con la cuenta de ChatGPT y no se puede automatizar: en cada contenedor
+# nuevo hay que ejecutar `codex login --device-auth` y aprobar el código en el navegador.
 exit 0

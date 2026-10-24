@@ -9,8 +9,8 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 command -v codex >/dev/null 2>&1 || bash scripts/codex-setup.sh
 
-if ! codex login status >/dev/null 2>&1 && [ -z "${OPENAI_API_KEY:-}" ]; then
-  echo "codex-review: Codex no tiene credenciales. Define OPENAI_API_KEY en el entorno." >&2
+if ! codex login status 2>/dev/null | grep -qi chatgpt; then
+  echo "codex-review: Codex no tiene sesión de ChatGPT. Ejecuta: codex login --device-auth" >&2
   exit 2
 fi
 
