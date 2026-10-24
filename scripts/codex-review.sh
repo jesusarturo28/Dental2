@@ -49,4 +49,11 @@ PROMPT="$PROMPT
 Revisa: $DESC. El diff va en el bloque <stdin>. Puedes leer cualquier archivo del
 repositorio para ver el contexto completo; no modifiques nada."
 
-printf '%s\n' "$DIFF" | exec codex exec --sandbox read-only -c approval_policy='"never"' "$PROMPT"
+OUT="$(mktemp)"; LOG="$(mktemp)"
+if printf '%s\n' "$DIFF" | codex exec --sandbox read-only -c approval_policy='"never"' -o "$OUT" "$PROMPT" >"$LOG" 2>&1; then
+  cat "$OUT"
+else
+  echo "codex-review: Codex falló. Últimas líneas del log:" >&2
+  grep -E "ERROR|error" "$LOG" | tail -5 >&2 || tail -5 "$LOG" >&2
+  exit 3
+fi
