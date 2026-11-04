@@ -792,7 +792,7 @@
     // Horario de citas normales (último paciente a la 1 pm) y horario de urgencias
     const CAL_OPEN = 7 * 60, CAL_CLOSE = 14 * 60;
     const CAL_URGENT = 'Urgencias: 22:00 a 6:00';
-    const CAL_COLORS = ['#8C52FF', '#0f766e', '#d9480f', '#0369a1', '#c2255c', '#5c940d', '#9a5b00'];
+    const CAL_COLORS = ['#a78bfa', '#00d4c8', '#fb923c', '#38bdf8', '#ff6b9d', '#a3e635', '#f5c842'];
     const WEEKDAYS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
     const toMin = t => { const [h, m] = String(t).split(':'); return (+h) * 60 + (+m); };
@@ -802,7 +802,7 @@
 
     function specColor(id) {
         const i = state.specialists.findIndex(s => s.id === id);
-        return i < 0 ? '#837599' : CAL_COLORS[i % CAL_COLORS.length];
+        return i < 0 ? '#7c8aa3' : CAL_COLORS[i % CAL_COLORS.length];
     }
 
     async function renderCalendario(view) {
@@ -899,7 +899,7 @@
         const free = specs.map(s => {
             let n = 0;
             for (let m = CAL_OPEN; m < CAL_CLOSE; m += 30) if (!busyAt(s.id, m) && !blockedAt(s.id, m)) n++;
-            return `<span class="chip" style="background:#fff;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n * 30} min libres</span>`;
+            return `<span class="chip" style="background:transparent;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n * 30} min libres</span>`;
         }).join(' ');
 
         box.innerHTML = `<div class="card cal-day-card">
