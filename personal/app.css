@@ -164,6 +164,8 @@ table.items input { padding: .4rem .5rem; }
 
 .slots { display: flex; flex-wrap: wrap; gap: .4rem; }
 .slot { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 8px; padding: .35rem .6rem; font: inherit; font-size: .85rem; cursor: pointer; }
+.hours-stepper { display: flex; align-items: center; gap: .6rem; flex-wrap: wrap; }
+.hours-stepper strong { min-width: 4.5rem; text-align: center; color: var(--teal); }
 .slot.selected { background: var(--teal); color: #0b1426; border-color: var(--teal); }
 
 /* ---------- Ventana (modal) ---------- */

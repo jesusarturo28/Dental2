@@ -380,7 +380,7 @@
     function serviceOptions(selected) {
         let html = '<option value="">Selecciona un servicio</option>';
         let cat = null;
-        state.services.forEach(s => {
+        state.services.filter(s => s.category !== 'Renta').forEach(s => {
             if (s.category !== cat) {
                 if (cat !== null) html += '</optgroup>';
                 cat = s.category;
@@ -790,8 +790,8 @@
     // Calendario mensual
     // ------------------------------------------------------------------
     // Horario de citas normales (último paciente a la 1 pm) y horario de urgencias
-    const CAL_OPEN = 7 * 60, CAL_CLOSE = 14 * 60;
-    const CAL_URGENT = 'Urgencias: 22:00 a 6:00';
+    // Horario abierto las 24 horas; la cuadrícula del día va en bloques de una hora
+    const CAL_OPEN = 0, CAL_CLOSE = 24 * 60, CAL_STEP = 60;
     const CAL_COLORS = ['#a78bfa', '#00d4c8', '#fb923c', '#38bdf8', '#ff6b9d', '#a3e635', '#f5c842'];
     const WEEKDAYS = ['dom', 'lun', 'mar', 'mié', 'jue', 'vie', 'sáb'];
 
@@ -827,7 +827,7 @@
                 <button class="cal-filter ${filter ? '' : 'on'}" data-act="filter" data-id="">Todos</button>
                 ${state.specialists.map(s => `<button class="cal-filter ${filter === s.id ? 'on' : ''}" data-act="filter" data-id="${s.id}" style="--c:${specColor(s.id)}"><i></i>${esc(s.name)}</button>`).join('')}
             </div>
-            <p class="muted small">Citas de 7:00 a 14:00 (último paciente a la 1 pm) · ${esc(CAL_URGENT)}. Toca un día para ver sus horarios.</p>
+            <p class="muted small">Agenda abierta las 24 horas, en bloques de una hora. Toca un día para ver sus horarios.</p>
             <div class="cal" id="cal"><p class="loading">Cargando…</p></div>
             <div id="cal-day"></div>`;
 
@@ -874,18 +874,21 @@
         const normal = citas.filter(r => !r.is_emergency);
         const urg = citas.filter(r => r.is_emergency);
 
-        // Cuadrícula de media hora por especialista dentro del horario normal
-        const busyAt = (sid, m) => normal.find(r => r.specialist_id === sid && toMin(r.start_time) <= m && toMin(r.end_time) > m);
-        const blockedAt = (sid, m) => blocks.find(b => (!b.specialist_id || b.specialist_id === sid) && toMin(b.start_time) <= m && toMin(b.end_time) > m);
+        // Cuadrícula de una hora por especialista
+        const endMin = t => { const v = toMin(t); return v === 0 ? 24 * 60 : v; };
+        const overlaps = (r, m) => toMin(r.start_time) < m + CAL_STEP && endMin(r.end_time) > m;
+        const busyAt = (sid, m) => normal.find(r => r.specialist_id === sid && overlaps(r, m));
+        const blockedAt = (sid, m) => blocks.find(b => (!b.specialist_id || b.specialist_id === sid) && overlaps(b, m));
         let grid = '';
         if (specs.length) {
             grid = `<div class="table-wrap"><table class="cal-day-grid"><thead><tr><th>Hora</th>${specs.map(s => `<th style="color:${specColor(s.id)}">${esc(s.name)}</th>`).join('')}</tr></thead><tbody>`;
-            for (let m = CAL_OPEN; m < CAL_CLOSE; m += 30) {
+            for (let m = CAL_OPEN; m < CAL_CLOSE; m += CAL_STEP) {
                 grid += `<tr><td class="h">${fromMin(m)}</td>` + specs.map(s => {
                     const a = busyAt(s.id, m);
                     if (a) {
-                        const startsHere = toMin(a.start_time) === m || m === CAL_OPEN;
-                        return `<td class="busy" style="--c:${specColor(s.id)}">${startsHere ? `<button class="link-btn" data-act="patient" data-id="${a.patient_id}">${esc(a.patient_name)}</button><span>${esc(a.service_name)} · ${esc(fmtTime(a.start_time))}–${esc(fmtTime(a.end_time))}</span>` : ''}</td>`;
+                        const st = toMin(a.start_time);
+                        const startsHere = (st >= m && st < m + CAL_STEP) || m === CAL_OPEN;
+                        return `<td class="busy" style="--c:${specColor(s.id)}">${startsHere ? `${patientLink(a)}<span>${esc(a.service_name)} · ${esc(fmtTime(a.start_time))}–${esc(fmtTime(a.end_time))}</span>` : ''}</td>`;
                     }
                     const b = blockedAt(s.id, m);
                     if (b) return `<td class="blk">${esc(b.reason || 'Bloqueado')}</td>`;
@@ -898,8 +901,8 @@
         }
         const free = specs.map(s => {
             let n = 0;
-            for (let m = CAL_OPEN; m < CAL_CLOSE; m += 30) if (!busyAt(s.id, m) && !blockedAt(s.id, m)) n++;
-            return `<span class="chip" style="background:transparent;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n * 30} min libres</span>`;
+            for (let m = CAL_OPEN; m < CAL_CLOSE; m += CAL_STEP) if (!busyAt(s.id, m) && !blockedAt(s.id, m)) n++;
+            return `<span class="chip" style="background:transparent;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n} h libres</span>`;
         }).join(' ');
 
         box.innerHTML = `<div class="card cal-day-card">
@@ -907,14 +910,20 @@
                 ${canEdit() ? '<button class="btn btn-primary btn-sm" data-act="new">Nueva cita</button>' : ''}</div>
             <div class="meta">${free}</div>
             ${grid}
-            <h3 style="margin-top:1rem">Urgencias (22:00 a 6:00)</h3>
-            ${urg.length ? urg.map(r => `<div class="meta"><span class="chip bad">${esc(fmtTime(r.start_time))}–${esc(fmtTime(r.end_time))}</span><span>${esc(r.patient_name)}</span><span>🦷 ${esc(r.service_name)}</span><span>👩‍⚕️ ${esc(r.specialist_name)}</span></div>`).join('') : '<p class="muted small">Sin urgencias registradas este día.</p>'}
+            <h3 style="margin-top:1rem">Urgencias</h3>
+            ${urg.length ? urg.map(r => `<div class="meta"><span class="chip bad">${esc(fmtTime(r.start_time))}–${esc(fmtTime(r.end_time))}</span><span>${esc(r.patient_name || 'Renta de espacio')}</span><span>🦷 ${esc(r.service_name)}</span><span>👩‍⚕️ ${esc(r.specialist_name)}</span></div>`).join('') : '<p class="muted small">Sin urgencias registradas este día.</p>'}
         </div>`;
         bind(box, {
             patient: el => openPatient(el.dataset.id),
             new: () => appointmentModal({ date: d, onDone: () => go('calendario') })
         });
         box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function patientLink(a, style) {
+        const name = a.patient_name || 'Renta de espacio';
+        if (!a.patient_id) return `<strong${style ? ` style="${style}"` : ''}>${esc(name)}</strong>`;
+        return `<button class="link-btn"${style ? ` style="${style}"` : ''} data-act="patient" data-id="${a.patient_id}">${esc(name)}</button>`;
     }
 
     function noSpecialistsNote() {
@@ -928,7 +937,7 @@
         return `<div class="card"><div class="agenda-item">
             <div class="time">${esc(fmtTime(a.start_time))}<div class="muted small" style="font-weight:500">${esc(fmtTime(a.end_time))}</div></div>
             <div class="body">
-                <div class="card-head"><h3><button class="link-btn" style="font-size:1.05rem;font-weight:700;text-decoration:none;color:inherit" data-act="patient" data-id="${a.patient_id}">${esc(a.patient_name)}</button></h3>
+                <div class="card-head"><h3>${patientLink(a, 'font-size:1.05rem;font-weight:700;text-decoration:none;color:inherit')}</h3>
                     <span>${a.is_emergency ? '<span class="chip bad">Emergencia</span> ' : ''}${statusChip(a.status)}</span></div>
                 <div class="meta"><span>🦷 ${esc(a.service_name)}</span><span>👩‍⚕️ ${esc(a.specialist_name)}</span></div>
                 ${canEdit() && open ? `<div class="actions">
@@ -990,7 +999,7 @@
         if (!specialistId || !serviceId || !date) { box.innerHTML = '<p class="muted small">Elige servicio, especialista y fecha para ver los horarios libres.</p>'; return; }
         box.innerHTML = '<p class="muted small">Buscando horarios…</p>';
         try {
-            const rows = await rpc('get_available_slots', { p_specialist_id: specialistId, p_service_id: serviceId, p_date: date, p_step_minutes: 30, p_exclude_appointment_id: excludeId || null });
+            const rows = await rpc('get_available_slots', { p_specialist_id: specialistId, p_service_id: serviceId, p_date: date, p_step_minutes: 60, p_exclude_appointment_id: excludeId || null });
             if (!(rows || []).length) { box.innerHTML = '<p class="muted small">No hay horarios libres ese día.</p>'; return; }
             box.innerHTML = '<div class="slots">' + rows.map(s => `<button type="button" class="slot" data-t="${esc(s.slot_start)}">${esc(fmtTime(s.slot_start))}</button>`).join('') + '</div>';
             $$('.slot', box).forEach(b => b.addEventListener('click', () => {
@@ -1009,30 +1018,63 @@
             return;
         }
         const fromRequest = !!opts.requestId;
+        const rentals = state.services.filter(s => s.category === 'Renta' && s.active !== false)
+            .sort((a, b) => a.duration_minutes - b.duration_minutes);
+        const canRent = !fromRequest && rentals.length > 0;
         const m = openModal(fromRequest ? 'Agendar solicitud' : 'Nueva cita', `<form id="af">
             ${opts.note ? `<div class="note info">El paciente pidió: ${esc(opts.note)}</div>` : ''}
+            ${canRent ? `<div class="field"><label>Tipo</label><div class="slots" id="af-kind">
+                <button type="button" class="slot selected" data-k="cita">Cita de paciente</button>
+                <button type="button" class="slot" data-k="renta">Renta de espacio</button></div></div>` : ''}
             <div class="field" id="af-patient"></div>
             <div class="grid-2">
-                <div class="field"><label>Servicio</label><select name="service" required>${serviceOptions()}</select></div>
+                <div class="field" id="af-service-wrap"><label>Servicio</label><select name="service" required>${serviceOptions()}</select></div>
+                <div class="field hidden" id="af-hours-wrap"><label>Tiempo</label>
+                    <div class="hours-stepper"><button type="button" class="btn btn-sm" data-act="hless" aria-label="Menos tiempo">−</button>
+                    <strong id="af-hours">1 hora</strong>
+                    <button type="button" class="btn btn-sm" data-act="hmore" aria-label="Más tiempo">+ 1 hora</button></div></div>
                 <div class="field"><label>Especialista</label><select name="specialist" required>${specialistOptions(state.specialists.length === 1 ? state.specialists[0].id : '')}</select></div>
                 <div class="field"><label>Fecha</label><input name="date" type="date" required value="${esc(opts.date || todayMX())}"></div>
                 ${fromRequest ? '' : `<div class="field"><label>Estado</label><select name="status"><option>Confirmada</option><option>Pendiente de confirmar</option></select></div>`}
             </div>
-            <div class="field"><label class="check"><input type="checkbox" name="emergency"> Emergencia (permite agendar fuera del horario)</label></div>
+            <div class="field"><label class="check"><input type="checkbox" name="emergency"> Emergencia (escribir la hora a mano)</label></div>
             <div class="field" id="af-slots-wrap"><label>Horario</label><div id="af-slots"></div></div>
             <div class="field hidden" id="af-time-wrap"><label>Hora de inicio</label><input name="time" type="time"></div>
             <div class="field"><label id="af-notes-label">Notas</label><textarea name="notes"></textarea></div>
             <p class="form-error" id="af-error"></p>
             <div class="actions"><button class="btn btn-primary" type="submit">Agendar</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div>
         </form>`);
-        bind(m.body, { close: () => m.close() });
         const form = $('#af', m.body);
         const getPatient = patientPicker($('#af-patient', m.body), opts.patient && opts.patient.id ? opts.patient : null);
         let slot = null;
+        let kind = 'cita', hours = 1;
+        const rentalService = () => (rentals.find(s => s.duration_minutes === hours * 60) || {}).id;
+        const serviceId = () => kind === 'renta' ? rentalService() : form.service.value;
         const refresh = () => {
             slot = null;
-            loadSlots($('#af-slots', m.body), form.specialist.value, form.service.value, form.date.value, t => { slot = t; });
+            loadSlots($('#af-slots', m.body), form.specialist.value, serviceId(), form.date.value, t => { slot = t; });
         };
+        const maxHours = rentals.length ? Math.max(...rentals.map(s => s.duration_minutes / 60)) : 1;
+        const setHours = h => {
+            hours = Math.min(maxHours, Math.max(1, h));
+            $('#af-hours', m.body).textContent = hours === 1 ? '1 hora' : hours + ' horas';
+            refresh();
+        };
+        bind(m.body, {
+            close: () => m.close(),
+            hless: () => setHours(hours - 1),
+            hmore: () => setHours(hours + 1)
+        });
+        if (canRent) $$('#af-kind .slot', m.body).forEach(b => b.addEventListener('click', () => {
+            kind = b.dataset.k;
+            $$('#af-kind .slot', m.body).forEach(x => x.classList.toggle('selected', x === b));
+            const renta = kind === 'renta';
+            $('#af-patient', m.body).classList.toggle('hidden', renta);
+            $('#af-service-wrap', m.body).classList.toggle('hidden', renta);
+            $('#af-hours-wrap', m.body).classList.toggle('hidden', !renta);
+            form.service.required = !renta;
+            refresh();
+        }));
         ['service', 'specialist', 'date'].forEach(n => form[n].addEventListener('change', refresh));
         form.emergency.addEventListener('change', () => {
             const em = form.emergency.checked;
@@ -1046,10 +1088,12 @@
             ev.preventDefault();
             const err = $('#af-error', m.body);
             err.textContent = '';
-            const patientId = getPatient();
+            const renta = kind === 'renta';
+            const patientId = renta ? null : getPatient();
             const em = form.emergency.checked;
             const start = em ? form.time.value : slot;
-            if (!patientId) { err.textContent = 'Elige un paciente.'; return; }
+            if (!renta && !patientId) { err.textContent = 'Elige un paciente.'; return; }
+            if (!serviceId()) { err.textContent = renta ? 'Elige cuántas horas.' : 'Elige un servicio.'; return; }
             if (!start) { err.textContent = em ? 'Escribe la hora de inicio.' : 'Elige un horario.'; return; }
             if (em && !form.notes.value.trim()) { err.textContent = 'Escribe el motivo de la emergencia.'; return; }
             busy($('button[type=submit]', form), async () => {
@@ -1061,12 +1105,12 @@
                         });
                     } else {
                         await rpc('create_appointment', {
-                            p_patient_id: patientId, p_service_id: form.service.value, p_specialist_id: form.specialist.value,
+                            p_patient_id: patientId, p_service_id: serviceId(), p_specialist_id: form.specialist.value,
                             p_date: form.date.value, p_start: start, p_status: form.status.value, p_notes: form.notes.value.trim() || null, p_is_emergency: em
                         });
                     }
                     m.close();
-                    toast('Cita agendada.', 'ok');
+                    toast(renta ? 'Renta agendada.' : 'Cita agendada.', 'ok');
                     if (opts.onDone) opts.onDone();
                 } catch (e) {
                     err.textContent = errMsg(e);
