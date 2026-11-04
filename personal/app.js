@@ -878,6 +878,7 @@
         const endMin = t => { const v = toMin(t); return v === 0 ? 24 * 60 : v; };
         const overlaps = (r, m) => toMin(r.start_time) < m + CAL_STEP && endMin(r.end_time) > m;
         const busyAt = (sid, m) => normal.find(r => r.specialist_id === sid && overlaps(r, m));
+        const takenAt = m => normal.find(r => overlaps(r, m));
         const blockedAt = (sid, m) => blocks.find(b => (!b.specialist_id || b.specialist_id === sid) && overlaps(b, m));
         let grid = '';
         if (specs.length) {
@@ -892,6 +893,8 @@
                     }
                     const b = blockedAt(s.id, m);
                     if (b) return `<td class="blk">${esc(b.reason || 'Bloqueado')}</td>`;
+                    const o = takenAt(m);
+                    if (o) return `<td class="blk">Sillón ocupado (${esc(shortName(o.specialist_name))})</td>`;
                     return '<td class="free">Libre</td>';
                 }).join('') + '</tr>';
             }
@@ -901,7 +904,7 @@
         }
         const free = specs.map(s => {
             let n = 0;
-            for (let m = CAL_OPEN; m < CAL_CLOSE; m += CAL_STEP) if (!busyAt(s.id, m) && !blockedAt(s.id, m)) n++;
+            for (let m = CAL_OPEN; m < CAL_CLOSE; m += CAL_STEP) if (!takenAt(m) && !blockedAt(s.id, m)) n++;
             return `<span class="chip" style="background:transparent;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n} h libres</span>`;
         }).join(' ');
 

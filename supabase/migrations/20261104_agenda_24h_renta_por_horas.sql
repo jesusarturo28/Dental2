@@ -83,3 +83,60 @@ BEGIN
     LIMIT 100;
 END;
 $function$;
+
+-- 5) Un solo sillón: dos citas o rentas nunca se cruzan, sin importar la especialista
+ALTER TABLE appointments DROP CONSTRAINT IF EXISTS appointments_no_overlap;
+ALTER TABLE appointments ADD CONSTRAINT appointments_no_overlap
+    EXCLUDE USING gist (tsrange(appointment_date + start_time, appointment_date + end_time, '[)') WITH &&)
+    WHERE (public.appointment_holds_slot(status));
+
+-- 6) Horarios libres: se descuenta cualquier cita del sillón, no solo las de esa especialista
+CREATE OR REPLACE FUNCTION public.get_available_slots(p_specialist_id uuid, p_service_id uuid, p_date date, p_step_minutes integer DEFAULT 30, p_exclude_appointment_id uuid DEFAULT NULL::uuid)
+ RETURNS TABLE(slot_start time without time zone, slot_end time without time zone)
+ LANGUAGE plpgsql STABLE SECURITY DEFINER SET search_path TO 'public'
+AS $function$
+DECLARE
+    v_duration INTEGER;
+    v_now TIMESTAMP := (NOW() AT TIME ZONE 'America/Mexico_City');
+BEGIN
+    IF public.current_user_role() IS NULL THEN
+        RAISE EXCEPTION 'No autorizado.';
+    END IF;
+    IF p_step_minutes IS NULL OR p_step_minutes <= 0 THEN
+        RAISE EXCEPTION 'Intervalo inválido.';
+    END IF;
+
+    SELECT s.duration_minutes INTO v_duration FROM services s WHERE s.id = p_service_id AND s.active;
+    IF v_duration IS NULL THEN RAISE EXCEPTION 'Servicio no encontrado o inactivo.'; END IF;
+    IF NOT EXISTS (SELECT 1 FROM specialists sp WHERE sp.id = p_specialist_id AND sp.active) THEN
+        RAISE EXCEPTION 'Especialista no encontrado o inactivo.';
+    END IF;
+
+    RETURN QUERY
+    SELECT g.ts::TIME, (g.ts + make_interval(mins => v_duration))::TIME
+    FROM business_hours bh
+    CROSS JOIN LATERAL generate_series(
+        p_date + bh.opening_time,
+        p_date + bh.closing_time - make_interval(mins => v_duration),
+        make_interval(mins => p_step_minutes)
+    ) AS g(ts)
+    WHERE bh.active
+      AND bh.day_of_week = EXTRACT(DOW FROM p_date)::INT
+      AND g.ts > v_now
+      AND NOT EXISTS (
+          SELECT 1 FROM appointments a
+          WHERE a.appointment_date = p_date
+            AND public.appointment_holds_slot(a.status)
+            AND a.id IS DISTINCT FROM p_exclude_appointment_id
+            AND (a.appointment_date + a.start_time) < g.ts + make_interval(mins => v_duration)
+            AND (a.appointment_date + a.end_time)   > g.ts
+      )
+      AND NOT EXISTS (
+          SELECT 1 FROM calendar_blocks cb
+          WHERE (cb.specialist_id IS NULL OR cb.specialist_id = p_specialist_id)
+            AND cb.start_datetime < ((g.ts + make_interval(mins => v_duration)) AT TIME ZONE 'America/Mexico_City')
+            AND cb.end_datetime   > (g.ts AT TIME ZONE 'America/Mexico_City')
+      )
+    ORDER BY g.ts;
+END;
+$function$;
