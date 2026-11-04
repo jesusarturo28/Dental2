@@ -79,6 +79,8 @@
 
     function canEdit() { return state.role === 'Administrador' || state.role === 'Recepción'; }
     function isAdmin() { return state.role === 'Administrador'; }
+    // Especialista que renta la unidad: solo ve disponibilidad y aparta sus horas
+    function isRenter() { return state.role === 'Especialista'; }
 
     function toast(msg, type) {
         const el = document.createElement('div');
@@ -291,7 +293,7 @@
 
         const { data: { user } } = await sb.auth.getUser();
         try {
-            state.me = await q(sb.from('users').select('id,name,email').eq('auth_user_id', user.id).maybeSingle());
+            state.me = await q(sb.from('users').select('id,name,email,specialist_id').eq('auth_user_id', user.id).maybeSingle());
         } catch (e) { state.me = null; }
         $('#user-name').textContent = (state.me && state.me.name) || (user && user.email) || '';
         $('#user-role').textContent = role;
@@ -303,7 +305,7 @@
         state.agendaDate = state.agendaDate || todayMX();
         const saved = storeGet('personal_tab');
         const visible = visibleTabs().map(t => t.id);
-        state.tab = visible.includes(saved) ? saved : 'inicio';
+        state.tab = visible.includes(saved) ? saved : visible[0];
         renderTabs();
         go(state.tab);
         refreshRequestCount();
@@ -325,6 +327,7 @@
     }
 
     function visibleTabs() {
+        if (isRenter()) return [{ id: 'calendario', label: 'Apartar horas', roles: 'renter' }];
         return TABS.filter(t => t.roles === 'all' || (t.roles === 'edit' && canEdit()) || (t.roles === 'admin' && isAdmin()));
     }
 
@@ -806,6 +809,7 @@
     }
 
     async function renderCalendario(view) {
+        if (isRenter()) return renderRenterCalendar(view);
         const today = todayMX();
         const month = state.calMonth || today.slice(0, 7);
         state.calMonth = month;
@@ -927,6 +931,166 @@
         const name = a.patient_name || 'Renta de espacio';
         if (!a.patient_id) return `<strong${style ? ` style="${style}"` : ''}>${esc(name)}</strong>`;
         return `<button class="link-btn"${style ? ` style="${style}"` : ''} data-act="patient" data-id="${a.patient_id}">${esc(name)}</button>`;
+    }
+
+    // ------------------------------------------------------------------
+    // Vista de la especialista que renta: disponibilidad de la unidad y sus horas
+    // ------------------------------------------------------------------
+    const RENT_MAX_HOURS = 12;
+
+    async function renderRenterCalendar(view) {
+        const today = todayMX();
+        const month = state.calMonth || today.slice(0, 7);
+        state.calMonth = month;
+        const first = month + '-01';
+        const dow = new Date(first + 'T12:00:00Z').getUTCDay();
+        const gridStart = addDays(first, -dow);
+        const nextMonth = addDays(addDays(first, 32).slice(0, 7) + '-01', 0);
+        const lastDay = addDays(nextMonth, -1);
+        const weeks = Math.ceil((dow + Number(lastDay.slice(8))) / 7);
+        const gridEnd = addDays(gridStart, weeks * 7 - 1);
+        const title = new Intl.DateTimeFormat('es-MX', { timeZone: 'UTC', month: 'long', year: 'numeric' }).format(new Date(first + 'T12:00:00Z'));
+        const linked = !!(state.me && state.me.specialist_id);
+
+        view.innerHTML = `<div class="toolbar"><h2>${esc(capFirst(title))}</h2>
+                <button class="btn btn-ghost btn-sm" data-act="prev" aria-label="Mes anterior">←</button>
+                <button class="btn btn-ghost btn-sm" data-act="today">Hoy</button>
+                <button class="btn btn-ghost btn-sm" data-act="next" aria-label="Mes siguiente">→</button>
+                ${linked ? '<button class="btn btn-primary btn-sm" data-act="book">Apartar horas</button>' : ''}</div>
+            ${linked ? '' : '<div class="note">Tu cuenta todavía no está ligada a tu nombre de especialista. Pide a la administradora que la configure para poder apartar horas.</div>'}
+            <p class="muted small">Es una sola unidad dental: si una hora está ocupada, ya no se puede apartar. Toca un día para ver sus horas.</p>
+            <div class="cal" id="cal"><p class="loading">Cargando…</p></div>
+            <div id="cal-day"></div>`;
+
+        const setMonth = m => { state.calMonth = m; state.calDay = null; go('calendario'); };
+        bind(view, {
+            prev: () => setMonth(addDays(first, -1).slice(0, 7)),
+            next: () => setMonth(nextMonth.slice(0, 7)),
+            today: () => { state.calMonth = today.slice(0, 7); state.calDay = today; go('calendario'); },
+            book: () => rentalBookingModal(state.calDay && state.calDay >= today ? state.calDay : today)
+        });
+
+        const rows = (await rpc('get_space_calendar', { p_from: gridStart, p_to: gridEnd })) || [];
+        const byDay = {};
+        rows.forEach(r => { (byDay[r.day] = byDay[r.day] || []).push(r); });
+
+        let html = WEEKDAYS.map((w, i) => `<div class="cal-head ${i === 0 ? 'sun' : ''}">${w}</div>`).join('');
+        for (let i = 0; i < weeks * 7; i++) {
+            const d = addDays(gridStart, i);
+            const items = byDay[d] || [];
+            const mine = items.filter(r => r.mine);
+            const taken = items.filter(r => !r.mine);
+            const out = d.slice(0, 7) !== month;
+            html += `<button class="cal-cell ${out ? 'out' : ''} ${d === today ? 'today' : ''} ${d === state.calDay ? 'sel' : ''}" data-act="day" data-d="${d}">
+                <span class="cal-num ${i % 7 === 0 ? 'sun' : ''}">${Number(d.slice(8))}</span>
+                ${mine.slice(0, 2).map(r => `<span class="cal-chip" style="--c:var(--teal)">${esc(fmtTime(r.start_time))}<span class="nm"> Mi renta</span></span>`).join('')}
+                ${taken.length ? `<span class="cal-chip blk">${taken.length} ocupado${taken.length > 1 ? 's' : ''}</span>` : ''}
+            </button>`;
+        }
+        const cal = $('#cal');
+        cal.innerHTML = html;
+        bind(cal, { day: b => { state.calDay = b.dataset.d; $$('.cal-cell', cal).forEach(c => c.classList.toggle('sel', c === b)); renderRenterDay(byDay[b.dataset.d] || [], b.dataset.d, linked); } });
+        if (state.calDay && state.calDay >= gridStart && state.calDay <= gridEnd) renderRenterDay(byDay[state.calDay] || [], state.calDay, linked);
+    }
+
+    function renderRenterDay(rows, d, linked) {
+        const box = $('#cal-day');
+        const endMin = t => { const v = toMin(t); return v === 0 ? 24 * 60 : v; };
+        const at = m => rows.find(r => toMin(r.start_time) < m + 60 && endMin(r.end_time) > m);
+        const nowMin = d === todayMX() ? toMin(new Intl.DateTimeFormat('en-GB', { timeZone: 'America/Mexico_City', hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date())) : -1;
+        let grid = '<div class="table-wrap"><table class="cal-day-grid"><thead><tr><th>Hora</th><th>Unidad dental</th></tr></thead><tbody>';
+        let free = 0;
+        for (let m = 0; m < 24 * 60; m += 60) {
+            const r = at(m);
+            let cell;
+            if (r && r.mine) cell = `<td class="busy" style="--c:var(--teal)"><strong>Mi renta</strong><span>${esc(fmtTime(r.start_time))}–${esc(fmtTime(r.end_time))}</span></td>`;
+            else if (r) cell = `<td class="blk">${esc(r.label)}</td>`;
+            else if (d < todayMX() || m + 60 <= nowMin) cell = '<td class="blk">Ya pasó</td>';
+            else { cell = '<td class="free">Libre</td>'; free++; }
+            grid += `<tr><td class="h">${fromMin(m)}</td>${cell}</tr>`;
+        }
+        grid += '</tbody></table></div>';
+        const mine = rows.filter(r => r.mine && r.appointment_id);
+        const upcoming = mine.filter(r => d > todayMX() || (d === todayMX() && toMin(r.start_time) > nowMin));
+        box.innerHTML = `<div class="card cal-day-card">
+            <div class="card-head"><h3>${esc(capFirst(fmtDateLong(d)))}</h3>
+                ${linked && d >= todayMX() ? '<button class="btn btn-primary btn-sm" data-act="book">Apartar horas</button>' : ''}</div>
+            <div class="meta"><span class="chip ok">${free} h libres</span></div>
+            ${upcoming.length ? `<div class="actions" style="margin-bottom:.6rem">${upcoming.map(r => `<button class="btn btn-sm btn-bad" data-act="cancel" data-id="${r.appointment_id}">Cancelar mi renta de ${esc(fmtTime(r.start_time))}–${esc(fmtTime(r.end_time))}</button>`).join('')}</div>` : ''}
+            ${grid}
+        </div>`;
+        bind(box, {
+            book: () => rentalBookingModal(d),
+            cancel: btn => cancelRentalModal(btn.dataset.id)
+        });
+        box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    function rentalBookingModal(date) {
+        const specId = state.me && state.me.specialist_id;
+        const rentals = state.services.filter(s => s.category === 'Renta').sort((a, b) => a.duration_minutes - b.duration_minutes);
+        const maxHours = Math.min(RENT_MAX_HOURS, rentals.length ? Math.max(...rentals.map(s => s.duration_minutes / 60)) : 1);
+        const m = openModal('Apartar horas', `<form id="rb">
+            <div class="grid-2">
+                <div class="field"><label for="rb-date">Fecha</label><input id="rb-date" name="date" type="date" required min="${esc(todayMX())}" value="${esc(date)}"></div>
+                <div class="field"><label>Tiempo</label>
+                    <div class="hours-stepper"><button type="button" class="btn btn-sm" data-act="hless" aria-label="Menos tiempo">−</button>
+                    <strong id="rb-hours">1 hora</strong>
+                    <button type="button" class="btn btn-sm" data-act="hmore" aria-label="Más tiempo">+ 1 hora</button></div></div>
+            </div>
+            <div class="field"><label>Hora de inicio</label><div id="rb-slots"></div></div>
+            <p class="form-error" id="rb-error"></p>
+            <div class="actions"><button class="btn btn-primary" type="submit">Apartar</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div>
+        </form>`);
+        const form = $('#rb', m.body);
+        let hours = 1, slot = null;
+        const serviceId = () => (rentals.find(s => s.duration_minutes === hours * 60) || {}).id;
+        const refresh = () => { slot = null; loadSlots($('#rb-slots', m.body), specId, serviceId(), form.date.value, t => { slot = t; }); };
+        const setHours = h => {
+            hours = Math.min(maxHours, Math.max(1, h));
+            $('#rb-hours', m.body).textContent = hours === 1 ? '1 hora' : hours + ' horas';
+            refresh();
+        };
+        bind(m.body, { close: () => m.close(), hless: () => setHours(hours - 1), hmore: () => setHours(hours + 1) });
+        form.date.addEventListener('change', refresh);
+        refresh();
+        form.addEventListener('submit', ev => {
+            ev.preventDefault();
+            const err = $('#rb-error', m.body);
+            err.textContent = '';
+            if (!slot) { err.textContent = 'Elige la hora de inicio.'; return; }
+            busy($('button[type=submit]', form), async () => {
+                try {
+                    await rpc('book_space', { p_date: form.date.value, p_start: slot, p_hours: hours });
+                    m.close();
+                    toast(`Listo: apartaste ${hours === 1 ? '1 hora' : hours + ' horas'} desde las ${fmtTime(slot)}.`, 'ok');
+                    state.calDay = form.date.value;
+                    state.calMonth = form.date.value.slice(0, 7);
+                    go('calendario');
+                } catch (e) { err.textContent = errMsg(e); refresh(); }
+            });
+        });
+    }
+
+    function cancelRentalModal(id) {
+        const m = openModal('Cancelar renta', `<form id="rc">
+            <p>Se liberará ese horario para alguien más.</p>
+            <div class="field"><label for="rc-reason">Motivo (opcional)</label><input id="rc-reason" name="reason"></div>
+            <p class="form-error" id="rc-error"></p>
+            <div class="actions"><button class="btn btn-bad" type="submit">Cancelar renta</button><button class="btn btn-ghost" type="button" data-act="close">Volver</button></div>
+        </form>`);
+        bind(m.body, { close: () => m.close() });
+        $('#rc', m.body).addEventListener('submit', ev => {
+            ev.preventDefault();
+            busy($('button[type=submit]', ev.target), async () => {
+                try {
+                    await rpc('cancel_space_booking', { p_appointment_id: id, p_reason: ev.target.reason.value.trim() || null });
+                    m.close();
+                    toast('Renta cancelada.', 'ok');
+                    go('calendario');
+                } catch (e) { $('#rc-error', m.body).textContent = errMsg(e); }
+            });
+        });
     }
 
     function noSpecialistsNote() {
@@ -1524,10 +1688,12 @@
     }
 
     async function renderEquipo(view) {
-        const [rows, roles] = await Promise.all([rpc('admin_list_staff'), q(sb.from('roles').select('id,name').order('name'))]);
+        const [rows, roles, links] = await Promise.all([rpc('admin_list_staff'), q(sb.from('roles').select('id,name').order('name')), q(sb.from('users').select('id,specialist_id'))]);
         state.roles = roles || [];
+        const linkBy = Object.fromEntries((links || []).map(l => [l.id, l.specialist_id]));
+        (rows || []).forEach(r => { r.specialist_id = linkBy[r.id] || null; });
         view.innerHTML = `<div class="toolbar"><h2>Equipo</h2><button class="btn btn-primary" data-act="new">Agregar persona</button></div>
-            <p class="muted small">Quién puede entrar a esta página y qué puede hacer. Recepción gestiona pacientes, agenda, cotizaciones y seguimientos; Odontólogo solo consulta.</p>
+            <p class="muted small">Quién puede entrar a esta página y qué puede hacer. Recepción gestiona pacientes, agenda, cotizaciones y seguimientos; Odontólogo solo consulta; Especialista (quien renta la unidad) solo ve qué horas están libres y aparta las suyas, sin ver pacientes ni servicios.</p>
             ${(rows || []).map(staffCard).join('')}`;
         const byId = Object.fromEntries((rows || []).map(r => [r.id, r]));
         bind(view, {
@@ -1581,16 +1747,24 @@
                 <div class="field"><label>Correo</label><input name="email" type="email" required value="${esc(u ? u.email : '')}" ${u && u.has_account ? 'readonly title="Ya tiene cuenta: el correo no se cambia aquí"' : ''}></div>
                 <div class="field"><label>Teléfono</label><input name="phone" type="tel" value="${esc(u ? u.phone : '')}"></div>
                 <div class="field"><label>Rol</label><select name="role_id" required>${roleOpts(u ? u.role_id : recep && recep.id)}</select></div>
+                <div class="field hidden" id="tf-spec-wrap"><label>Su nombre en la agenda</label><select name="specialist_id">${specialistOptions(u ? u.specialist_id : '')}</select></div>
                 ${u ? `<div class="field"><label>Estado</label><select name="active"><option value="true" ${u.active ? 'selected' : ''}>Activo</option><option value="false" ${u.active ? '' : 'selected'}>Inactivo (ya no puede entrar)</option></select></div>` : ''}
             </div>
             ${u ? '' : '<div class="field"><label class="check"><input type="checkbox" name="invite" checked> Enviarle ahora el correo de invitación</label></div>'}
             <p class="form-error" id="tf-error"></p>
             <div class="actions"><button class="btn btn-primary" type="submit">Guardar</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div></form>`);
         bind(m.body, { close: () => m.close() });
-        $('#tf', m.body).addEventListener('submit', ev => {
+        const tf = $('#tf', m.body);
+        const isSpecRole = () => ((state.roles || []).find(r => r.id === tf.role_id.value) || {}).name === 'Especialista';
+        const syncSpec = () => { $('#tf-spec-wrap', m.body).classList.toggle('hidden', !isSpecRole()); tf.specialist_id.required = isSpecRole(); };
+        tf.role_id.addEventListener('change', syncSpec);
+        syncSpec();
+        tf.addEventListener('submit', ev => {
             ev.preventDefault();
             const f = ev.target;
-            const row = { name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim() || null, role_id: f.role_id.value };
+            const row = { name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim() || null, role_id: f.role_id.value,
+                specialist_id: isSpecRole() ? (f.specialist_id.value || null) : null };
+            if (isSpecRole() && !row.specialist_id) { $('#tf-error', m.body).textContent = 'Elige su nombre en la agenda.'; return; }
             busy($('button[type=submit]', f), async () => {
                 try {
                     if (u) {
