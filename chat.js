@@ -24,6 +24,7 @@
 
     const panel = document.createElement('section');
     panel.className = 'chat-panel';
+    panel.id = 'chat'; // el rastreo de clics a WhatsApp de index.html usa este id como origen
     panel.setAttribute('role', 'dialog');
     panel.setAttribute('aria-label', 'Chat con el asistente virtual');
     panel.hidden = true;
@@ -43,6 +44,9 @@
             <textarea id="chat-input" rows="1" maxlength="1000" placeholder="Escribe tu mensaje…" autocomplete="off"></textarea>
             <button type="submit" class="chat-send" aria-label="Enviar"><i class="fa-solid fa-paper-plane"></i></button>
         </form>
+        <a class="chat-whatsapp" href="${WHATSAPP_URL}" target="_blank" rel="noopener">
+            <i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Escribir por WhatsApp
+        </a>
         <p class="chat-foot">Asistente con IA: puede equivocarse. Para urgencias escribe por <a href="${WHATSAPP_URL}" target="_blank" rel="noopener">WhatsApp</a>.</p>`;
 
     document.body.appendChild(launcher);

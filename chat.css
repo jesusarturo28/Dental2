@@ -177,6 +177,25 @@
   cursor: pointer;
 }
 .chat-send:disabled { opacity: 0.5; cursor: wait; }
+.chat-whatsapp {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin: 0 0.8rem 0.55rem;
+  padding: 0.6rem 1rem;
+  border-radius: 999px;
+  background: var(--gradient-btn);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.92rem;
+  text-decoration: none;
+  box-shadow: var(--shadow-md);
+  transition: var(--transition);
+}
+.chat-whatsapp i { font-size: 1.2rem; }
+.chat-whatsapp:hover { transform: translateY(-1px); box-shadow: var(--shadow-glow); color: #fff; }
+.chat-whatsapp:focus-visible { outline: 2px solid var(--primary-dark); outline-offset: 2px; }
 .chat-foot {
   margin: 0;
   padding: 0 0.9rem 0.65rem;

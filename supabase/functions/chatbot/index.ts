@@ -5,6 +5,9 @@
 // Secretos necesarios (Supabase → Edge Functions → Secrets):
 //   ANTHROPIC_API_KEY  — clave de la API de Claude
 // SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY los pone Supabase automáticamente.
+//
+// Mientras no exista ANTHROPIC_API_KEY, el chat responde con un mensaje amable que
+// dirige a WhatsApp (sin llamar a la API).
 
 import Anthropic from "npm:@anthropic-ai/sdk@0.130.0";
 import { createClient } from "npm:@supabase/supabase-js@2";
@@ -13,6 +16,7 @@ const MODEL = "claude-opus-5-5";
 const WHATSAPP = "55 7354 1129";
 const MAX_MESSAGES = 30;
 const MAX_CHARS = 1000;
+const API_KEY = Deno.env.get("ANTHROPIC_API_KEY") ?? "";
 
 const ALLOWED_ORIGINS = [
   /^https:\/\/estefaniamza\.netlify\.app$/,
@@ -21,7 +25,7 @@ const ALLOWED_ORIGINS = [
   /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/,
 ];
 
-const anthropic = new Anthropic({ apiKey: Deno.env.get("ANTHROPIC_API_KEY") });
+const anthropic = new Anthropic({ apiKey: API_KEY || undefined });
 const db = createClient(
   Deno.env.get("SUPABASE_URL")!,
   Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
@@ -85,7 +89,7 @@ function systemPrompt(info: string): string {
 - Trata de "tú" al paciente.
 
 ## Datos del consultorio
-- Dirección: Riobamba 952, Lindavista Sur, Gustavo A. Madero, C.P. 07300, CDMX.
+- Dirección: Sierravista 133, Lindavista, Gustavo A. Madero, CDMX.
 - WhatsApp y teléfono: ${WHATSAPP} (https://wa.me/525573541129).
 - Instagram: @dra.estefaniamza
 - Tratamientos: limpieza dental, ortodoncia, endodoncia, resinas, implantes, cirugía bucal (extracciones y terceros molares), odontopediatría (niñas, niños y adolescentes), diseño de sonrisa, blanqueamiento, carillas, coronas, prótesis y rehabilitación oral.
@@ -197,7 +201,7 @@ function validMessages(raw: unknown): ChatMessage[] | null {
 }
 
 const FALLBACK_REPLY =
-  `Perdón, en este momento no puedo responder. Escríbenos por WhatsApp al ${WHATSAPP} y con gusto te atendemos.`;
+  `¡Gracias por escribirnos! 😊 Para darte la mejor atención y resolver tus dudas con calma, escríbenos por WhatsApp al ${WHATSAPP} (https://wa.me/525573541129) y con gusto te ayudamos.`;
 
 // ---------- Servidor ----------
 
@@ -217,6 +221,9 @@ Deno.serve(async (req) => {
   }
   const history = validMessages(body.messages);
   if (!history) return json({ error: "Conversación inválida" }, 400, origin);
+
+  // Sin clave de la API todavía: respuesta amable directa a WhatsApp, sin errores en los registros.
+  if (!API_KEY) return json({ reply: FALLBACK_REPLY, booked: false }, 200, origin);
 
   const { data: allowed, error: limitError } = await db.rpc("chatbot_allow", { p_key: await clientKey(req) });
   if (limitError) console.error("chatbot_allow", limitError);
