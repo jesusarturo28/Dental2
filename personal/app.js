@@ -875,8 +875,13 @@
 
     function renderCalDay(rows, d) {
         const box = $('#cal-day');
-        const specs = state.calSpecialist ? state.specialists.filter(s => s.id === state.calSpecialist) : state.specialists;
         const citas = rows.filter(r => r.kind === 'cita');
+        const activeSpecs = state.calSpecialist ? state.specialists.filter(s => s.id === state.calSpecialist) : state.specialists;
+        // Especialistas desactivadas que aún tienen citas ese día: se muestran para no perder esas citas
+        const inactiveSpecs = state.calSpecialist ? [] : [...new Map(citas
+            .filter(r => r.specialist_id && !state.specialists.some(s => s.id === r.specialist_id))
+            .map(r => [r.specialist_id, { id: r.specialist_id, name: `${r.specialist_name || 'Especialista'} (inactiva)`, inactive: true }])).values()];
+        const specs = activeSpecs.concat(inactiveSpecs);
         const blocks = rows.filter(r => r.kind === 'bloqueo');
         const normal = citas.filter(r => !r.is_emergency);
         const urg = citas.filter(r => r.is_emergency);
@@ -898,6 +903,7 @@
                         const startsHere = (st >= m && st < m + CAL_STEP) || m === CAL_OPEN;
                         return `<td class="busy" style="--c:${specColor(s.id)}">${startsHere ? `${patientLink(a)}<span>${esc(a.service_name)} · ${esc(fmtTime(a.start_time))}–${esc(fmtTime(a.end_time))}</span>` : ''}</td>`;
                     }
+                    if (s.inactive) return '<td></td>';
                     const b = blockedAt(s.id, m);
                     if (b) return `<td class="blk">${esc(b.reason || 'Bloqueado')}</td>`;
                     const o = takenAt(m);
@@ -909,7 +915,7 @@
         } else {
             grid = '<div class="note">Todavía no hay especialistas registrados.</div>';
         }
-        const free = specs.map(s => {
+        const free = activeSpecs.map(s => {
             let n = 0;
             for (let m = CAL_OPEN; m < CAL_CLOSE; m += CAL_STEP) if (!takenAt(m) && !blockedAt(s.id, m)) n++;
             return `<span class="chip" style="background:transparent;border:1px solid ${specColor(s.id)};color:${specColor(s.id)}">${esc(s.name)}: ${n} h libres</span>`;
@@ -1394,14 +1400,113 @@
         });
     }
 
-    function specialistModal() {
-        const m = openModal('Agregar especialista', `<form id="sf">
-            <div class="field"><label>Nombre</label><input name="name" required placeholder="Ej. Dra. Estefani Amza"></div>
+    // ------------------------------------------------------------------
+    // Especialistas (en Equipo): agregar, editar, desactivar y borrar
+    // ------------------------------------------------------------------
+    async function loadSpecialistsSection() {
+        const box = $('#spec-section');
+        if (!box) return;
+        let specs, counts;
+        try {
+            specs = await q(sb.from('specialists').select('id,name,specialty,phone,email,active').order('active', { ascending: false }).order('name'));
+            const today = todayMX();
+            counts = await Promise.all((specs || []).map(async sp => {
+                const [all, upcoming] = await Promise.all([
+                    sb.from('appointments').select('id', { count: 'exact', head: true }).eq('specialist_id', sp.id),
+                    sb.from('appointments').select('id', { count: 'exact', head: true }).eq('specialist_id', sp.id)
+                        .gte('appointment_date', today).in('status', OPEN_STATUSES)
+                ]);
+                if (all.error) throw all.error;
+                if (upcoming.error) throw upcoming.error;
+                return { total: all.count || 0, upcoming: upcoming.count || 0 };
+            }));
+        } catch (e) {
+            box.innerHTML = `<h2 style="margin-top:1.6rem">Especialistas</h2><div class="note">${esc(errMsg(e))}</div>`;
+            return;
+        }
+        const byId = {};
+        (specs || []).forEach((sp, i) => { byId[sp.id] = Object.assign({}, sp, counts[i]); });
+        box.innerHTML = `<div class="toolbar" style="margin-top:1.6rem"><h2>Especialistas</h2><button class="btn btn-primary" data-act="spec-new">Agregar especialista</button></div>
+            <p class="muted small">Quién se puede elegir al agendar. Desactivar la quita de la lista para citas nuevas y le impide apartar horas; sus citas ya registradas se conservan y siguen viéndose en la agenda. Solo se puede borrar a quien nunca ha tenido citas.</p>
+            ${(specs || []).length ? specs.map(sp => specialistCard(byId[sp.id])).join('') : '<div class="empty">Todavía no hay especialistas.</div>'}`;
+        bind(box, {
+            'spec-new': () => specialistModal(),
+            'spec-edit': btn => specialistModal(byId[btn.dataset.id]),
+            'spec-off': btn => deactivateSpecialist(byId[btn.dataset.id], btn),
+            'spec-on': btn => busy(btn, () => setSpecialistActive(byId[btn.dataset.id], true)),
+            'spec-del': btn => deleteSpecialist(byId[btn.dataset.id], btn)
+        });
+    }
+
+    function specialistCard(sp) {
+        const citas = sp.total === 1 ? '1 cita' : `${sp.total} citas`;
+        return `<div class="card">
+            <div class="card-head"><h3>${esc(sp.name)}</h3>
+                <span>${sp.active ? '<span class="chip ok">Activa</span>' : '<span class="chip gray">Inactiva</span>'}</span></div>
+            <div class="meta">${sp.specialty ? `<span>🦷 ${esc(sp.specialty)}</span>` : ''}${sp.phone ? `<span>📱 ${esc(sp.phone)}</span>` : ''}${sp.email ? `<span>✉️ ${esc(sp.email)}</span>` : ''}
+                <span>📅 ${esc(citas)}${sp.upcoming ? ` · ${sp.upcoming} pendientes desde hoy` : ''}</span></div>
+            <div class="actions">
+                <button class="btn btn-sm btn-ghost" data-act="spec-edit" data-id="${sp.id}">Editar</button>
+                ${sp.active ? `<button class="btn btn-sm" data-act="spec-off" data-id="${sp.id}">Desactivar</button>`
+                    : `<button class="btn btn-sm btn-ok" data-act="spec-on" data-id="${sp.id}">Reactivar</button>`}
+                ${sp.total === 0 ? `<button class="btn btn-sm btn-bad" data-act="spec-del" data-id="${sp.id}">Borrar</button>` : ''}
+            </div></div>`;
+    }
+
+    async function afterSpecialistChange(msg) {
+        await loadCatalogs();
+        toast(msg, 'ok');
+        go(state.tab);
+    }
+
+    async function setSpecialistActive(sp, active) {
+        try {
+            const upd = await q(sb.from('specialists').update({ active }).eq('id', sp.id).select('id'));
+            if (!(upd || []).length) throw new Error('No se encontró a la especialista. Recarga la página.');
+            await afterSpecialistChange(active ? `${sp.name} vuelve a aparecer en la agenda.` : `${sp.name} quedó desactivada.`);
+        } catch (e) { toast(errMsg(e), 'error'); }
+    }
+
+    function deactivateSpecialist(sp, btn) {
+        if (!sp.upcoming) { busy(btn, () => setSpecialistActive(sp, false)); return; }
+        const m = openModal('Desactivar especialista', `<p><strong>${esc(sp.name)}</strong> tiene <strong>${sp.upcoming}</strong> ${sp.upcoming === 1 ? 'cita pendiente' : 'citas pendientes'} de hoy en adelante.</p>
+            <p class="muted">Esas citas no se cancelan: siguen en la base, pero ya no la podrás elegir para citas nuevas y, si tiene cuenta de Especialista, ya no podrá apartar horas. Si no se van a atender, reprográmalas o cancélalas desde la Agenda.</p>
+            <div class="actions"><button class="btn btn-bad" data-act="ok">Desactivar de todos modos</button><button class="btn btn-ghost" data-act="close">Cancelar</button></div>`);
+        bind(m.body, {
+            close: () => m.close(),
+            ok: b => busy(b, async () => { m.close(); await setSpecialistActive(sp, false); })
+        });
+    }
+
+    function deleteSpecialist(sp, btn) {
+        const m = openModal('Borrar especialista', `<p>¿Borrar a <strong>${esc(sp.name)}</strong> para siempre?</p>
+            <p class="muted">Nunca ha tenido citas, así que no se pierde historial. Esto no se puede deshacer.</p>
+            <div class="actions"><button class="btn btn-bad" data-act="ok">Borrar</button><button class="btn btn-ghost" data-act="close">Cancelar</button></div>`);
+        bind(m.body, {
+            close: () => m.close(),
+            ok: b => busy(b, async () => {
+                try {
+                    const del = await q(sb.from('specialists').delete().eq('id', sp.id).select('id'));
+                    if (!(del || []).length) throw new Error('No se pudo borrar. Revisa que sigas como Administrador.');
+                    m.close();
+                    await afterSpecialistChange(`${sp.name} fue borrada.`);
+                } catch (e) {
+                    const fk = e && (e.code === '23503' || /foreign key/i.test(e.message || ''));
+                    m.body.querySelector('.actions').insertAdjacentHTML('beforebegin', `<p class="form-error">${esc(fk ? 'Tiene registros ligados (por ejemplo una cuenta del equipo o una cita). Mejor desactívala.' : errMsg(e))}</p>`);
+                }
+            })
+        });
+    }
+
+    function specialistModal(sp) {
+        const v = k => esc((sp && sp[k]) || '');
+        const m = openModal(sp ? 'Editar especialista' : 'Agregar especialista', `<form id="sf">
+            <div class="field"><label>Nombre</label><input name="name" required placeholder="Ej. Dra. Estefani Amza" value="${v('name')}"></div>
             <div class="grid-2">
-                <div class="field"><label>Especialidad</label><input name="specialty" placeholder="Ej. Odontología general"></div>
-                <div class="field"><label>Teléfono</label><input name="phone" type="tel"></div>
+                <div class="field"><label>Especialidad</label><input name="specialty" placeholder="Ej. Odontología general" value="${v('specialty')}"></div>
+                <div class="field"><label>Teléfono</label><input name="phone" type="tel" value="${v('phone')}"></div>
             </div>
-            <div class="field"><label>Correo</label><input name="email" type="email"></div>
+            <div class="field"><label>Correo</label><input name="email" type="email" value="${v('email')}"></div>
             <p class="form-error" id="sf-error"></p>
             <div class="actions"><button class="btn btn-primary" type="submit">Guardar</button><button class="btn btn-ghost" type="button" data-act="close">Cancelar</button></div></form>`);
         bind(m.body, { close: () => m.close() });
@@ -1410,10 +1515,15 @@
             const f = Object.fromEntries(new FormData(ev.target).entries());
             busy($('button[type=submit]', ev.target), async () => {
                 try {
-                    await q(sb.from('specialists').insert({ name: f.name.trim(), specialty: f.specialty.trim() || null, phone: f.phone.trim() || null, email: f.email.trim() || null }));
+                    const data = { name: f.name.trim(), specialty: f.specialty.trim() || null, phone: f.phone.trim() || null, email: f.email.trim() || null };
+                    if (sp) {
+                        const upd = await q(sb.from('specialists').update(data).eq('id', sp.id).select('id'));
+                        if (!(upd || []).length) throw new Error('No se encontró a la especialista. Recarga la página.');
+                    }
+                    else await q(sb.from('specialists').insert(data));
                     await loadCatalogs();
                     m.close();
-                    toast('Especialista agregado.', 'ok');
+                    toast(sp ? 'Especialista actualizada.' : 'Especialista agregada.', 'ok');
                     go(state.tab);
                 } catch (e) { $('#sf-error', m.body).textContent = errMsg(e); }
             });
@@ -1767,8 +1877,10 @@
         (rows || []).forEach(r => { r.specialist_id = linkBy[r.id] || null; });
         view.innerHTML = `<div class="toolbar"><h2>Equipo</h2><button class="btn btn-primary" data-act="new">Agregar persona</button></div>
             <p class="muted small">Quién puede entrar a esta página y qué puede hacer. Recepción gestiona pacientes, agenda, cotizaciones y seguimientos; Odontólogo solo consulta; Especialista (quien renta la unidad) solo ve qué horas están libres y aparta las suyas, sin ver pacientes ni servicios.</p>
-            ${(rows || []).map(staffCard).join('')}`;
+            ${(rows || []).map(staffCard).join('')}
+            <div id="spec-section"><p class="loading">Cargando especialistas…</p></div>`;
         const byId = Object.fromEntries((rows || []).map(r => [r.id, r]));
+        loadSpecialistsSection();
         bind(view, {
             new: () => staffModal(null),
             edit: btn => staffModal(byId[btn.dataset.id]),
