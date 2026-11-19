@@ -496,8 +496,10 @@
     async function loadTodayAgenda() {
         const box = $('#today');
         if (!box) return;
-        const rows = await rpc('get_dashboard_agenda', { p_date: todayMX() });
-        box.innerHTML = (rows || []).length ? rows.map(agendaCard).join('') : '<div class="empty">No hay citas para hoy.</div>';
+        const d = todayMX();
+        const rows = await rpc('get_dashboard_agenda', { p_date: d });
+        const phones = await agendaPhones(rows);
+        box.innerHTML = (rows || []).length ? rows.map(a => agendaCard(a, d, phones)).join('') : '<div class="empty">No hay citas para hoy.</div>';
         bindAgenda(box, loadTodayAgenda);
     }
 
@@ -785,7 +787,8 @@
         $('#a-date').addEventListener('change', ev => ev.target.value && setDate(ev.target.value));
         const box = $('#a-list');
         const rows = await rpc('get_dashboard_agenda', { p_date: d });
-        box.innerHTML = (rows || []).length ? rows.map(agendaCard).join('') : '<div class="empty">No hay citas este día.</div>';
+        const phones = await agendaPhones(rows);
+        box.innerHTML = (rows || []).length ? rows.map(a => agendaCard(a, d, phones)).join('') : '<div class="empty">No hay citas este día.</div>';
         bindAgenda(box, () => go('agenda'));
     }
 
@@ -1099,7 +1102,76 @@
             ${isAdmin() ? '<div class="actions"><button class="btn btn-sm btn-primary" data-act="addspec">Agregar especialista</button></div>' : ' Pide a la administradora que los agregue.'}</div>`;
     }
 
-    function agendaCard(a) {
+    // Recordatorio y reseña por WhatsApp: el personal revisa el mensaje y lo envía
+    const REVIEW_URL = 'https://g.page/r/CTICTiD1vviIECE/review';
+    const CLINIC_ADDRESS = 'Sierravista 133, Lindavista';
+
+    // Teléfonos de los pacientes de la agenda (solo para quien puede ver pacientes)
+    async function agendaPhones(rows) {
+        const ids = [...new Set((rows || []).map(r => r.patient_id).filter(Boolean))];
+        if (!canEdit() || !ids.length) return {};
+        try {
+            const list = await q(sb.from('patients').select('id,first_name,phone,whatsapp').in('id', ids));
+            return Object.fromEntries((list || []).map(p => [p.id, p]));
+        } catch (e) {
+            console.error('No se pudieron cargar los teléfonos de la agenda', e);
+            return null; // null = error; las tarjetas lo avisan
+        }
+    }
+
+    function fmtTime12(t) {
+        const [h, m] = String(t || '').split(':').map(Number);
+        if (Number.isNaN(h)) return '';
+        const suf = h < 12 ? 'a. m.' : 'p. m.';
+        return `${h % 12 || 12}:${String(m || 0).padStart(2, '0')} ${suf}`;
+    }
+
+    function whenText(date) {
+        const today = todayMX();
+        if (date === today) return 'hoy';
+        if (date === addDays(today, 1)) return 'mañana ' + fmtDate(date, { weekday: 'long', day: 'numeric', month: 'long', year: undefined });
+        return 'el ' + fmtDate(date, { weekday: 'long', day: 'numeric', month: 'long', year: undefined });
+    }
+
+    function reminderText(p, a, date) {
+        return `Hola ${p.first_name} 😊, te recordamos tu cita de ${a.service_name} ${whenText(date)} a las ${fmtTime12(a.start_time)} ` +
+            `en Estefani Amza | Odontología Integral (${CLINIC_ADDRESS}). ` +
+            `¿Nos confirmas tu asistencia? Si necesitas cambiar el horario, con gusto te ayudamos. ¡Te esperamos!`;
+    }
+
+    function reviewText(p) {
+        return `Hola ${p.first_name}, gracias por visitarnos en Estefani Amza | Odontología Integral 💜. ` +
+            `Nos encantaría saber cómo fue tu experiencia. ¿Nos dejas tu opinión en Google? ` +
+            `Solo toma un minuto y nos ayuda a mejorar: ${REVIEW_URL}`;
+    }
+
+    function agendaWaButtons(a, date, phones) {
+        if (!a.patient_id || !canEdit()) return '';
+        if (phones === null) return '<p class="muted small">No se pudo cargar el WhatsApp del paciente. Recarga la página para enviar mensajes.</p>';
+        const p = phones[a.patient_id];
+        if (!p) return '';
+        const phone = [p.whatsapp, p.phone].find(n => waLink(n)) || '';
+        const today = todayMX();
+        const nowMin = toMin(new Intl.DateTimeFormat('en-GB', { timeZone: TZ, hour: '2-digit', minute: '2-digit', hour12: false }).format(new Date()));
+        const upcoming = date > today || (date === today && toMin(a.start_time) > nowMin);
+        const wantsReminder = OPEN_STATUSES.includes(a.status) && upcoming;
+        // La reseña se pide durante la semana siguiente a la consulta
+        const wantsReview = a.status === 'Atendida' && date <= today && date >= addDays(today, -7);
+        if (!wantsReminder && !wantsReview) return '';
+        const btns = [];
+        if (wantsReminder) {
+            const wa = waLink(phone, reminderText(p, a, date));
+            if (wa) btns.push(`<a class="btn btn-wa btn-sm" href="${esc(wa)}" target="_blank" rel="noopener">📅 Recordatorio</a>`);
+        }
+        if (wantsReview) {
+            const wa = waLink(phone, reviewText(p));
+            if (wa) btns.push(`<a class="btn btn-wa btn-sm" href="${esc(wa)}" target="_blank" rel="noopener">⭐ Pedir reseña</a>`);
+        }
+        if (!btns.length) return '<p class="muted small">Sin WhatsApp válido registrado para enviar mensajes.</p>';
+        return `<div class="actions">${btns.join('')}</div>`;
+    }
+
+    function agendaCard(a, date, phones) {
         const open = OPEN_STATUSES.includes(a.status);
         return `<div class="card"><div class="agenda-item">
             <div class="time">${esc(fmtTime(a.start_time))}<div class="muted small" style="font-weight:500">${esc(fmtTime(a.end_time))}</div></div>
@@ -1114,6 +1186,7 @@
                     <button class="btn btn-sm" data-act="resched" data-id="${a.appointment_id}">Reprogramar</button>
                     <button class="btn btn-sm btn-bad" data-act="cancel" data-id="${a.appointment_id}">Cancelar</button>
                 </div>` : ''}
+                ${agendaWaButtons(a, date, phones)}
             </div></div></div>`;
     }
 
