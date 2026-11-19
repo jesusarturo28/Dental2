@@ -9,7 +9,7 @@ set -euo pipefail
 cd "$(git rev-parse --show-toplevel)"
 command -v codex >/dev/null 2>&1 || bash scripts/codex-setup.sh
 
-if ! codex login status 2>/dev/null | grep -qi chatgpt; then
+if ! codex login status 2>&1 | grep -qi chatgpt; then
   echo "codex-review: Codex no tiene sesión de ChatGPT. Ejecuta: codex login --device-auth" >&2
   exit 2
 fi
